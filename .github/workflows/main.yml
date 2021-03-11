@@ -23,7 +23,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Check out
       - uses: actions/checkout@v2
 
       - name: Deploy to GitHub Pages
-  uses: JamesIves/github-pages-deploy-action@4.1.0
+      - uses: JamesIves/github-pages-deploy-action@4.1.0
