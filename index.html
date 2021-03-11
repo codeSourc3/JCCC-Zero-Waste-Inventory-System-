@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Zero Waste Bin Client Test</title>
+    
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <template id="intern-template">
+      <style>
+        .intern-board {
+          border: 1px solid black;
+        }
+      </style>
+      <div class="intern-board">
+        <p><span>ID: </span> <slot name="intern-id">No ID</slot></p>
+        <p>First Name: <slot name="first-name">First Name Unavailable</slot></p>
+        <p>Last Name: <slot name="last-name">Last Name Unavailable</slot></p>
+      </div>
+    </template>
+
+    <template id="task-template">
+      <style>
+        .task-board {
+          border: 1px solid black;
+        }
+      </style>
+      <div class="task-board">
+        <p>Task ID: <slot name="task-id"></slot></p>
+        <p>Description: <slot name="description"></slot></p>
+        <p>Creation Date: <slot name="creation-date"></slot></p>
+        <p>Status: <slot name="task-status"></slot></p>
+        <p>Intern ID: <slot name="intern-id"></slot></p>
+      </div>
+    </template>
+
+    <template id="bin-template">
+      <style>
+        .bin-board {
+          border: 1px solid black;
+        }
+      </style>
+      <div class="bin-board">
+        <p>Bin ID: <slot name="bin-id"></slot></p>
+        <p>Weight: <slot name="weight"> lb.</slot></p>
+        <p>Status: <slot name="status"></slot></p>
+      </div>
+    </template>
+
+    <h1>Zero Waste Bin Client Test</h1>
+
+    
+
+    
+
+    <script src="ui.js"></script>
+    <script src="webclient.js"></script>
+  </body>
+</html>
