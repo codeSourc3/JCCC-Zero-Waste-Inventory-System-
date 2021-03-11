@@ -1,5 +1,5 @@
 'use strict';
-const SERVICE_URL = 'https://script.google.com/macros/s/AKfycbx4DOO5aLEHTKtFsry_3_blSnxRf8-0_Tt7gsnISHiC7_yHjeZGg8mA6PJDY1FnapEf/exec';
+const SERVICE_URL = '${{secrets.service_url}}';
 
 function buildURL({table, id, action}) {
     let url = SERVICE_URL;
