@@ -64,7 +64,8 @@ class TaskCardElement extends HTMLElement {
         const templateContent = template.content.cloneNode(true);
         templateContent.querySelector('slot[name=task-id]').innerHTML = this._taskId;
         templateContent.querySelector('slot[name=description]').innerHTML = this._description;
-        templateContent.querySelector('slot[name=creation-date]').innerHTML = this._dateCreated;
+        let date = new Date(this._dateCreated);
+        templateContent.querySelector('slot[name=creation-date]').innerHTML = date.toLocaleDateString() + ', ' + date.toLocaleTimeString();
         templateContent.querySelector('slot[name=task-status]').innerHTML = this._taskStatus;
         templateContent.querySelector('slot[name=intern-id]').innerHTML = this._internId;
         this.shadowRoot.appendChild(templateContent);
@@ -149,3 +150,4 @@ class BinCardElement extends HTMLElement {
         return this._status;
     }
 }
+customElements.define('bin-card', BinCardElement);

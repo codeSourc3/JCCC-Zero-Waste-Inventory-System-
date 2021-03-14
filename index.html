@@ -12,6 +12,16 @@
       <style>
         .intern-board {
           border: 1px solid black;
+          padding: 1em;
+          
+        }
+        .intern-board p {
+          margin: 1em;
+        }
+        @media screen and (min-width: 800px) {
+          .intern-board {
+            display: flex;
+          }
         }
       </style>
       <div class="intern-board">
@@ -25,6 +35,7 @@
       <style>
         .task-board {
           border: 1px solid black;
+          padding: 1em;
         }
       </style>
       <div class="task-board">
@@ -40,22 +51,84 @@
       <style>
         .bin-board {
           border: 1px solid black;
+          padding: 1em;
+          
         }
       </style>
       <div class="bin-board">
         <p>Bin ID: <slot name="bin-id"></slot></p>
-        <p>Weight: <slot name="weight"> lb.</slot></p>
+        <p>Weight: <slot name="weight"></slot> .lb</p>
         <p>Status: <slot name="status"></slot></p>
       </div>
     </template>
+    <header>
+      <h1>Zero Waste Bin Client Test</h1>
+    </header>
+    <main>
+      <p id="log"></p>
+      <form id="query-form">
+        <h1></h1>
+        <fieldset id="request-set">
+          <legend>Request Type</legend>
+          <label for="get-request">
+            <input type="radio" id="get-request" name="request-type" value="GET" checked>
+            GET
+          </label>
 
-    <h1>Zero Waste Bin Client Test</h1>
+          <label for="post-request">
+            <input type="radio" id="post-request" name="request-type" value="POST">
+            POST
+          </label>
+          <label for="put-request">
+            <input type="radio" id="put-request" name="request-type" value="PUT">
+            PUT
+          </label>
+          <label for="delete-request">
+            <input type="radio" id="delete-request" name="request-type" value="DELETE">
+            DELETE
+          </label>
+        </fieldset>
+        <fieldset>
+          <legend>Query Data</legend>
+          <label for="table">
+            Table:
+            <select id="table">
+              <option value="interns" selected>Interns</option>
+              <option value="tasks">Tasks</option>
+              <option value="bins">Bins</option>
+            </select>
+          </label>
+          <!--
+          GET: table, ?id
+          POST: table, data
+          PUT: table, id, data
+          DELETE: table, id
+          -->
+          <div id="dynamic-form">
+            <label for="intern-id">
+              Intern Id:
+              <input type="number" id="intern-id">
+            </label>
+          </div>
+        </fieldset>
+        <button type="submit">Run Query</button>
+      </form>
 
+      <div id="results-panel">
+
+      </div>
+
+      
+    </main>
+    <footer>
+      <p>Built by JCCC Students for a Project</p>
+    </footer>
     
-
     
-
+    
+    <script src="logger.js"></script>
     <script src="ui.js"></script>
+    <script src="entities.js"></script>
     <script src="webclient.js"></script>
   </body>
 </html>
