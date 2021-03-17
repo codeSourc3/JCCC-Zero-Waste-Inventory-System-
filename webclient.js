@@ -166,7 +166,8 @@ async function displayTasks(results) {
             taskCard.taskId = task['taskId'];
             taskCard.description = task['taskDescription'];
             taskCard.dateCreated = task['createdOn'];
-            taskCard.taskStatus = TaskStatus[task['taskStatus']];
+            logger.info(task['taskStatus']);
+            taskCard.taskStatus = task['taskStatus'];
             taskCard.internId = task['internId'];
             elements.push(taskCard);
             
@@ -179,7 +180,7 @@ async function displayTasks(results) {
         taskCard.taskId = results['taskId'];
         taskCard.description = results['taskDescription'];
         taskCard.dateCreated = results['createdOn'];
-        taskCard.taskStatus = TaskStatus[results['taskStatus']];
+        taskCard.taskStatus = results['taskStatus'];
         taskCard.internId = results['internId'];
         resultsPanel.append(taskCard);
 
@@ -195,7 +196,7 @@ async function displayBins(results) {
             const binCard = document.createElement('bin-card');
             binCard.binId = bin['binId'];
             binCard.weight = bin['binWeight'];
-            binCard.status = BinStatus[bin['binStatus']];
+            binCard.status = bin['binStatus'];
             elements.push(binCard);
         });
         resultsPanel.append(...elements);
@@ -203,7 +204,7 @@ async function displayBins(results) {
         const binCard = document.createElement('bin-card');
         binCard.binId = results['binId'];
         binCard.weight = results['binWeight'];
-        binCard.status = BinStatus[results['binStatus']];
+        binCard.status = results['binStatus'];
         resultsPanel.append(binCard);
         // result must be singular.
     }
@@ -497,9 +498,7 @@ window.addEventListener('DOMContentLoaded', e =>   {
 //     logger.log(JSON.stringify(response, 0, 2));
 // })
 
-deleteData('bins', 1).then(response => {
-    logger.log(JSON.stringify(response, 0, 2));
-});
+
     
 });
 
