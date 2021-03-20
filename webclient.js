@@ -157,7 +157,7 @@ async function displayInterns(results) {
         resultsPanel.append(internCard);
     }
 }
-
+//
 async function displayTasks(results) {
     if (Array.isArray(results)) {
         let elements = [];
