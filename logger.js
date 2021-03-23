@@ -40,3 +40,4 @@ class Logger {
     }
 }
 
+export {Logger};
