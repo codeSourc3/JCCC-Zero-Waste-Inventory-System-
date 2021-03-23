@@ -1,10 +1,10 @@
-const BinStatus = {
+export const BinStatus = {
     IN_TRANSIT: 'In Transit',
     LOST: 'Lost',
     UNKNOWN: 'Unknown'
 };
 
-class Bin {
+export class Bin {
     constructor(id, weight=0.0, status=BinStatus.IN_TRANSIT) {
         this.binId = id;
         this.binWeight = weight;
@@ -66,12 +66,12 @@ class Bin {
     }
 }
 
-const TaskStatus = {
+ export const TaskStatus = {
     COMPLETED: 'Completed',
     UNCOMPLETED: 'Uncompleted'
 };
 
-class Task {
+export class Task {
     constructor(id, description='No description', dateCreated=new Date(), status=TaskStatus.UNCOMPLETED) {
         this.taskId = id;
         this.taskDescription = description;
@@ -150,7 +150,7 @@ class Task {
     }
 }
 
-class Intern {
+export class Intern {
     constructor(id, first='', last='') {
         this.internId = id;
         this.firstName = first;

@@ -1,6 +1,6 @@
- 'use strict';
+ 
 
- class InternCardElement extends HTMLElement {
+ export class InternCardElement extends HTMLElement {
     constructor() {
         super();
         this._internId = undefined;
@@ -48,7 +48,7 @@
 }
 customElements.define('intern-card', InternCardElement);
 
-class TaskCardElement extends HTMLElement {
+export class TaskCardElement extends HTMLElement {
     constructor() {
         super();
         this._taskId = undefined;
@@ -104,7 +104,7 @@ class TaskCardElement extends HTMLElement {
 }
 customElements.define('task-card', TaskCardElement);
 
-class BinCardElement extends HTMLElement {
+export class BinCardElement extends HTMLElement {
     constructor() {
         super();
         this._binId = undefined;
