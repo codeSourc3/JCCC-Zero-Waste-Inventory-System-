@@ -34,3 +34,22 @@ module.exports.hasProperty = (obj, property) => {
 module.exports.hasProperties = (obj, ...properties) => {
     return properties.every(value => value in obj);
 };
+
+/**
+* Checks if properties match.
+* 
+* @param {Object} obj1 the object to match against.
+* @param {...string} obj2 the object to check.
+* @returns {boolean} true if obj2 has all the properties of obj1, false otherwise.
+*/
+module.exports.checkPropertiesMatch = (obj, ...properties) => {
+   let propsMatch = true;
+   for (const prop of properties) {
+       // for each property, check if the property exists.
+       if (!(prop in obj)) {
+           propsMatch = false;
+       }
+   }
+   //propsMatch = false;
+   return propsMatch;
+};

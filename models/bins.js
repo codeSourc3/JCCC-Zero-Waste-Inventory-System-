@@ -11,6 +11,7 @@
  */
 const BinType = {
     EOC: 'EOC',
+    BLUE_CART: 'Blue Cart',
     /**
      * Determines if the value matches anything in the enum.
      * 
@@ -21,18 +22,32 @@ const BinType = {
         const values = Object.values(BinType);
         return values.includes(value);
     }
-}
+};
 
 class Bin {
-    constructor(id, type=BinType.EOC, weight=0.0, isReturned=true) {
+    /**
+     * Constructor for creating the Bin object.
+     * 
+     * @param {number} id the bin id.
+     * @param {BinType} type the bin type.
+     * @param {number} weight the last bin weight.
+     * @param {boolean} isReturned if the bin is returned.
+     * @param {string} location the current location of the bin.
+     * @param {string} notes any notes on the bin.
+     */
+    constructor(id, type=BinType.EOC, weight=0.0, isReturned=true, location='', notes='') {
         /**@private */
         this._binId = id;
         /**@private */
         this._binType = type;
         /**@private */
-        this._binWeight = weight;
+        this._lastBinWeight = weight;
         /**@private */
         this._isReturned = isReturned;
+        /**@private */
+        this._location = location;
+        /**@private */
+        this._notes = notes;
     }
 
     get binId() {
@@ -51,35 +66,44 @@ class Bin {
     }
 
     get binWeight() {
-        return this._binWeight;
+        return this._lastBinWeight;
     }
 
     get isReturned() {
         return this._isReturned;
     }
 
+    get location() {
+        return this._location;
+    }
+
+    get notes() {
+        return this._notes;
+    }
+
     static fromObject(object) {
-        let {binId, binType, binWeight, isReturned} = object;
+        let {binId, binType, lastBinWeight, isReturned, location, notes} = object;
         if (typeof(binId) !== 'number') {
             binId = Number(binId);
         }
-        if (typeof(binWeight) !== 'number') {
-            binWeight = Number(binWeight);
+        if (typeof(lastBinWeight) !== 'number') {
+            lastBinWeight = Number(lastBinWeight);
         }
         if (typeof(isReturned) === 'string') {
             isReturned = new Boolean(isReturned.toLowerCase());
         }
-        return new Bin(binId, binType, binWeight, isReturned);
+        return new Bin(binId, binType, lastBinWeight, isReturned, location, notes);
     }
 
-    toObject() {
-        const self = this;
-        const bool = new Boolean(self._isReturned);
+    toJSON() {
+        const bool = new Boolean(this._isReturned);
         return {
-            binId: self._binWeight,
-            binType: self._binType,
-            binWeight: self._binWeight,
-            isReturned: bool.toString().toUpperCase()
+            binId: this._binId,
+            binType: this._binType,
+            lastBinWeight: this._lastBinWeight,
+            isReturned: bool.toString().toUpperCase(),
+            location: this._location,
+            notes: this._notes
         };
     }
 
@@ -88,13 +112,18 @@ class Bin {
         if (object instanceof Bin) {
             isEqual = object.binId === this.binId;
             isEqual = object.binType === this.binType;
-            isEqual = object.binWeight === this.binWeight;
+            isEqual = object.lastBinWeight === this.lastBinWeight;
             isEqual = object.isReturned === this.isReturned;
-        } else if ('binId' in object && 'binType' in object && 'binWeight' in object && 'isReturned' in object) {
+            isEqual = object.location === this.location;
+            isEqual = object.notes === this.notes;
+        } else if ('binId' in object && 'binType' in object && 'lastBinWeight' in object 
+        && 'isReturned' in object && 'location' in object && 'notes' in object) {
             isEqual = this._binId === object.binId;
             isEqual = this._binType === object.binType;
-            isEqual = this._binWeight === object.binWeight;
+            isEqual = this._lastBinWeight === object.lastBinWeight;
             isEqual = this._isReturned === object.isReturned;
+            isEqual = this._location === object.location;
+            isEqual = this._notes === object.notes;
         }
         return isEqual;
     }
@@ -114,14 +143,14 @@ class Bin {
     }
 
     get weight() {
-        return this._binWeight;
+        return this._lastBinWeight;
     }
 
     set weight(value) {
         if (typeof(value) === 'number' && Number.isInteger(value)) {
-            this._binWeight = value;
+            this._lastBinWeight = value;
         } else {
-            this._binWeight = Number(value);
+            this._lastBinWeight = Number(value);
         }
     }
 

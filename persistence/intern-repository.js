@@ -44,6 +44,7 @@ class InternRepository {
         return interns;
     }
 
+
     /**
      * Gets an Intern by id.
      * 
@@ -70,10 +71,13 @@ class InternRepository {
      */
     async add(intern) {
         // Validates the intern before adding it.
-        const id = this._sheet.rowCount + 1;
+        const ids = (await this._sheet.getRows()).map(row => Number(row.internId));
+        let nextId = Math.max(...ids);
+        nextId++;
+
         if (intern instanceof Intern) {
-            intern.internId = id;
-            let addedRow = await this._sheet.addRow(intern.toObject());
+            intern.internId = nextId;
+            let addedRow = await this._sheet.addRow(intern.toJSON());
             this._unsavedRows.push(addedRow);
             return addedRow.rowIndex;
         } else {
@@ -98,7 +102,7 @@ class InternRepository {
         }
         let object = newIntern;
         if (newIntern instanceof Intern) {
-            object = newIntern.toObject();
+            object = newIntern.toJSON();
         }
         for (const key in object) {
             if (key !== 'internId' && object[key]) {
@@ -106,7 +110,7 @@ class InternRepository {
             }
         }
         this._unsavedRows.push(row);
-        return row.rowIndex;
+        return row.rowIndex - 1;
     }
 
     /**

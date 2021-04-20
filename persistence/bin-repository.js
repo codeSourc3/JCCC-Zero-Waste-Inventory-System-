@@ -34,7 +34,7 @@ class BinRepository {
 
     /**
      * 
-     * @returns {BinRepository} a new BinRepository.
+     * @returns {Promise<BinRepository>} a new BinRepository.
      */
     static async load() {
         const database = await db;
@@ -96,9 +96,9 @@ class BinRepository {
         const binId = this._sheet.rowCount + 1;
         if (intern instanceof Bin) {
             bin.binId = binId;
-            let addedRow = await this._sheet.addRow(bin.toObject());
+            let addedRow = await this._sheet.addRow(bin);
             this._unsavedRows.push(addedRow);
-            return addedRow.rowIndex;
+            return addedRow.rowIndex - 1;
         } else {
             throw new TypeError(`The object ${bin} is not a Bin object.`);
         }
@@ -146,7 +146,7 @@ class BinRepository {
         // update the row's attributes with the new bins attributes.
         let object = newBin;
         if (newBin instanceof Bin) {
-            object = newBin.toObject();
+            object = newBin.toJSON();
         }
         for (const key in object) {
             if (key !== 'binId' && object[key]) {
@@ -154,7 +154,7 @@ class BinRepository {
             }
         }
         this._unsavedRows.push(row);
-        return row.rowIndex;
+        return row.rowIndex - 1;
     }
 
     /**

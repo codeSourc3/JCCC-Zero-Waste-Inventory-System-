@@ -1,23 +1,46 @@
-import {RestClient, Resources} from './rest-client.js';
+import {RestClient, Resources} from './api/rest-client.js';
+import {Intern, InternRepository} from './api/intern-resource.js';
 
-function showData(result) {
+import {listAllInterns, addInternFromForm} from './ui/interns-ui.js';
+
+import {Task, BinTask, TaskRepository} from './api/task-resource.js';
+
+
+const output = document.querySelector('#output');
+
+const addBin = document.querySelector('#add-intern');
+addBin.addEventListener('submit', event => {
+  addInternFromForm(addBin);
+});
+
+// Example code. Replace with actual implementation.
+function displayInterns(result) {
   
-    document.body.insertAdjacentHTML('beforeend', `<p>Response: ${JSON.stringify(result)}</p>`);
-    console.dir(result);
+    const list = listAllInterns(result);
+    output.append(list);
 }
 
-function showError(error) {
+function displayError(error) {
   document.body.insertAdjacentHTML('beforeend', `<p>Error: ${error}</p>`);
 }
-const internId = 1;
-const task = {
-  taskId: 2,
-  notes: 'Task is updated',
-  deliveryDate: new Date().toLocaleDateString(),
-  location: 'A Location',
-  completionStatus: 'Uncompleted',
-  binId: 3
+
+function displayTask(result) {
+  if (Array.isArray(result)) {
+    const list = listTasks(result);
+    output.append(list);
+  } else {
+    const list = listTasks([result]);
+    output.append(list);
+  }
 };
-const taskId = 2;
-const resourceURL = `${Resources.INTERNS}/${internId}/${Resources.TASKS}/${taskId}`;
-RestClient.getInstance().put(resourceURL, task).then(showData).catch(showError);
+
+
+
+
+
+const internRepo = new InternRepository();
+internRepo.getAll().then(displayInterns).catch(displayError);
+const taskRepo = new TaskRepository();
+taskRepo.getAll().then(displayTask).catch(displayError);
+
+

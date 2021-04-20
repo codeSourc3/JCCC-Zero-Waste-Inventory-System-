@@ -12,7 +12,7 @@ module.exports.getOutBins = async (req, res) => {
     const binRepo = await BinRepository.load();
     try {
         const bins = await binRepo.getOutBins();
-        res.status(Codes.Success.OK).json(bins.map(b => b.toObject()));
+        res.status(Codes.Success.OK).json(bins);
     } catch (error) {
         console.error('Error getting out bins %s', error);
         res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: error});
@@ -40,7 +40,7 @@ module.exports.getBins = async (req, res) => {
         } else {
             bins = await binRepo.getAll();
         }
-        res.status(Codes.Success.OK).json(bins.map(bin => bin.toObject()));
+        res.status(Codes.Success.OK).json(bins);
     } catch (err) {
         console.error(err);
         res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err});
@@ -57,7 +57,7 @@ module.exports.addBin = async (req, res) => {
     try {
         const bin = Bin.fromObject(req.body);
         const index = await binRepo.add(bin);
-        res.status(Codes.Success.OK).json({rowNr: index});
+        res.status(Codes.Success.OK).json({id: index});
     } catch (err) {
         console.error(err);
         res.status(Codes.ClientError.BAD_REQUEST).json({error: err.message});
@@ -75,7 +75,7 @@ module.exports.getBin = async (req, res) => {
     try {
         let id = Number(binId);
         const bin = await binRepo.getById(id);
-        res.status(Codes.Success.OK).json(bin.toObject());
+        res.status(Codes.Success.OK).json(bin);
     } catch (err) {
         console.error(err);
         res.status(Codes.ClientError.NOT_FOUND).json({error: err});

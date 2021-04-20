@@ -44,7 +44,8 @@ const { GoogleSpreadsheet, GoogleSpreadsheetWorksheet, GoogleSpreadsheetRow } = 
         // assert offset >= 0 && limit > 0
 
         const results = await this._sheet.getRows({offset, limit});
-        const tasks = results.map(row => Task.fromObject(row));
+        const tasks = results.map(row => toTask(row));
+        console.dir(tasks);
         return tasks;
     }
 
@@ -78,7 +79,7 @@ const { GoogleSpreadsheet, GoogleSpreadsheetWorksheet, GoogleSpreadsheetRow } = 
         const taskId = this._sheet.rowCount + 1;
         if (task instanceof Task) {
             task.taskId = taskId;
-            let addedRow = await this._sheet.addRow(task.toObject());
+            let addedRow = await this._sheet.addRow(task.toJSON());
             this._unsavedRows.push(addedRow);
             return addedRow.rowIndex;
         } else {

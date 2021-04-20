@@ -12,13 +12,8 @@ module.exports.getTasks = async (req, res) => {
     const {limit, offset} = req.query;
     try {
         /**@type {(Task|BinTask)[]} */
-        let tasks;
-        if (limit && offset) {
-            tasks = await taskRepo.getAll(offset, limit);
-        } else {
-            tasks = await taskRepo.getAll();
-        }
-        res.status(Codes.Success.OK).json(tasks.map(task => task.toObject()));
+        const tasks = await taskRepo.getAll(Number(offset), Number(limit));
+        res.status(Codes.Success.OK).json(tasks);
     } catch (error) {
         res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: error});
     }
@@ -34,7 +29,7 @@ module.exports.getTask = async (req, res) => {
     const taskId = Number(req.params.taskId);
     try {
         const task = await taskRepo.getById(taskId);
-        res.status(Codes.Success.OK).json(task.toObject());
+        res.status(Codes.Success.OK).json(task);
     } catch (error) {
         console.error('Error in getTask: ', error);
         res.status(Codes.ClientError.NOT_FOUND).json({error: error});

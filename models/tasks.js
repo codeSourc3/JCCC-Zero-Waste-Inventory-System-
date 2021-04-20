@@ -34,6 +34,10 @@ class Task {
         this._internId = Number(internNr);
     }
 
+    static properties() {
+        return ['taskId', 'notes', 'createdOn', 'completionStatus', 'internId'];
+    }
+
     /**
      * Gets the task id.
      * 
@@ -141,7 +145,7 @@ class Task {
      * 
      * @returns an object literal for persistence.
      */
-    toObject() {
+    toJSON() {
         const self = this;
         return {
             taskId: self._taskId,
@@ -178,6 +182,10 @@ class BinTask extends Task {
         this._name = requestor;
         this._deliveryDate = deliveryDate;
         this._location = location;
+    }
+    
+    static properties() {
+        return [...super.properties(), 'binId', 'name', 'deliveryDate', 'location'];
     }
 
     /**
@@ -276,8 +284,8 @@ class BinTask extends Task {
      * 
      * @returns {Object} the object literal version of the bin task.
      */
-    toObject() {
-        const obj = super.toObject();
+    toJSON() {
+        const obj = super.toJSON();
         obj.binId = this._binId;
         obj.name = this._name;
         obj.deliveryDate = this._deliveryDate.toLocaleDateString();
@@ -286,12 +294,13 @@ class BinTask extends Task {
     }
 }
 
-const toTask = (object) => {
-    if (typeSafety.isNullOrUndefined(object)) throw new TypeError('Parameter provided to toTask invalid');
-    if ('binId' in object) {
-        return BinTask.fromObject(object);
+const toTask = (obj) => {
+    if (typeSafety.checkPropertiesMatch(obj, ...BinTask.properties())) {
+        return BinTask.fromObject(obj);
+    } else if (typeSafety.checkPropertiesMatch(obj, ...Task.properties())) {
+        return Task.fromObject(obj);
     } else {
-        return Task.fromObject(object);
+        throw new Error(`Error from server: Could not convert ${JSON.stringify(obj)} to a Task object.`);
     }
 };
 

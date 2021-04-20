@@ -3,13 +3,15 @@
  * @module
  */
 
+
+
 const API_ENDPOINT = '/api/v1';
 
 const Resources = {
     BINS: 'bins',
     TASKS: 'tasks',
     INTERNS: 'interns'
-}
+};
 
 class RestClient {
     constructor() {
@@ -23,12 +25,13 @@ class RestClient {
         return this._instance;
     }
 
-    async getTasks() {
-        const internId = 1;
-        const taskId = 1;
-        const url = `/api/v1/interns/`
-    }
-
+    /**
+     * 
+     * @param {string} resource 
+     * @param {number} offset 
+     * @param {number} limit 
+     * @returns {Promise<Object[]>}
+     */
     async getAll(resource, offset = 0, limit = 10) {
         const queryParams = new URLSearchParams();
         queryParams.append('offset', offset);
@@ -50,6 +53,21 @@ class RestClient {
 
     }
 
+    async getOne(resource, id) {
+        const url = `${this._endPoint}/${String(resource)}/${Number(id)}`;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if (!response.ok) {
+            console.error('GET Request of id %d of %s returned a response %d', id, resource, response.status);
+            throw new Error('GET Request was not OK.');
+        }
+        return response.json();
+    }
+
     async post(resource, data) {
         const relativeURL = `${this._endPoint}/${String(resource)}`;
         const response = await fetch(relativeURL, {
@@ -63,8 +81,8 @@ class RestClient {
         return response.json();
     }
 
-    async put(resource, data) {
-        const relativeURL = `${this._endPoint}/${String(resource)}`;
+    async put(resource, id,  data) {
+        const relativeURL = `${this._endPoint}/${String(resource)}/${Number(id)}`;
         const response = await fetch(relativeURL, {
             method: 'PUT',
             headers: {
@@ -77,18 +95,19 @@ class RestClient {
         return jsonResult;
     }
 
-    async delete(resource) {
-        const relativeURL = `${this._endPoint}/${String(resource)}`;
+    async delete(resource, id) {
+        const relativeURL = `${this._endPoint}/${String(resource)}/${Number(id)}`;
         const response = await fetch(relativeURL, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            }
         });
 
         return response.json();
     }
 }
+
+
 
 export {RestClient, Resources};

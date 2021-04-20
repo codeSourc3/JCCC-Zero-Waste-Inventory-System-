@@ -1,15 +1,156 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Express</title>
-  <link rel="stylesheet" href="/stylesheets/style.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./stylesheets/style.css" />
+
+  <title>Home - Zero Waste</title>
 </head>
-
 <body>
-  <h1>Express</h1>
-  <p>Welcome to Express</p>
+  <h1>Zero Waste</h1>
+  <form id="add-bin">
+    <!-- Add Bin -->
+    <section>
+      <h1>Add Bin</h1>
+      <legend>First Name</legend>
+      <label for="first-name"><input type="text" id="first-name"></label>
 
-  <p>Text Text</p>
+      <legend>Last Name</legend>
+      <label for="last-name"><input type="text" id="last-name"></label>
+    </section>
+    <section>
+      <p><input type="submit">Add Bin</p>
+    </section>
+  </form>
+
+  <form id="update-bin">
+    <!-- Update Bin -->
+    <section>
+      <h1>Update Bin</h1>
+
+      <legend>Bin Id</legend>
+      <label for="bin-id">
+        <input type="number" id="bin-id">
+      </label>
+
+      <legend>Bin Type</legend>
+      <label for="bin-type">
+        <select id="bin-type">
+          <option value="eoc">EOC</option>
+          <option value="blue-cart">Blue Cart</option>
+        </select>
+      </label>
+
+      <legend>Bin Weight</legend>
+      <label for="bin-weight">
+        <input type="number" id="bin-weight">
+      </label>
+
+      <legend>Is Returned</legend>
+      <label for="is-returned">
+        <input type="checkbox" id="is-returned">
+      </label>
+
+      <legend>Location</legend>
+      <label for="bin-location">
+        <input type="text" id="bin-location">
+      </label>
+
+      <legend>Notes</legend>
+      <label for="bin-notes">
+        <input type="text" id="bin-notes">
+      </label>
+
+    </section>
+    <section>
+      <p><button type="submit">Update Bin</button></p>
+    </section>
+  </form>
+
+  <form id="delete-bin">
+    <!-- Delete Bin -->
+  </form>
+
+  <form id="find-bin-by-id">
+    <!-- Find Bin By Id -->
+  </form>
+
+  <form id="add-intern">
+    <section>
+      <h1>Add Intern</h1>
+      <legend>First Name</legend>
+      <label for="first-name">
+        <input type="text" id="first-name">
+      </label>
+
+      <legend>Last Name</legend>
+      <label for="last-name">
+        <input type="text" id="last-name">
+      </label>
+    </section>
+    <section>
+      <p>
+        <button type="submit">Add Intern</button>
+      </p>
+    </section>
+  </form>
+
+  <form id="update-intern">
+    <section>
+      <h1>Update Intern</h1>
+      <legend>Intern Id</legend>
+      <label for="intern-id">
+        <input type="number" id="intern-id">
+      </label>
+
+      <legend>First Name</legend>
+      <label for="first-name">
+        <input type="text" name="" id="first-name">
+      </label>
+
+      <legend>Last Name</legend>
+      <label for="last-name">
+        <input type="text" name="" id="last-name">
+      </label>
+    </section>
+    <section>
+      <p><button type="submit">Update Intern</button></p>
+    </section>
+  </form>
+
+  <form id="delete-intern">
+    <section>
+      <h1>Delete Intern</h1>
+      <legend>Intern Id</legend>
+      <label for="intern-id">
+        <input type="number" name="" id="intern-id">
+      </label>
+    </section>
+    <section>
+      <p><button type="submit">Delete Intern</button></p>
+    </section>
+  </form>
+
+  <form id="add-task">
+    <!-- Add Task -->
+  </form>
+
+  <form id="update-task">
+    <!-- Update Task -->
+  </form>
+
+  <form id="delete-task">
+    <!-- Delete Task -->
+  </form>
+
+  <output id="output"></output>
+  <div>
+    <button id="all-bins">Get All Bins</button>
+    <button id="all-interns">Get All Interns</button>
+    <button id="all-tasks">Get All Tasks</button>
+  </div>
+  <script type="module" src="./javascripts/main.js"></script>
 </body>
-<script type="module" src="javascripts/main.js"></script>
 </html>

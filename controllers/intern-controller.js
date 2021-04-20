@@ -16,8 +16,8 @@ module.exports.getOneOrAllInterns = async (req, res) => {
         console.log('Intern Id: ', typeof(req.params.internId));
         try {
             const intern = await internRepo.getById(req.params.internId);
-            console.dir(intern.toObject());
-            res.status(200).json(intern.toObject());
+            //console.dir(intern.toObject());
+            res.status(200).json(intern);
         } catch(err) {
             console.error('Error: ', err);
             res.status(404).json({error: err});
@@ -25,7 +25,7 @@ module.exports.getOneOrAllInterns = async (req, res) => {
     } else {
         try {
             const interns = await internRepo.getAll();
-            res.status(200).json(interns.map(intern => intern.toObject()));
+            res.status(200).json(interns);
         } catch (err) {
             res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err});
         }
@@ -38,7 +38,7 @@ module.exports.getOneOrAllInternTasks = async (req, res) => {
     if (taskId) {
         try {
             const task = await taskRepo.getTaskOfIntern(internId, taskId);
-            res.status(Codes.Success.OK).json(task.toObject());
+            res.status(Codes.Success.OK).json(task);
         } catch (err) {
             res.status(Codes.ClientError.NOT_FOUND).json({error: err});
         }
@@ -46,7 +46,7 @@ module.exports.getOneOrAllInternTasks = async (req, res) => {
         // Getting all tasks
         const { limit = 10, offset = 0 } = req.query;
         try {
-            const tasks = (await taskRepo.getTasksOfIntern(internId)).map(task => task.toObject());
+            const tasks = await taskRepo.getTasksOfIntern(internId);
             console.dir('Task Array: ', tasks);
             res.status(Codes.Success.OK).json(tasks);
         } catch (err) {
@@ -67,9 +67,9 @@ module.exports.addInternTask = async (req, res) => {
         requestBody.internId = Number(internId);
         console.dir('New body is: ', requestBody);
         const task = Task.fromObject(requestBody);
-        await taskRepo.add(task);
+        const id = await taskRepo.add(task);
         await taskRepo.save();
-        res.status(Codes.Success.OK).json({rowNr: newRow.rowIndex, result: task.toObject()});
+        res.status(Codes.Success.OK).json({id});
     } catch (err) {
         console.error('Error encountered: ', err);
         res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err.message});
@@ -87,6 +87,7 @@ module.exports.addIntern = async (req, res) => {
 
         res.status(Codes.Success.OK).json({id: index});
     } catch (err) {
+        console.error(err);
         res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err});
     }
 };

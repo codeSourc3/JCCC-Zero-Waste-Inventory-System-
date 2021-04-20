@@ -3,6 +3,7 @@
     "sheets": {
         "Interns": 0,
         "Bins": 1,
-        "Tasks": 2
+        "Tasks": 2,
+        "WeightHistory": 3
     }
 }

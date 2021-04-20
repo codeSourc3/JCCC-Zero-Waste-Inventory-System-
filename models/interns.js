@@ -93,7 +93,7 @@ class Intern {
         return new Intern(Number(internId), firstName, lastName);
     }
 
-    toObject() {
+    toJSON() {
         const self = this;
         return {
             internId: self._internId,
