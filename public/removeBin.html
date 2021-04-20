@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html id = "homePage" lang="en">
+<html id = "addRemoveBin" lang="en">
     <head>
-		<title>Home Page</title>
+		<title>Add/Remove Bin from Inventory</title>
         <style>
             .But {
               border:none ;
@@ -30,17 +30,36 @@
             #Title{
                 text-align: center;
             }
+            .formDiv{
+                display:block;
+                
+            }
+            .formFormat{
+                margin-top: 1em;
+                text-align: center;
+            }
+            .removeBinFormInput{
+                margin-bottom: 1em;
+            }
+            .binFormSubmit{
+                margin-top: 1em;
+            }
             </style>
 	</head>
 	<body>
         <div id="pageContainer">
         <h1 id="Title">JCCC ZERO WASTE TEST SITE</h1>
-        <button class="But binInventory" onclick="location.href='addBin.html'">Add Bin from Inventory</button>
-        <button class="But binInventory" onclick="location.href='removeBin.html'">Remove Bin from Inventory</button>
-        <button class="But weighBin" onclick="location.href='weighBin.html'">Weigh Bin</button>
-        <button class="But binLocation" onclick="location.href='newLocation.html'">New Location for Bin </button>
-        <button class="But QRCode" onclick="location.href='scanQRCode.html'">Scan QR Code</button>
-        <button class="But binInformation" onclick="location.href='getBinInfo.html'">Get Bin Information</button>
+        <button class="But returnHome" onclick="location.href='index.html'">Home Page</button>
+        <div class="formDiv">
+        <form class = "formFormat">
+            <label for="removeBin">Bin ID to Remove:</label><br>
+            <input class="removeBinFormInput" type="text" name="removeBin"><br>
+            <label for="check">Are you sure?</label><br>
+            <input type="checkbox" id="doubleCheck" name="check" value="check">
+            <label for="check">Yes I am sure</label><br>
+            <input class="binFormSubmit" type="submit" name="submit">
+        </form>
+        </div>
         <footer class="pageFooter"><small><i>JCCC ZERO WASTE<br><a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a></i></small></footer>
         </div>
     </body>

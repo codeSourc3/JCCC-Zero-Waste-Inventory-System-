@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html id = "scanQRCode" lang="en">
+    <head>
+		<title>Scan QR Code</title>
+        <style>
+            .But {
+              border:none ;
+              background-color: rgb(41, 233, 41);
+              padding: 14px 28px;
+              font-size: 16px;
+              cursor: pointer;
+              display: block;
+              text-align: center;
+              margin:auto;
+              margin-top:25px;
+            }
+            .pageFooter{
+                
+                width: 100%;
+                height: 2.5rem;
+                text-align:center;
+            }
+            #pageContainer{
+                position: relative;
+                min-height: 100vh;
+            }
+            #Title{
+                text-align: center;
+            }
+            </style>
+	</head>
+	<body>
+        <main id="pageContainer">
+        <h1 id="Title">JCCC ZERO WASTE TEST SITE</h1>
+        <button class="But returnHome" onclick="location.href='index.html'">Home Page</button>
+        <!-- IDK what to put here-->
+        <div id="reader" width="80%"></div>
+        
+        <footer class="pageFooter"><small><i>JCCC ZERO WASTE<br><a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a></i></small></footer>
+        </main>
+        <script src="./javascripts/packages/html5-qrcode.min.js"></script>
+        <script>
+            // For example only.
+            /**
+             * @author Enzo Mayo
+             */
+            function onScanSuccess(qrMessage) {
+                // To test if it works.
+                console.log(`QR matched = ${qrMessage}`);
+            }
+            
+            function onScanFailure(error) {
+                // should try to ignore and keep scanning.
+                ;
+            }
+            
+            const qrScanner = new Html5QrcodeScanner("reader", {fps: 10, qrbox: 250});
+            qrScanner.render(onScanSuccess, onScanFailure);
+        </script>
+    </body>
+</html>

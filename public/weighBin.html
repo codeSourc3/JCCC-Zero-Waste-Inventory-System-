@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html id = "weighBin" lang="en">
+    <head>
+		<title>Weigh Bin</title>
+        <style>
+            .But {
+              border:none ;
+              background-color: rgb(41, 233, 41);
+              padding: 14px 28px;
+              font-size: 16px;
+              cursor: pointer;
+              display: block;
+              text-align: center;
+              margin:auto;
+              margin-top:25px;
+            }
+            .pageFooter{
+                /*
+                position: absolute;
+                bottom: 0;
+                */
+                width: 100%;
+                height: 2.5rem;
+                text-align:center;
+            }
+            #pageContainer{
+                position: relative;
+                min-height: 100vh;
+            }
+            #Title{
+                text-align: center;
+            }
+            .formDiv{
+                display:block;
+                
+            }
+            .formFormat{
+                margin-top: 1em;
+                text-align: center;
+            }
+            .binFormSubmit{
+                margin-top: 1em;
+            }
+            input{
+                margin-bottom: 1em;
+            }
+   
+            </style>
+	</head>
+	<body>
+        <div id="pageContainer">
+        <h1 id="Title">JCCC ZERO WASTE TEST SITE</h1>
+        <button class="But returnHome" onclick="location.href='index.html'">Home Page</button>
+        <div class="formDiv">
+            <form class = "formFormat">
+                <label for="BinID">Bin ID:</label><br>
+                <input class="binIDInput" type="text" name="BinID"><br>
+                <label for="BimWeight">Bin Weight</label><br>
+                <input class="binWeight" type="text" name="BinWeight"><br>
+                <!-- Put a static weight descriptor i.e pounds as a static text in the right side of the form-->
+                <label class="staticWeightText"></label>
+                <!-- Dunno if we want to have a date option here or not, probs should for past weight input -->
+                <input class="binFormSubmit" type="submit" name="submit">
+            </form>
+            </div>
+        <footer class="pageFooter"><small><i>JCCC ZERO WASTE<br><a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a></i></small></footer>
+        </div>
+    </body>
+</html>

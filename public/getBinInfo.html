@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html id = "homePage" lang="en">
+<html id = "getBinInfo" lang="en">
     <head>
-		<title>Home Page</title>
+		<title>Bin Information</title>
         <style>
             .But {
               border:none ;
@@ -30,18 +30,30 @@
             #Title{
                 text-align: center;
             }
+            .binFormSubmit{
+                margin-top: 1em;
+            }
+            .formDiv{
+                display:block;
+                
+            }
+            .formFormat{
+                margin-top: 1em;
+                text-align: center;
+            }
             </style>
 	</head>
 	<body>
-        <div id="pageContainer">
+        <main id="pageContainer">
         <h1 id="Title">JCCC ZERO WASTE TEST SITE</h1>
-        <button class="But binInventory" onclick="location.href='addBin.html'">Add Bin from Inventory</button>
-        <button class="But binInventory" onclick="location.href='removeBin.html'">Remove Bin from Inventory</button>
-        <button class="But weighBin" onclick="location.href='weighBin.html'">Weigh Bin</button>
-        <button class="But binLocation" onclick="location.href='newLocation.html'">New Location for Bin </button>
-        <button class="But QRCode" onclick="location.href='scanQRCode.html'">Scan QR Code</button>
-        <button class="But binInformation" onclick="location.href='getBinInfo.html'">Get Bin Information</button>
+        <button class="But returnHome" onclick="location.href='index.html'">Home Page</button>
+        <div class="formDiv"></div>
+                <form class = "formFormat">
+                    <label for="BinID">Bin ID:</label><br>
+                    <input class="binIDInput" type="text" name="BinID"><br>
+                    <input class="binFormSubmit" type="submit" name="submit">
+                </form>
+        </main>
         <footer class="pageFooter"><small><i>JCCC ZERO WASTE<br><a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a></i></small></footer>
-        </div>
     </body>
 </html>
