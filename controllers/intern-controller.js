@@ -5,6 +5,36 @@ const {Task} = require('../models/tasks');
 const Intern = require('../models/interns');
 const typeSafety = require('../utils/type-safety');
 
+/**
+ * Checks if the Intern with the Intern Id exists.
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ * @param {import('express').NextFunction} next 
+ */
+module.exports.lookupIntern = async (req, res, next) => {
+    const internId = Number(req.params.internId);
+    const repo = await InternRepository.load();
+    try {
+        const intern = await repo.getById(internId);
+        next();
+    } catch (err) {
+        res.status(Codes.ClientError.NOT_FOUND).json({error: 'Intern was not found.'});
+    }
+};
+
+
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ * @param {import('express').NextFunction} next 
+ */
+module.exports.validatePartialBody = (req, res, next) => {
+    //
+};
+
 /** 
  * @module controllers/intern-controller
  * @requires express

@@ -2,6 +2,25 @@ const Codes = require('../utils/http-codes');
 const BinRepository = require('../persistence/bin-repository');
 const typeSafety = require('../utils/type-safety');
 const {Bin} = require('../models/bins');
+const WeightHistoryRepository = require('../persistence/weight-history-repository');
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ * @param {import('express').NextFunction} next 
+ */
+module.exports.lookupBin = async (req, res, next) => {
+    const binId = Number(req.params.binId);
+    const repo = await BinRepository.load();
+    try {
+        const bin = await repo.getById(binId);
+        next();
+    } catch (err) {
+        res.status(Codes.ClientError.NOT_FOUND).json({error: 'Bin was not found'});
+    }
+};
+
 
 /**
  * 
@@ -16,6 +35,18 @@ module.exports.getOutBins = async (req, res) => {
     } catch (error) {
         console.error('Error getting out bins %s', error);
         res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: error});
+    }
+};
+
+
+module.exports.getWeightHistory = async (req, res) => {
+    const weightRepo = await WeightHistoryRepository.load();
+    const {binId} = req.params;
+    try {
+        const weightHistory = await weightRepo.getByBinId(Number(binId));
+        res.status(Codes.Success.OK).json(weightHistory);
+    } catch (err) {
+        res.status(Codes.ClientError.BAD_REQUEST).json({error: err});
     }
 };
 

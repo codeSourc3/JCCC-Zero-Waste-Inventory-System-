@@ -140,7 +140,7 @@ class BinRepository {
         if (!row) {
             throw new Error(`Bin of ${binId} doesn't exist or has been deleted`);
         }
-        if (!newTask) {
+        if (!newBin) {
             throw new Error('New bin is undefined or null.');
         }
         // update the row's attributes with the new bins attributes.

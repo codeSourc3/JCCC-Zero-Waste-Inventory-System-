@@ -142,7 +142,9 @@ class WeightHistoryRepository {
         const id = Number(weightId);
         // Use unsaved rows first.
         let targetRow = this._unsavedRows.find(row => Number(row.weightId) === id);
-        targetRow ??= (await this._sheet.getRows()).find(row => Number(row.weightId) === id);
+        if (typeof targetRow === 'undefined') {
+            targetRow = (await this._sheet.getRows()).find(row => Number(row.weightId) === id);
+        } 
         if (targetRow) {
             await targetRow.delete();
             return true;

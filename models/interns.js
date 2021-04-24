@@ -122,6 +122,10 @@ class Intern {
     getTask(index) {
         return this._tasks[index];
     }
+
+    get tasks() {
+        return this._tasks;
+    }
 }
 
 module.exports = Intern;

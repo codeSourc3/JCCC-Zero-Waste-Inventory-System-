@@ -4,6 +4,24 @@ const TaskRepository = require('../persistence/task-repository');
 
 /**
  * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ * @param {import('express').NextFunction} next 
+ */
+module.exports.lookupTask = async (req, res, next) => {
+    const taskId = Number(req.params.taskId);
+    const repo = await TaskRepository.load();
+    try {
+        const task = await repo.getById(taskId);
+        next();
+    } catch (err) {
+        res.status(Codes.ClientError.NOT_FOUND).json({error: 'Task was not found.'});
+    }
+};
+
+
+/**
+ * 
  * @param {import('express').RequestHandler} req - the request. No body.
  * @param {import('express').Response} res 
  */

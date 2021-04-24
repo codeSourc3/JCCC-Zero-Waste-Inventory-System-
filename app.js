@@ -20,6 +20,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 const index = require('./routes/home');
 
 app.use('/', index);
-
+app.get('/packages/html5-qrcode.min.js', (req, res) => {
+    res.sendFile(__dirname + '/node_modules/html5-qrcode/minified/html5-qrcode.min.js');
+});
 
 module.exports = app;
