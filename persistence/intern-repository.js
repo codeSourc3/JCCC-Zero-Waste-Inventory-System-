@@ -1,7 +1,8 @@
 const db = require('./db');
-const Intern = require('../models/interns');
+const {Intern, Admin} = require('../models/interns');
 const {TaskStatus, Task, BinTask} = require('../models/tasks');
 const { GoogleSpreadsheetWorksheet, GoogleSpreadsheetRow } = require('google-spreadsheet');
+const role = require('../models/role');
 
 /**
  * 
@@ -42,6 +43,19 @@ class InternRepository {
         const results = await this._sheet.getRows({offset, limit});
         const interns = results.map(row => Intern.fromObject(row));
         return interns;
+    }
+
+    async findByUsernameAndPassword(username, password) {
+        const results = await this._sheet.getRows();
+        const user = results.find(u => u.username === username && u.password === password);
+        /**@type {Admin | Intern} */
+        let result;
+        if (user.role === role.Admin) {
+            result = Admin.fromObject(user);
+        } else {
+            result = Intern.fromObject(user);
+        }
+        return result;
     }
 
 

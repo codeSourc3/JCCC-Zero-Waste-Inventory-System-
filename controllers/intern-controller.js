@@ -2,8 +2,12 @@ const TaskRepository = require('../persistence/task-repository');
 const InternRepository = require('../persistence/intern-repository');
 const Codes = require('../utils/http-codes');
 const {Task} = require('../models/tasks');
-const Intern = require('../models/interns');
+const {Intern, Admin} = require('../models/interns');
 const typeSafety = require('../utils/type-safety');
+const jwt = require('jsonwebtoken');
+const config = require('../login-secrets.json');
+const role = require('../models/role');
+
 
 /**
  * Checks if the Intern with the Intern Id exists.
@@ -24,6 +28,25 @@ module.exports.lookupIntern = async (req, res, next) => {
 };
 
 
+async function authenticate({username, password}) {
+    // Find user by username and password.
+    const repo = await InternRepository.load();
+    const user = await repo.findByUsernameAndPassword(username, password);
+    if (user) {
+        const token = jwt.sign({sub: user.internId, role: user.role}, config.secret);
+        const {password, ...userWithoutPassword} = user.toJSON();
+        return {
+            ...userWithoutPassword,
+            token
+        };
+    }
+
+}
+
+module.exports.authenticate = (req, res, next) => {
+    authenticate(req.body).then(user => user ? res.json(user) : res.status(400).json({message: 'Username or password is incorrect'})).catch(err => next(err));
+};
+
 
 /**
  * 
@@ -40,27 +63,39 @@ module.exports.validatePartialBody = (req, res, next) => {
  * @requires express
  */
 
-module.exports.getOneOrAllInterns = async (req, res) => {
+module.exports.getAllInterns = async (req, res) => {
     const internRepo = await InternRepository.load();
-    if (req.params.internId) {
-        console.log('Intern Id: ', typeof(req.params.internId));
-        try {
-            const intern = await internRepo.getById(req.params.internId);
-            //console.dir(intern.toObject());
-            res.status(200).json(intern);
-        } catch(err) {
-            console.error('Error: ', err);
-            res.status(404).json({error: err});
-        }
-    } else {
+    
+    
         try {
             const interns = await internRepo.getAll();
             res.status(200).json(interns);
         } catch (err) {
             res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err});
         }
-    }
+    
 };
+
+module.exports.getInternById = async (req, res) => {
+    const currentUser = req.user;
+    const id = Number(req.params.internId);
+
+    // only allow admins to access other user records.
+    if (id !== currentUser.sub && currentUser.role !== role.Admin) {
+        return res.status(401).json({message: 'Unauthorized'});
+    }
+
+    const internRepo = await InternRepository.load();
+
+    try {
+        const intern = await internRepo.getById(Number(req.param.internId));
+        const internObj = intern.toJSON();
+        delete internObj.password;
+        res.status(200).jsoN(internObj);
+    } catch (err) {
+        res.status(400).json({error: err});
+    }
+}
 
 module.exports.getOneOrAllInternTasks = async (req, res) => {
     const taskRepo = await TaskRepository.load();

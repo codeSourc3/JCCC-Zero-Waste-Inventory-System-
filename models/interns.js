@@ -1,5 +1,6 @@
+const role = require('./role');
 const {Task, BinTask} = require('./tasks');
-
+const User = require('./users');
 /**
  * @typedef {Object} InternLiteral
  * @property {Number} internId - the intern id.
@@ -10,7 +11,7 @@ const {Task, BinTask} = require('./tasks');
 /**
  * Represents an intern. Can add tasks, remove tasks, edit tasks, change their name, etc.
  */
-class Intern {
+class Intern extends User {
 
     /**
      * Constructs an Intern.
@@ -19,7 +20,8 @@ class Intern {
      * @param {String} firstName 
      * @param {String} lastName 
      */
-    constructor(id, firstName, lastName) {
+    constructor(id, firstName, lastName, username, password) {
+        super(username, password, role.Intern);
         this._internId = id;
         this._firstName = firstName;
         this._lastName = lastName;
@@ -43,8 +45,8 @@ class Intern {
     }
 
     static fromObject(obj) {
-        const {internId, firstName, lastName} = obj;
-        return new Intern(internId, firstName, lastName);
+        const {internId, firstName, lastName, username, password} = obj;
+        return new Intern(internId, firstName, lastName, username, password);
     }
 
     /**
@@ -83,22 +85,15 @@ class Intern {
         }
     }
 
-    /**
-     * 
-     * @param {InternLiteral} obj 
-     * @returns an Intern object.
-     */
-    static fronObject(obj) {
-        const {internId, firstName, lastName} = obj;
-        return new Intern(Number(internId), firstName, lastName);
-    }
+    
 
     toJSON() {
         const self = this;
         return {
             internId: self._internId,
             firstName: self._firstName,
-            lastName: self._lastName
+            lastName: self._lastName,
+            ...super.toJSON()
         };
     }
 
@@ -128,4 +123,59 @@ class Intern {
     }
 }
 
-module.exports = Intern;
+class Admin extends User {
+    /**
+     * 
+     * @param {Number} internId 
+     * @param {string} firstName 
+     * @param {string} lastName 
+     * @param {string} username 
+     * @param {string} password 
+     */
+    constructor(internId, firstName, lastName, username, password) {
+        super(username, password, role.Admin);
+        this._internId = internId;
+        this._firstName = firstName;
+        this._lastName = lastName;
+    }
+
+    static fromObject(obj) {
+        let {internId, firstName, lastName, username, password} = obj;
+        return new Admin(internId, firstName, lastName, username, password);
+    }
+
+    get firstName() {
+        return this._firstName;
+    }
+
+    get lastName() {
+        return this._lastName;
+    }
+
+    set firstName(value) {
+        this._firstName = String(value);
+    }
+
+    set lastName(value) {
+        this._lastName = String(value);
+    }
+
+    get internId() {
+        return this._internId;
+    }
+
+    set internId(value) {
+        this._internId = Number(value);
+    }
+
+    toJSON() {
+        return {
+            internId: this._internId,
+            firstName: this._firstName,
+            lastName: this._lastName,
+            ...super.toJSON()
+        }
+    }
+}
+
+module.exports = {Intern, Admin};

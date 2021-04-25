@@ -24,4 +24,6 @@ app.get('/packages/html5-qrcode.min.js', (req, res) => {
     res.sendFile(__dirname + '/node_modules/html5-qrcode/minified/html5-qrcode.min.js');
 });
 
+//app.use(require('./utils/global-handler.js'));
+
 module.exports = app;

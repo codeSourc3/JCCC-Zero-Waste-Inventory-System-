@@ -63,3 +63,4 @@ typings/
 # Client secret file
 client_secret.json
 
+login-secrets.json
