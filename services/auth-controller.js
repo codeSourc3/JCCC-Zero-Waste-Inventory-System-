@@ -44,7 +44,7 @@ module.exports.isPasswordAndUserMatch = async (req, res, next) => {
 
 
 /**
- * Takes in a request body 
+ * Takes in a request body. Must be called after validateJWT
  * @param {import('express').Request} req 
  * @param {import('express').Response} res 
  * @param {import('express').NextFunction} next 
@@ -55,7 +55,9 @@ module.exports.login = async (req, res, next) => {
         let salt = crypto.randomBytes(16).toString('base64');
         let hash = crypto.createHmac('sha512', salt).update(refreshId).digest('base64');
         req.body.refreshKey = salt;
-        let token = jwt.sign(req.body, config.accessToken.secret);
+        let token = jwt.sign(req.body, config.accessToken.secret, {
+            expiresIn: config.accessToken.life
+        });
         let b = Buffer.from(hash);
         let refresh_token = b.toString('base64');
         res.status(201).send({accessToken: token, refreshToken: refresh_token});
@@ -81,7 +83,9 @@ module.exports.logout = (req, res) => {
 module.exports.refreshToken = (req, res) => {
     try {
         req.body = req.jwt;
-        let token = jwt.sign(req.body, config.accessToken.secret);
+        let token = jwt.sign(req.body, config.refreshToken.secret, {
+            expiresIn: config.refreshToken.life
+        });
         res.status(201).send({id: token});
     } catch (err) {
         res.status(500).send({error: err.message});

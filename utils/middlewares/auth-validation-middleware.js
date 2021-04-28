@@ -16,12 +16,14 @@ module.exports.validJWTNeeded = (req, res, next) => {
                 res.status(401).send({message: 'Unauthorized'});
             } else {
                 req.jwt = jwt.verify(authorization[1], secret);
+                next();
             }
         } catch (err) {
+            console.log(err.name);
             res.status(403).send({});
         }
     } else {
-        res.status(401).send();
+        res.status(401).send({message: 'No Authorization Header found'});
     }
 };
 
