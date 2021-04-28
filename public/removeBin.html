@@ -2,54 +2,15 @@
 <html id = "addRemoveBin" lang="en">
     <head>
 		<title>Add/Remove Bin from Inventory</title>
-        <style>
-            .But {
-              border:none ;
-              background-color: rgb(41, 233, 41);
-              padding: 14px 28px;
-              font-size: 16px;
-              cursor: pointer;
-              display: block;
-              text-align: center;
-              margin:auto;
-              margin-top:25px;
-            }
-            .pageFooter{
-                /*
-                position: absolute;
-                bottom: 0;
-                */
-                width: 100%;
-                height: 2.5rem;
-                text-align:center;
-            }
-            #pageContainer{
-                position: relative;
-                min-height: 100vh;
-            }
-            #Title{
-                text-align: center;
-            }
-            .formDiv{
-                display:block;
-                
-            }
-            .formFormat{
-                margin-top: 1em;
-                text-align: center;
-            }
-            .removeBinFormInput{
-                margin-bottom: 1em;
-            }
-            .binFormSubmit{
-                margin-top: 1em;
-            }
-            </style>
-	</head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="style.css">
 	<body>
-        <div id="pageContainer">
-        <h1 id="Title">JCCC ZERO WASTE TEST SITE</h1>
-        <a href="/dashboard">Back to Dashboard</a>
+		<div id="wrapper">
+		<header>
+			<h1 id="Title">JCCC Zero Waste Test Site</h1>
+		</header>
+        <main id="pageContainer">
+        <button class="But returnHome" onclick="location.href='index.html'">Home Page</button>
         <div class="formDiv">
         <form class = "formFormat">
             <label for="removeBin">Bin ID to Remove:</label><br>
@@ -60,7 +21,12 @@
             <input class="binFormSubmit" type="submit" name="submit">
         </form>
         </div>
-        <footer class="pageFooter"><small><i>JCCC ZERO WASTE<br><a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a></i></small></footer>
-        </div>
+        </main>
+			<footer class="pageFooter">
+			<i>JCCC ZERO WASTE<br>
+			<a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a>
+			</i>
+			</footer>
+		</div>
     </body>
 </html>

@@ -2,52 +2,31 @@
 <html id = "homePage" lang="en">
     <head>
 		<title>Home Page</title>
-        <style>
-            .But {
-              border:none ;
-              background-color: rgb(41, 233, 41);
-              padding: 14px 28px;
-              font-size: 16px;
-              cursor: pointer;
-              display: block;
-              text-align: center;
-              margin:auto;
-              margin-top:25px;
-            }
-            .pageFooter{
-                /*
-                position: absolute;
-                bottom: 0;
-                */
-                width: 100%;
-                height: 2.5rem;
-                text-align:center;
-            }
-            #pageContainer{
-                position: relative;
-                min-height: 100vh;
-            }
-            #Title{
-                text-align: center;
-            }
-            </style>
-	</head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
 	<body>
-        <div id="pageContainer">
-        
-        <header>
-            <h1 id="Title">JCCC ZERO WASTE TEST SITE</h1>
-            <nav>
-                <ul>
-                    <li><a href="/login">Login</a></li>
-                </ul>
-            </nav>
-        </header>
-        <main>
-
-        </main>
-        <footer class="pageFooter"><small><i>JCCC ZERO WASTE<br><a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a></i></small></footer>
-        <script type="module" src="./javascripts/main.js"></script>
-        </div>
-    </body>
+		<div id="wrapper">
+			<header>
+				<h1 id="Title">JCCC Zero Waste Test Site</h1>
+			</header>
+			<main>
+				<div id="pageContainer">
+					<div id="buttons">
+						<button class="But binInventory" onclick="location.href='addBin.html'">Add Bin to Inventory</button>
+						<button class="But binInventory" onclick="location.href='removeBin.html'">Remove Bin from Inventory</button>
+						<button class="But weighBin" onclick="location.href='weighBin.html'">Weigh Bin</button>
+						<button class="But binLocation" onclick="location.href='newLocation.html'">New Location for Bin </button>
+						<button class="But QRCode" onclick="location.href='scanQRCode.html'">Scan QR Code</button>
+						<button class="But binInformation" onclick="location.href='getBinInfo.html'">Get Bin Information</button>                    
+					</div>
+				</div>
+			
+			</main>
+			<footer class="pageFooter">
+			<i>JCCC ZERO WASTE<br>
+			<a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a>
+			</i>
+			</footer>
+		</div>
+	</body>
 </html>
