@@ -3,6 +3,7 @@ const {Intern, Admin} = require('../models/interns');
 const {TaskStatus, Task, BinTask} = require('../models/tasks');
 const { GoogleSpreadsheetWorksheet, GoogleSpreadsheetRow } = require('google-spreadsheet');
 const role = require('../models/role');
+const User = require('../models/users');
 
 /**
  * 
@@ -41,20 +42,19 @@ class InternRepository {
         // assert offset >= 0 && limit > 0
 
         const results = await this._sheet.getRows({offset, limit});
-        const interns = results.map(row => Intern.fromObject(row));
+        const interns = results.map(row => User.fromObject(row));
         return interns;
     }
 
-    async findByUsernameAndPassword(username, password) {
+    async findByUsernameAndPassword(username) {
         const results = await this._sheet.getRows();
-        const user = results.find(u => u.username === username && u.password === password);
+        const user = results.find(u => u.username === username);
         /**@type {Admin | Intern} */
-        let result;
-        if (user.role === role.Admin) {
-            result = Admin.fromObject(user);
-        } else {
-            result = Intern.fromObject(user);
+        let result = null;
+        if (!user) {
+            return result;
         }
+        result = User.fromObject(user);
         return result;
     }
 
@@ -73,8 +73,8 @@ class InternRepository {
         if (!intern) {
             throw new Error(`Intern of ${internId} was not found.`);
         }
-        intern = Intern.fromObject(intern);
-        return intern;
+        let result = User.fromObject(intern);
+        return result;
     }
 
     /**
@@ -89,7 +89,7 @@ class InternRepository {
         let nextId = Math.max(...ids);
         nextId++;
 
-        if (intern instanceof Intern) {
+        if (intern instanceof User) {
             intern.internId = nextId;
             let addedRow = await this._sheet.addRow(intern.toJSON());
             this._unsavedRows.push(addedRow);
@@ -115,7 +115,7 @@ class InternRepository {
             throw new Error(`Intern has to exist to be updated.`);
         }
         let object = newIntern;
-        if (newIntern instanceof Intern) {
+        if (newIntern instanceof User) {
             object = newIntern.toJSON();
         }
         for (const key in object) {

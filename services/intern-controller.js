@@ -3,10 +3,9 @@ const InternRepository = require('../persistence/intern-repository');
 const Codes = require('../utils/http-codes');
 const {Task} = require('../models/tasks');
 const {Intern, Admin} = require('../models/interns');
-const typeSafety = require('../utils/type-safety');
-const jwt = require('jsonwebtoken');
-const config = require('../login-secrets.json');
+const crypto = require('crypto');
 const role = require('../models/role');
+const User = require('../models/users');
 
 
 /**
@@ -28,24 +27,7 @@ module.exports.lookupIntern = async (req, res, next) => {
 };
 
 
-async function authenticate({username, password}) {
-    // Find user by username and password.
-    const repo = await InternRepository.load();
-    const user = await repo.findByUsernameAndPassword(username, password);
-    if (user) {
-        const token = jwt.sign({sub: user.internId, role: user.role}, config.secret);
-        const {password, ...userWithoutPassword} = user.toJSON();
-        return {
-            ...userWithoutPassword,
-            token
-        };
-    }
 
-}
-
-module.exports.authenticate = (req, res, next) => {
-    authenticate(req.body).then(user => user ? res.json(user) : res.status(400).json({message: 'Username or password is incorrect'})).catch(err => next(err));
-};
 
 
 /**
@@ -68,10 +50,13 @@ module.exports.getAllInterns = async (req, res) => {
     
     
         try {
-            const interns = await internRepo.getAll();
+            let interns = await internRepo.getAll();
+            interns = interns.map(intern => intern.toJSON()).forEach(obj => {
+                delete obj.password;
+            });
             res.status(200).json(interns);
         } catch (err) {
-            res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err});
+            res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err.message});
         }
     
 };
@@ -88,12 +73,12 @@ module.exports.getInternById = async (req, res) => {
     const internRepo = await InternRepository.load();
 
     try {
-        const intern = await internRepo.getById(Number(req.param.internId));
+        const intern = await internRepo.getById(id);
         const internObj = intern.toJSON();
         delete internObj.password;
-        res.status(200).jsoN(internObj);
+        res.status(200).json(internObj);
     } catch (err) {
-        res.status(400).json({error: err});
+        res.status(400).json({error: err.message});
     }
 }
 
@@ -144,9 +129,14 @@ module.exports.addInternTask = async (req, res) => {
 module.exports.addIntern = async (req, res) => {
     const internRepo = await InternRepository.load();
     try {
+        /*
+        let salt = crypto.randomBytes(16).toString('base64');
+        let hash = crypto.createHmac('sha512', salt).update(req.body.password).digest('base64');
+        req.body.password = salt + '$' + hash;
+        */
         // try to add an intern.
         const requestBody = req.body;
-        const intern = Intern.fromObject(requestBody);
+        const intern = User.fromObject(requestBody);
         const index = await internRepo.add(intern);
         await internRepo.save();
 
@@ -183,6 +173,13 @@ module.exports.updateIntern = async (req, res) => {
     const internRepo = await InternRepository.load();
     const {internId} = req.params;
     try {
+        
+        if (req.body.password) {
+            let salt = crypto.randomBytes(16).toString('base64');
+            let hash = crypto.createHmac('sha512', salt).update(req.body.password).digest('base64');
+            req.body.password = salt + '$' + hash;
+        }
+        
         const newIntern = req.body;
         const index = await internRepo.update(Number(internId), newIntern);
         await internRepo.save();

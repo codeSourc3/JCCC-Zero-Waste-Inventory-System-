@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Zero Waste</title>
+</head>
+<body>
+    <header>
+        <h1>Admin Dashboard</h1>
+        <nav>
+            <ul>
+                <li>
+                    <form action="/api/v1/auth/logout" method="post">
+                        <button type="submit">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <button id="js-add-bin" onclick="location.href='./addBin.html'">Add Bin From Storage</button>
+        <button id="js-remove-bin">Remove Bin From Storage</button>
+        <button id="js-add-intern">Add Intern</button>
+        <button id="js-remove-intern">Remove Intern</button>
+        <button id="js-weigh-bin">Weigh Bin</button>
+        <button id="js-new-location">Set Bin Location</button>
+        <button id="js-scan-qrcode">Scan QR Code</button>
+        <button id="js-bin-info">Get Bin Information</button>
+        <!--Would like to add ability to change password-->
+    </main>
+    <footer><small><i>JCCC ZERO WASTE<br><a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a></i></small></footer>
+    <script type="module" src="./javascripts/ui/dashboard-ui.js"></script>
+</body>
+</html>

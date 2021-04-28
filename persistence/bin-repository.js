@@ -93,9 +93,11 @@ class BinRepository {
      */
     async add(bin) {
         // Validates the bin before adding it.
-        const binId = this._sheet.rowCount + 1;
+        const ids = (await this._sheet.getRows()).map(row => Number(row.binId));
+        let nextId = Math.max(...ids) + 1;
+
         if (intern instanceof Bin) {
-            bin.binId = binId;
+            bin.binId = nextId;
             let addedRow = await this._sheet.addRow(bin);
             this._unsavedRows.push(addedRow);
             return addedRow.rowIndex - 1;

@@ -9,9 +9,11 @@ import {Task, BinTask, TaskRepository} from './api/task-resource.js';
 const output = document.querySelector('#output');
 
 const addBin = document.querySelector('#add-intern');
-addBin.addEventListener('submit', event => {
-  addInternFromForm(addBin);
-});
+if (document.contains(addBin)) {
+  addBin.addEventListener('submit', event => {
+    addInternFromForm(addBin);
+  });
+}
 
 // Example code. Replace with actual implementation.
 function displayInterns(result) {
@@ -34,13 +36,21 @@ function displayTask(result) {
   }
 };
 
+const updateAdminPassword = async () => {
+  const url = '/api/v1/interns/1';
+  const response = await fetch(url, {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({password: 'jj123'.normalize()})
+  });
+  const {id, error} = await response.json();
+  console.log('ID: ', id);
+  console.log('Error', error);
+};
 
 
-
-
-const internRepo = new InternRepository();
-internRepo.getAll().then(displayInterns).catch(displayError);
-const taskRepo = new TaskRepository();
-taskRepo.getAll().then(displayTask).catch(displayError);
 
 

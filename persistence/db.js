@@ -1,6 +1,7 @@
 const {GoogleSpreadsheet, GoogleSpreadsheetWorksheet} = require('google-spreadsheet');
-const config = require('../config.json');
-const credentials = require('../client_secret.json');
+const config = require('../config/config.json');
+const credentials = require('../config/client_secret.json');
+
 /** @type {GoogleSpreadsheet} */
 let doc;
 

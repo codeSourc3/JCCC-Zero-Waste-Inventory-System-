@@ -76,9 +76,10 @@ const { GoogleSpreadsheet, GoogleSpreadsheetWorksheet, GoogleSpreadsheetRow } = 
      */
     async add(task) {
         // Validates the task before adding it.
-        const taskId = this._sheet.rowCount + 1;
+        const ids = (await this._sheet.getRows()).map(row => Number(row.taskId));
+        let nextId = Math.max(...ids) + 1;
         if (task instanceof Task) {
-            task.taskId = taskId;
+            task.taskId = nextId;
             let addedRow = await this._sheet.addRow(task.toJSON());
             this._unsavedRows.push(addedRow);
             return addedRow.rowIndex;

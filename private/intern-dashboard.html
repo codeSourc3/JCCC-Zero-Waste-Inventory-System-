@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intern Dashboard - Zero Waste</title>
+    <style>
+        .But {
+          border:none ;
+          background-color: rgb(41, 233, 41);
+          padding: 14px 28px;
+          font-size: 16px;
+          cursor: pointer;
+          display: block;
+          text-align: center;
+          margin:auto;
+          margin-top:25px;
+        }
+        .pageFooter{
+            /*
+            position: absolute;
+            bottom: 0;
+            */
+            width: 100%;
+            height: 2.5rem;
+            text-align:center;
+        }
+        #pageContainer{
+            position: relative;
+            min-height: 100vh;
+        }
+        #Title{
+            text-align: center;
+        }
+        </style>
+</head>
+<body>
+    <header>
+        <h1>Intern Dashboard</h1>
+        <nav>
+            <ul>
+                <li>
+                    <form action="/api/v1/auth/logout" method="post">
+                        <button type="submit">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main id="pageContainer">
+        
+        <button id="js-weigh-bin" class="But weighBin" >Weigh Bin</button>
+        <button id="js-new-location" class="But binLocation" onclick="location.href='newLocation.html'">New Location for Bin </button>
+        <button id="js-scan-qrcode" class="But QRCode" onclick="location.href='scanQRCode.html'">Scan QR Code</button>
+        <button id="js-bin-info" class="But binInformation" onclick="location.href='getBinInfo.html'">Get Bin Information</button>
+    </main>
+    <footer class="pageFooter"><small><i>JCCC ZERO WASTE<br><a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a></i></small></footer>
+    <script type="module" src="./javascripts/ui/dashboard-ui.js"></script>
+</body>
+</html>

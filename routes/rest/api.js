@@ -10,5 +10,8 @@ router.use('/tasks', taskRoute);
 const binRoute = require('./bins');
 router.use('/bins', binRoute);
 
+const authRoute = require('./auth');
+router.use('/auth', authRoute);
+
 
 module.exports = router;

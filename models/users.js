@@ -11,10 +11,34 @@ class User {
      * @param {string} username 
      * @param {string} password 
      */
-    constructor(username, password, role=Role.Intern) {
-        this._username = username.normalize();
-        this._password = password.normalize();
+    constructor(internId, firstName, lastName, username='', password='', role=Role.Intern) {
+        this._internId = Number(internId);
+        this._firstName = String(firstName);
+        this._lastName = String(lastName);
+        this._username = String(username).normalize();
+        this._password = String(password).normalize();
         this._role = role;
+    }
+
+    static fromObject(obj) {
+        let {internId, firstName, lastName, username, password, role} = obj;
+        return new User(internId, firstName, lastName, username, password, role);
+    }
+
+    get internId() {
+        return this._internId;
+    }
+
+    set internId(value) {
+        this._internId = Number(value);
+    }
+
+    get firstName() {
+        return this._firstName;
+    }
+
+    get lastName() {
+        return this._lastName;
     }
 
     get username() {
@@ -30,7 +54,7 @@ class User {
     }
 
     toJSON() {
-        return { username: this._username, password: this._password};
+        return { internId: this._internId, firstName: this._firstName, lastName: this._lastName, username: this._username, password: this._password, role: this._role};
     }
 }
 module.exports = User;

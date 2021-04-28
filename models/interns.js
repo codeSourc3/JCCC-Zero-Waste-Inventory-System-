@@ -21,28 +21,11 @@ class Intern extends User {
      * @param {String} lastName 
      */
     constructor(id, firstName, lastName, username, password) {
-        super(username, password, role.Intern);
-        this._internId = id;
-        this._firstName = firstName;
-        this._lastName = lastName;
+        super(id, firstName, lastName, username, password, role.Intern);
         this._tasks = [];
     }
 
-    get internId() {
-        return this._internId;
-    }
-
-    set internId(value) {
-        this._internId = Number(value);
-    }
-
-    get firstName() {
-        return this._firstName;
-    }
-
-    get lastName() {
-        return this._lastName;
-    }
+    
 
     static fromObject(obj) {
         const {internId, firstName, lastName, username, password} = obj;
@@ -88,13 +71,7 @@ class Intern extends User {
     
 
     toJSON() {
-        const self = this;
-        return {
-            internId: self._internId,
-            firstName: self._firstName,
-            lastName: self._lastName,
-            ...super.toJSON()
-        };
+        return super.toJSON();
     }
 
     /**
@@ -133,10 +110,7 @@ class Admin extends User {
      * @param {string} password 
      */
     constructor(internId, firstName, lastName, username, password) {
-        super(username, password, role.Admin);
-        this._internId = internId;
-        this._firstName = firstName;
-        this._lastName = lastName;
+        super(internId, firstName, lastName, username, password, role.Admin);
     }
 
     static fromObject(obj) {
@@ -144,37 +118,9 @@ class Admin extends User {
         return new Admin(internId, firstName, lastName, username, password);
     }
 
-    get firstName() {
-        return this._firstName;
-    }
-
-    get lastName() {
-        return this._lastName;
-    }
-
-    set firstName(value) {
-        this._firstName = String(value);
-    }
-
-    set lastName(value) {
-        this._lastName = String(value);
-    }
-
-    get internId() {
-        return this._internId;
-    }
-
-    set internId(value) {
-        this._internId = Number(value);
-    }
-
+    
     toJSON() {
-        return {
-            internId: this._internId,
-            firstName: this._firstName,
-            lastName: this._lastName,
-            ...super.toJSON()
-        }
+        return super.toJSON();
     }
 }
 

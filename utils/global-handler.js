@@ -1,3 +1,5 @@
+const { TokenExpiredError } = require("jsonwebtoken");
+
 const errorHandler = (err, req, res, next) => {
     if (typeof(err) === 'string') {
         // custom application error
@@ -7,6 +9,10 @@ const errorHandler = (err, req, res, next) => {
     if (err.name === 'UnauthorizedError') {
         // jwt authentication error
         return res.status(401).json({message: 'Invalid Token'});
+    }
+
+    if (err instanceof TokenExpiredError) {
+        res.redirect('/login');
     }
 
     // default to 500 server error.
