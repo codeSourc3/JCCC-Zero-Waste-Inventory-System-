@@ -9,16 +9,12 @@ router.get('/', function(req, res, next) {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
-router.get('/dashboard', auth.validJWTNeeded, (req, res) => {
-  if (!req.jwt) {
-    //
-  } else if (req.jwt.role === role.Admin) {
+router.get('/dashboard', auth.validJWTNeeded, auth.validRefreshNeeded, (req, res) => {
+  if (req.jwt.role === role.Admin) {
     // Send admin-dashboard.html
-    console.debug('Sending Admin Dashboard');
     res.sendFile('admin-dashboard.html', {root: './private/'});
   } else {
     // Send intern-dashboard.html
-    console.debug('Sending Intern Dashboard');
     res.sendFile('intern-dashboard.html', {root: './private/'});
   }
 });

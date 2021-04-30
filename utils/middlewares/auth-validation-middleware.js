@@ -9,21 +9,15 @@ const crypto = require('crypto');
  * @param {import('express').NextFunction} next 
  */
 module.exports.validJWTNeeded = (req, res, next) => {
-    if (req.headers.authorization) {
+    if (req.cookies.jwt) {
         try {
-            let authorization = req.headers.authorization.split(' ');
-            if (authorization[0] !== 'Bearer') {
-                res.status(401).send({message: 'Unauthorized'});
-            } else {
-                req.jwt = jwt.verify(authorization[1], secret);
-                next();
-            }
+            req.jwt = jwt.verify(req.cookies.jwt, secret);
+            next();
         } catch (err) {
-            console.log(err.name);
             res.status(403).send({});
         }
-    } else {
-        res.status(401).send({message: 'No Authorization Header found'});
+    } else if (req.cookies.ref) {
+        next();
     }
 };
 
@@ -34,13 +28,22 @@ module.exports.validJWTNeeded = (req, res, next) => {
  * @param {import('express').NextFunction} next 
  */
 module.exports.validRefreshNeeded = (req, res, next) => {
-    let b = Buffer.from(req.body.refresh_token, 'base64');
-    let refresh_token = b.toString();
-    let hash = crypto.createHmac('sha512', req.jwt.refreshKey).update(req.jwt.internId + secret).digest('base64');
-    if (hash === refresh_token) {
-        req.body = req.jwt;
+    if (!req.cookies.jwt && req.cookies.ref) {
+        // Playing with hashbrowns.
+        let b = Buffer.from(req.cookies.ref, 'base64');
+        let refresh_token = b.toString();
+        let hash = crypto.createHmac('sha512', req.cookies.refK).update(req.cookies.user_id + secret).digest('base64');
+        if (hash === refresh_token) {
+            req.body = req.jwt;
+            next();
+        } else {
+            res.status(400).send({error: 'Invalid refresh token'});
+        }
+    } else if (req.cookies.jwt) {
+        next();
     } else {
-        res.status(400).send({error: 'Invalid refresh token'});
+        // both the access token and refresh token expired. 
+        res.redirect('/login');
     }
 };
 
@@ -50,8 +53,22 @@ module.exports.validRefreshNeeded = (req, res, next) => {
  * @param {import('express').Response} res 
  * @param {import('express').NextFunction} next 
  */
+module.exports.redirectToRefresh = (req, res, next) => {
+    if (!req.cookies.jwt) {
+        // JWT token expired. Attempt to refresh
+    } else {
+        next();
+    }
+}
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ * @param {import('express').NextFunction} next 
+ */
 module.exports.verifyRefreshBodyField = (req, res, next) => {
-    if (req.body && req.body.refresh_token) {
+    if (req.cookies && req.cookies.ref) {
         next();
     } else {
         res.status(400).send({error: 'Need to pass refresh_token field.'});
