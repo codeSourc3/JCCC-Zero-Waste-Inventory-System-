@@ -19,6 +19,27 @@ module.exports.lookupTask = async (req, res, next) => {
     }
 };
 
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
+module.exports.getUnassignedTasks = (req, res) => {
+    const taskRepo = await TaskRepository.load();
+    let {limit, offset} = req.query;
+    try {
+        //
+        let unassignedTasks;
+        if (limit && offset) {
+            unassignedTasks = await taskRepo.getUnassignedTasks(limit, offset);
+        } else {
+            unassignedTasks = await taskRepo.getUnassignedTasks(offset);
+        }
+        res.status(Codes.Success.OK).json(unassignedTasks);
+    } catch (err) {
+        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err.message});
+    }
+};
 
 /**
  * 

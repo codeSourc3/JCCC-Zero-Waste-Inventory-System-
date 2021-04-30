@@ -95,6 +95,10 @@ class Task {
         return this._internId;
     }
 
+    get isAssigned() {
+        return this._internId !== -1;
+    }
+
     set intern(value) {
         this._internId = Number(value);
     }

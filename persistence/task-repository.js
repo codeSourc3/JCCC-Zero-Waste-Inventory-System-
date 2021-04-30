@@ -50,6 +50,27 @@ const { GoogleSpreadsheet, GoogleSpreadsheetWorksheet, GoogleSpreadsheetRow } = 
     }
 
     /**
+     * 
+     * @param {number} offset 
+     * @param {number} limit 
+     * @returns 
+     */
+    async getUnassignedTasks(offset = 0, limit = 10) {
+        // assert offset >= 0 && limit > 0
+        const results = await this._sheet.getRows();
+        const tasks = results.map(row => toTask(row)).filter(task => !task.isAssigned);
+        // Preventing an index out of bounds logic error.
+        let end = offset + limit <= tasks.length ? offset + limit : tasks.length;
+        let page;
+        if (tasks.length === 0) {
+            page = [];
+        } else {
+            page = tasks.slice(offset, end);
+        }
+        return page;
+    }
+ 
+    /**
      * Gets an Task by id.
      * 
      * @param {Number} id the id starting at 1
