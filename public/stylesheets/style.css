@@ -90,7 +90,7 @@ input[type=submit]:hover {
 }   
 @font-face {
 	font-family: Vogie;
-	src: url(FontsFree-Net-Vogie-Bold.ttf);
+	src: url(../fonts/FontsFree-Net-Vogie-Bold.ttf);
 }
 #Title{
 	text-align: center;

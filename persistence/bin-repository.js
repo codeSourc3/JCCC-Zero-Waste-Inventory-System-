@@ -26,6 +26,12 @@ class BinRepository {
         this._sheet = this._doc.sheetsByTitle['Bins'];
 
         /**
+         * @type {GoogleSpreadsheetWorksheet}
+         * @private
+         */
+        this._inactiveBinSheet = this._doc.sheetsByTitle['InactiveBins'];
+
+        /**
          * @type {GoogleSpreadsheetRow[]}
          * @private
          */
@@ -110,15 +116,23 @@ class BinRepository {
      * Attempts to delete a bin by its id.
      * 
      * @param {number} binId the id of the bin to delete, starting at 1.
+     * @param {boolean} isLost to differentiate lost bins from deleted bins. 
      * @returns {Promise<boolean>} a promise resolving to true if 
      * the bin was deleted, false otherwise.
      */
-    async delete(binId) {
+    async delete(binId, isLost=false) {
         const rows = await this._sheet.getRows();
         const id = Number(binId);
         const targetRow = rows.find(row => Number(row.binId) === id);
         if (targetRow) {
             // row with bin id exists.
+            if (isLost) {
+                const bin = Bin.fromObject(targetRow);
+                let binLiteral = bin.toJSON();
+                binLiteral.status = 'Lost';
+                // save to inactive bins sheet
+                await this._inactiveBinSheet.addRow(binLiteral);
+            }
             await targetRow.delete();
             return true;
         } else {
