@@ -27,13 +27,15 @@ module.exports.lookupTask = async (req, res, next) => {
 module.exports.getUnassignedTasks = (req, res) => {
     const taskRepo = await TaskRepository.load();
     let {limit, offset} = req.query;
+    let limitParam = Number(limit);
+    let offsetParam = Number(offset);
     try {
         //
         let unassignedTasks;
         if (limit && offset) {
-            unassignedTasks = await taskRepo.getUnassignedTasks(limit, offset);
+            unassignedTasks = await taskRepo.getUnassignedTasks(limitParam, offsetParam);
         } else {
-            unassignedTasks = await taskRepo.getUnassignedTasks(offset);
+            unassignedTasks = await taskRepo.getUnassignedTasks(offsetParam);
         }
         res.status(Codes.Success.OK).json(unassignedTasks);
     } catch (err) {
