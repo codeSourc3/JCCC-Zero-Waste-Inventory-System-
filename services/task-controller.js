@@ -3,6 +3,7 @@ const {Task, BinTask, toTask} = require('../models/tasks');
 const TaskRepository = require('../persistence/task-repository');
 
 /**
+ * Middleware function for checking if a task exists.
  * 
  * @param {import('express').Request} req 
  * @param {import('express').Response} res 
@@ -20,11 +21,14 @@ module.exports.lookupTask = async (req, res, next) => {
 };
 
 /**
+ * Gets all unassigned tasks.
  * 
+ * @example
+ * /api/v1/tasks/unassigned
  * @param {import('express').Request} req 
  * @param {import('express').Response} res 
  */
-module.exports.getUnassignedTasks = (req, res) => {
+module.exports.getUnassignedTasks = async (req, res) => {
     const taskRepo = await TaskRepository.load();
     let {limit, offset} = req.query;
     let limitParam = Number(limit);
@@ -44,7 +48,8 @@ module.exports.getUnassignedTasks = (req, res) => {
 };
 
 /**
- * 
+ * Gets all tasks. Can be limited by the query parameters limit and offset.
+ * @example /api/v1/tasks?offset=${offset}&limit=${limit}
  * @param {import('express').RequestHandler} req - the request. No body.
  * @param {import('express').Response} res 
  */
@@ -61,7 +66,8 @@ module.exports.getTasks = async (req, res) => {
 };
 
 /**
- * 
+ * Gets a task by id.
+ * @example /api/v1/tasks/:taskId
  * @param {Express.Request} req 
  * @param {import('express').Response} res 
  */
@@ -78,7 +84,9 @@ module.exports.getTask = async (req, res) => {
 };
 
 /**
- * 
+ * Adds a task.
+ * @example 
+ * POST /api/v1/tasks
  * @param {Express.Request} req 
  * @param {import('express').Response} res 
  */
@@ -97,7 +105,10 @@ module.exports.addTask = async (req, res) => {
 };
 
 /**
- * 
+ * Edits a task.
+ * @example
+ * PUT /api/v1/tasks/:taskId
+ * PATCH /api/v1/tasks/:taskId
  * @param {Express.Request} req 
  * @param {import('express').Response} res 
  */
@@ -117,6 +128,8 @@ module.exports.editTask = async (req, res) => {
 
 /**
  * 
+ * @example
+ * DELETE /api/v1/tasks
  * @param {Express.Request} req 
  * @param {import('express').Response} res 
  */

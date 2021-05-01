@@ -11,6 +11,7 @@ const User = require('../models/users');
 /**
  * Checks if the Intern with the Intern Id exists.
  * 
+ * 
  * @param {import('express').Request} req 
  * @param {import('express').Response} res 
  * @param {import('express').NextFunction} next 
@@ -27,28 +28,15 @@ module.exports.lookupIntern = async (req, res, next) => {
 };
 
 
-
-
-
-/**
- * 
- * @param {import('express').Request} req 
- * @param {import('express').Response} res 
- * @param {import('express').NextFunction} next 
- */
-module.exports.validatePartialBody = (req, res, next) => {
-    //
-};
-
 /** 
  * @module controllers/intern-controller
- * @requires express
+ * @param {import('express').Request} req the request object
+ * @param {import('express').Response} res the response object
+ * @example
+ * GET /api/v1/interns?offset=${offset}&limit=${limit}
  */
-
 module.exports.getAllInterns = async (req, res) => {
     const internRepo = await InternRepository.load();
-    
-    
         try {
             let interns = await internRepo.getAll();
             interns = interns.map(intern => intern.toJSON()).forEach(obj => {
@@ -61,6 +49,13 @@ module.exports.getAllInterns = async (req, res) => {
     
 };
 
+/**
+ * 
+ * @param {import('express').Request} req the request object
+ * @param {import('express').Response} res the response object
+ * @example
+ * GET /api/v1/interns/:internId
+ */
 module.exports.getInternById = async (req, res) => {
     const currentUser = req.user;
     const id = Number(req.params.internId);
@@ -82,6 +77,14 @@ module.exports.getInternById = async (req, res) => {
     }
 }
 
+/**
+ * 
+ * @param {import('express').Request} req the request object
+ * @param {import('express').Response} res the response object
+ * @example
+ * GET /api/v1/interns/:internId/tasks/:taskId
+ * GET /api/v1/interns/:internId/tasks
+ */
 module.exports.getOneOrAllInternTasks = async (req, res) => {
     const taskRepo = await TaskRepository.load();
     const { internId, taskId } = req.params;
@@ -105,6 +108,13 @@ module.exports.getOneOrAllInternTasks = async (req, res) => {
     }
 };
 
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ * @example
+ * POST /api/v1/interns/:internId/tasks
+ */
 module.exports.addInternTask = async (req, res) => {
     console.log('Got body', req.body);
     const taskRepo = await TaskRepository.load();
@@ -126,6 +136,14 @@ module.exports.addInternTask = async (req, res) => {
     }
 };
 
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ * @example
+ * POST /api/v1/interns
+ */
 module.exports.addIntern = async (req, res) => {
     const internRepo = await InternRepository.load();
     try {
@@ -147,7 +165,14 @@ module.exports.addIntern = async (req, res) => {
     }
 };
 
-// /:internId/tasks/:taskId
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ * @example
+ * PUT /api/v1/interns/:internId/tasks/:taskId
+ * PATCH /api/v1/interns/:internId/tasks/:taskId
+ */
 module.exports.updateInternTask = async (req, res) => {
     const taskRepo = await TaskRepository.load();
     const {internId, taskId} = req.params;
@@ -166,8 +191,11 @@ module.exports.updateInternTask = async (req, res) => {
 
 /**
  * @todo Implement update intern.
- * @param {*} req 
+ * @param {import('express').Request} req 
  * @param {import('express').Response} res 
+ * @example
+ * PUT /api/v1/interns/:internId
+ * PATCH /api/v1/interns/:internId
  */
 module.exports.updateIntern = async (req, res) => {
     const internRepo = await InternRepository.load();
@@ -193,7 +221,9 @@ module.exports.updateIntern = async (req, res) => {
 /**
  * @todo Implement delete intern.
  * @param {*} req 
- * @param {import('express').Response} res 
+ * @param {import('express').Response} res the response object
+ * @example
+ * DELETE /api/v1/interns/:internId
  */
 module.exports.deleteIntern = async (req, res) => {
     const internRepo = await InternRepository.load();
@@ -211,7 +241,9 @@ module.exports.deleteIntern = async (req, res) => {
 /**
  * @todo Implement delete intern task.
  * @param {*} req 
- * @param {import('express').Response} res 
+ * @param {import('express').Response} res the response object
+ * @example
+ * DELETE /api/v1/interns/:internId/tasks/:taskId
  */
 module.exports.deleteInternTask = async (req, res) => {
     const taskRepo = await TaskRepository.load();

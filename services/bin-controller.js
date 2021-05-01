@@ -26,6 +26,8 @@ module.exports.lookupBin = async (req, res, next) => {
  * 
  * @param {Express.Request} req 
  * @param {import('express').Response} res 
+ * @example
+ * GET /api/v1/bins/out
  */
 module.exports.getOutBins = async (req, res) => {
     const binRepo = await BinRepository.load();

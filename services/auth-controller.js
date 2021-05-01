@@ -5,6 +5,7 @@ const role = require('../models/role');
 const httpCodes = require('../utils/http-codes');
 const User = require('../models/users');
 const crypto = require('crypto');
+const millis = require('../utils/timeToMillis.js');
 
 
 
@@ -24,8 +25,10 @@ module.exports.isPasswordAndUserMatch = async (req, res, next) => {
     } else {
         let passwordFields = user.password.split('$');
         let salt = passwordFields[0];
+        console.group('Checking if password and user match');
         console.dir(req.body);
         console.assert(req.body.password !== undefined);
+        console.groupEnd();
         let hash = crypto.createHmac('sha512', salt).update(req.body.password).digest('base64');
         if (hash === passwordFields[1]) {
             req.body = {
@@ -43,40 +46,7 @@ module.exports.isPasswordAndUserMatch = async (req, res, next) => {
     }
 };
 
-/**
- * Converts minutes to milliseconds
- * @param {string | number} minutes string in the form of "15m" or number representing minutes.
- * @returns {number} number in milliseconds.
- */
-const minutesToMillis = (minutes) => {
-    // if param is "15m", strip m and convert to number.
-    let parsedMinutes;
-    if (typeof(minutes) === 'string' && minutes.endsWith('m')) {
-        parsedMinutes = parseInt(minutes.replace('m', ''));
-    } else {
-        parsedMinutes = minutes;
-    }
-    return parsedMinutes * 60 * 1000;
-};
 
-/**
- * Converts days to milliseconds.
- * @param {string | number} days string in the form of "15d" or number.
- * @returns {number} number in milliseconds.
- */
-const daysToMillis = (days) => {
-    // param may be in the form of "15d".
-    let parsedDays;
-    if (typeof(days) === 'string' && days.endsWith('d')) {
-        parsedDays = parseInt(days.replace('d', ''));
-    } else {
-        parsedDays = days;
-    }
-    let hours = parsedDays * 24;
-    let minutes = hours * 60;
-    let milliseconds = minutesToMillis(minutes);
-    return milliseconds;
-};
 
 /**
  * 
@@ -105,7 +75,7 @@ const clearRefreshToken = (res) => {
  * @returns {import('express').Response} the response for method chaining.
  */
 const addAccessToken = (res, token) => {
-    res.cookie('jwt', token, {httpOnly: true, secure: true, maxAge: minutesToMillis(config.accessToken.life)});
+    res.cookie('jwt', token, {httpOnly: true, secure: true, maxAge: millis.stringToMillis(config.accessToken.life)});
     return res;
 };
 
@@ -116,7 +86,7 @@ const addAccessToken = (res, token) => {
  * @returns {import('express').Response} the response for method chaining.
  */
 const addRefreshToken = (res, token) => {
-    res.cookie('ref', token, {httpOnly: true, secure: true, maxAge: daysToMillis(config.refreshToken.life)});
+    res.cookie('ref', token, {httpOnly: true, secure: true, maxAge: millis.stringToMillis(config.refreshToken.life)});
     return res;
 };
 
@@ -126,7 +96,7 @@ const addRefreshToken = (res, token) => {
  * @param {string} key 
  */
 const addRefreshKey = (res, key) => {
-    res.cookie('refK', key, {httpOnly: true, secure: true, maxAge: daysToMillis(config.refreshToken.life)});
+    res.cookie('refK', key, {httpOnly: true, secure: true, maxAge: millis.stringToMillis(config.refreshToken.life)});
 };
 
 /**
@@ -136,7 +106,7 @@ const addRefreshKey = (res, key) => {
  */
 const addIdToken = (res, id) => {
     // I did this because I couldn't find another way easily.
-    res.cookie('user_id', id, {httpOnly: true, secure: true, maxAge: daysToMillis(config.refreshToken.life)});
+    res.cookie('user_id', id, {httpOnly: true, secure: true, maxAge: millis.stringToMillis(config.refreshToken.life)});
 };
 
 /**
@@ -163,6 +133,8 @@ const clearRefreshKey = (res) => {
  * @param {import('express').Request} req 
  * @param {import('express').Response} res 
  * @param {import('express').NextFunction} next 
+ * @example
+ * POST /api/v1/auth/login Body: {username: value, password: value}
  */
 module.exports.login = async (req, res, next) => {
     try {
@@ -176,11 +148,12 @@ module.exports.login = async (req, res, next) => {
         let b = Buffer.from(hash);
         let refresh_token = b.toString('base64');
         addIdToken(res, req.body.internId);
-        addRefreshKey(res, salt);
+        addRefreshKey(res, req.body.refreshKey);
         addAccessToken(res, token);
         addRefreshToken(res, refresh_token);
         res.redirect('/dashboard');
     } catch(err) {
+        console.error('Login Error: ', err);
         res.status(500).send({message: err.message});
     } 
 };
@@ -189,6 +162,8 @@ module.exports.login = async (req, res, next) => {
  * 
  * @param {import('express').Request} req 
  * @param {import('express').Response} res 
+ * @example
+ * POST /api/v1/auth/logout
  */
 module.exports.logout = (req, res) => {
     clearAccessToken(res);
@@ -201,13 +176,15 @@ module.exports.logout = (req, res) => {
  * Should be called by 
  * @param {import('express').Request} req 
  * @param {import('express').Response} res 
+ * @example
+ * POST /api/v1/auth/refresh
  */
 module.exports.refreshToken = (req, res) => {
     try {
-        req.body = req.jwt;
+        req.body = req.cookies.jwt;
         let token = jwt.sign(req.body, config.accessToken.secret, {
         });
-        res.status(201).clearCookie('jwt', {httpOnly: true, secure: true}).cookie('jwt', token, {httpOnly: true, secure: true, maxAge: minutesToMillis(config.accessToken.life)});
+        res.status(201).clearCookie('jwt', {httpOnly: true, secure: true}).cookie('jwt', token, {httpOnly: true, secure: true, maxAge: millis.stringToMillis(config.accessToken.life)});
     } catch (err) {
         res.status(500).send({error: err.message});
     }
