@@ -1,43 +1,51 @@
 <!DOCTYPE html>
-<html id = "addIntern" lang="en-US">
-    <head>
-		<title>Add/Remove Bin from Storage</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="/stylesheets/style.css">
-	<body>
-		<div id="wrapper">
+<html id="addIntern" lang="en-US">
+
+<head>
+	<title>Add/Remove Bin from Storage</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+
+<body>
+	<div id="wrapper">
 		<header>
 			<h1 id="Title">JCCC Zero Waste Test Site</h1>
 		</header>
-        <main id="pageContainer">
-        <button class="But returnHome" onclick="location.href='/dashboard'">Home Page</button>
-        <div class="formDiv">
-			<form id="js-new-user-form" class ="formFormat">
-                <h5>Be sure to capitalize only first letter of each name input </h5>
-                <label for="first-name">Intern to add First Name</label><br>
-			    <input class="removedInternFirstName" id="first-name" pattern="^([A-Z]+).*$" type="text" required><br>
+		<main id="pageContainer">
+			<button class="But returnHome" onclick="location.href='/dashboard'">Home Page</button>
+			<div class="formDiv">
+				<form id="js-new-user-form" class="formFormat">
+					<h5>Be sure to capitalize only first letter of each name input </h5>
+					<label for="first-name">Intern to add First Name</label><br>
+					<input class="removedInternFirstName" id="first-name" pattern="^([A-Z]+).*$" name="first-name"
+						type="text" required><br>
 
-                <label for="last-name">Intern to add Last Name</label><br>
-			    <input class="removedInternLastName" id="last-name" pattern="^([A-Z]+).*$" type="text" required><br>
+					<label for="last-name">Intern to add Last Name</label><br>
+					<input class="removedInternLastName" id="last-name" pattern="^([A-Z]+).*$" name="last-name"
+						type="text" required><br>
 
-				<label for="user-name">User Name</label><br>
-				<input type="text" id="user-name" name="user-name" required><br>
+					<label for="user-name">User Name</label><br>
+					<input type="text" id="user-name" autocomplete="username" name="user-name" required><br>
 
-				<label for="password">Password</label><br>
-				<input type="password" id="password" name="password" required><br>
+					<label for="password">Password</label><br>
+					<input type="password" id="password" autocomplete="new-password" name="password" required><br>
 
-				<label for="confirm-password">Confirm Password</label><br>
-				<input type="password" name="confirm-password" id="confirm-password"><br>
-                <input class="binFormSubmit" type="submit" name="submit">
-			</form>
-        </div>
-        </main>
-				<footer class="pageFooter">
-				<i>JCCC ZERO WASTE<br>
+					<label for="confirm-password">Confirm Password</label><br>
+					<input type="password" name="confirm-password" autocomplete="new-password"
+						id="confirm-password"><br>
+					<input class="binFormSubmit" type="submit" name="submit">
+				</form>
+			</div>
+		</main>
+		<footer class="pageFooter">
+			<i>JCCC ZERO WASTE<br>
 				<a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a>
-				</i>
-				</footer>
-		</div>
-    </body>
+			</i>
+		</footer>
+	</div>
+
+	<script type="module" src="./javascripts/ui/add-intern-ui.js"></script>
+</body>
+
 </html>

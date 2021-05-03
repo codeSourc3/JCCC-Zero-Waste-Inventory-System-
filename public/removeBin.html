@@ -1,38 +1,41 @@
 <!DOCTYPE html>
-<html id = "addRemoveBin" lang="en">
-    <head>
-		<title>Add/Remove Bin from Inventory</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="/stylesheets/style.css">
-	<body>
-		<div id="wrapper">
-		<header>
-			<h1 id="Title">JCCC Zero Waste</h1>
-		</header>
+<html id="addRemoveBin" lang="en">
+
+<head>
+    <title>Add/Remove Bin from Inventory</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+
+<body>
+    <div id="wrapper">
+        <header>
+            <h1 id="Title">JCCC Zero Waste</h1>
+        </header>
         <main id="pageContainer">
-        <button class="But returnHome" onclick="location.href='/dashboard'">Home Page</button>
-        <div class="formDiv">
-        <form class = "formFormat">
-            <label for="bin-id">Bin ID to Remove:</label><br>
-            <input class="removeBinFormInput" type="text" id="bin-id" name="removeBin"><br>
-            <label>Reason to be Removed</label><br>
-				<input type="radio" id="lost" name="bin" value="lost">
-				<label for="lost">Lost</label>
-				<input type="radio" id="removed" name="bin" value="removed">
-				<label for="removed">Removed</label><br>
-            <label for="check">Are you sure?</label><br>
-            <input type="checkbox" id="check" name="check" value="check">
-            <label for="check">Yes I am sure</label><br>
-            <input class="binFormSubmit" type="submit" name="submit">
-        </form>
-        </div>
+            <button class="But returnHome" onclick="location.href='/dashboard'">Home Page</button>
+            <div class="formDiv">
+                <form class="formFormat">
+                    <label for="bin-id">Bin ID to Remove:</label><br>
+                    <input class="removeBinFormInput" type="text" id="bin-id" name="removeBin"><br>
+                    <label>Reason to be Removed</label><br>
+                    <input type="radio" id="lost" name="bin" value="lost">
+                    <label for="lost">Lost</label>
+                    <input type="radio" id="removed" name="bin" value="removed">
+                    <label for="removed">Removed</label><br>
+                    <label for="check">Are you sure?</label><br>
+                    <input type="checkbox" id="check" name="check" value="check">
+                    <label for="check">Yes I am sure</label><br>
+                    <input class="binFormSubmit" type="submit" name="submit">
+                </form>
+            </div>
         </main>
-			<footer class="pageFooter">
-			<i>JCCC ZERO WASTE<br>
-			<a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a>
-			</i>
-			</footer>
-		</div>
-    </body>
+        <footer class="pageFooter">
+            <i>JCCC ZERO WASTE<br>
+                <a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a>
+            </i>
+        </footer>
+    </div>
+</body>
+
 </html>
