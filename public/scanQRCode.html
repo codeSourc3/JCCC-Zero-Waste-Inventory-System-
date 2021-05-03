@@ -13,6 +13,9 @@
         <main id="pageContainer">
         <button class="But returnHome" onclick="location.href='/dashboard'">Home Page</button>
         <!-- IDK what to put here-->
+        <p>If the QR Code is damaged then please click 
+            <a href="./getBinInfo.html">here</a>.
+        </p>
         <div id="reader" width="50%"></div>
         
         </main>
@@ -24,23 +27,7 @@
 		</div>
 		
         <script src="/packages/html5-qrcode.min.js"></script>
-        <script>
-            // For example only.
-            /**
-             * @author Enzo Mayo
-             */
-            function onScanSuccess(qrMessage) {
-                // To test if it works.
-                console.log(`QR matched = ${qrMessage}`);
-            }
-            
-            function onScanFailure(error) {
-                // should try to ignore and keep scanning.
-                ;
-            }
-            
-            const qrScanner = new Html5QrcodeScanner("reader", {fps: 10, qrbox: 250});
-            qrScanner.render(onScanSuccess, onScanFailure);
-        </script>
+        <script src="/javascripts/ui/scanqrcode.js"></script>
+        
     </body>
 </html>

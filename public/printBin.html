@@ -15,10 +15,12 @@
 		<main id="pageContainer">
 			<button class="But returnHome" onclick="location.href='/dashboard'">Home Page</button>
 			<div class="formDiv">
-				<form class="formFormat">
+				<form id="printBin" class="formFormat" hidden>
 					<h5>Print Bin landing Page </h5>
-					<canvas id="canvas"></canvas>
+					<input type="number" name="bin-id" id="bin-id">
+					<input type="submit" value="Submit">
 				</form>
+				<canvas id="canvas"></canvas>
 			</div>
 		</main>
 		<footer class="pageFooter">
@@ -28,6 +30,7 @@
 		</footer>
 	</div>
 	<script src="/packages/qrcode.min.js"></script>
+	
 	<script src="/javascripts/api/qr.js"></script>
 </body>
 

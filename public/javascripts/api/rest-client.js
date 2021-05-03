@@ -16,6 +16,11 @@ const Resources = {
 class RestClient {
     constructor() {
         this._endPoint = API_ENDPOINT;
+        this.getAll = this.getAll.bind(this);
+        this.getOne = this.getOne.bind(this);
+        this.post = this.post.bind(this);
+        this.put = this.put.bind(this);
+        this.delete = this.delete.bind(this);
     }
 
     static getInstance() {

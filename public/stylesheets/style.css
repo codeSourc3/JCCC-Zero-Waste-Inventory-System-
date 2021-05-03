@@ -123,6 +123,28 @@ input[type=submit]:hover {
 	height:80%;
 }
 
+#canvas {
+	display: none;
+}
+
+.centered {
+	display: block;
+	width: auto;
+	margin: 1em auto;
+}
+
+@media print {
+	
+	#wrapper header, #wrapper nav, #wrapper footer {
+		display: none;
+		border: none;
+	}
+	#wrapper .printable img {
+		display: block;
+		border: 1px solid black;
+	}
+}
+
 	
 @media (min-width: 1024px)	{
 .But {

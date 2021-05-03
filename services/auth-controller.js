@@ -106,7 +106,7 @@ const addRefreshKey = (res, key) => {
  */
 const addIdToken = (res, id) => {
     // I did this because I couldn't find another way easily.
-    res.cookie('user_id', id, {httpOnly: true, secure: true, maxAge: millis.stringToMillis(config.refreshToken.life)});
+    res.cookie('user_id', id, {secure: true, maxAge: millis.stringToMillis(config.refreshToken.life)});
 };
 
 /**
@@ -114,7 +114,7 @@ const addIdToken = (res, id) => {
  * @param {import('express').Response} res 
  */
 const clearIdToken = (res) => {
-    res.clearCookie('user_id', {httpOnly: true, secure: true});
+    res.clearCookie('user_id', {secure: true});
 };
 
 /**

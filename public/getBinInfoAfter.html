@@ -7,19 +7,28 @@
         <link rel="stylesheet" href="/stylesheets/style.css">
 	<body>
         <!-- ALSO CAN USE THIS AS THE AFTERQRCODE PAGE AS WELL-->
+		<!--Enzo: Why? They are going to print the QR Code. I can redirect them back to the dashboard if needed.-->
 		<div id="wrapper">
 			<header>
 				<h1 id="Title">JCCC Zero Waste Test Site</h1>
 			</header>
+			<nav>
+				<ul>
+					<li><button class="But returnHome" onclick="location.href='/dashboard'">Back to Dashboard</button></li>
+				</ul>
+			</nav>
 			<main>
 				<div id="pageContainer">
+					
 					<div id="buttons">
-                        <button class="But returnHome" onclick="location.href='index.html'">Home Page</button><br><br><br> <!-- We can display bin info where breaks are-->
-						<button class="But weighBin" onclick="location.href='weighBin.html'">Weigh Bin</button>
-						<button class="But binLocation" onclick="location.href='newLocation.html'">Delivered Location for Bin </button>
-						<button class="But printQRCode" onclick="location.href='printBin.html'">Print QR Code</button>   
-                        <button class="But binInventory" onclick="location.href='removeBin.html'">Remove Bin from Storage</button>
+                         <!-- We can display bin info where breaks are-->
+						 <div id="js-bin-info"></div>
+						<button class="But weighBin" onclick="location.href='./weighBin.html'">Weigh Bin</button>
+						<button class="But binLocation" onclick="location.href='./newLocation.html'">Delivered Location for Bin </button>
+						<button class="But printQRCode" onclick="location.href='./printBin.html'">Print QR Code</button>   
+                        <button class="But binInventory" onclick="location.href='./removeBin.html'">Remove Bin from Storage</button>
 					</div>
+					
 				</div>
 			
 			</main>
@@ -29,5 +38,6 @@
 			</i>
 			</footer>
 		</div>
+		<script src="/javascripts/ui/bin-info.js"></script>
 	</body>
 </html>

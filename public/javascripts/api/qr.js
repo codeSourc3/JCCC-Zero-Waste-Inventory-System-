@@ -12,8 +12,8 @@ const inchesToPixels = (inches) => {
 
 const options = {
     errorCorrectionLevel: 'H',
-    
-    
+
+
     width: inchesToPixels(2)
 };
 
@@ -60,18 +60,45 @@ const generateQRCanvas = (canvas, value) => {
 const drawQRCode = async (value) => {
     const context = canvas.getContext('2d');
     // Draw a label at the bottom
-    const url = await generateQRUrl(canvas, value);
-    context.font = '18px Arial';
-    let {width} = context.measureText(String(value));
+    await generateQRCanvas(canvas, value);
+    let { width } = context.measureText(String(value));
     let textMiddle = width / 2;
     let startX = (canvas.width / 2) - textMiddle;
     context.fillText(value, startX, canvas.height);
     context.stroke();
+    const url = canvas.toDataURL();
     return url;
 };
 
-drawQRCode(`Bin Id: ${4}`).then((url) => {
-    console.log('Generated QR Code');
-    console.assert(typeof(url) === 'string');
-    console.log('URL: ', url);
-});
+const createDataLink = (url) => {
+    const img = document.createElement('img');
+    img.src = url;
+    img.classList.add('centered', 'printable');
+    canvas.insertAdjacentElement('afterend', img);
+};
+
+const form = document.forms[0];
+
+
+(() => {
+    if (!sessionStorage.getItem('binId')) {
+        // bin id hasn't been set.
+        form.hidden = false;
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            /**
+             * @type {HTMLInputElement}
+             */
+            const input = form.elements.namedItem('bin-id');
+            let value = input.valueAsNumber;
+            drawQRCode(`Bin Id=${value}`).then(createDataLink);
+            return false;
+        });
+    } else {
+        let value = parseInt(sessionStorage.getItem('binId'));
+        drawQRCode(`Bin Id=${value}`).then(createDataLink);
+    }
+})();
+
+
+

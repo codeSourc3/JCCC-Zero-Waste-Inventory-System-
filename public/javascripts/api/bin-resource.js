@@ -3,10 +3,25 @@ import { checkPropertiesMatch } from '../types.js';
 import { ResourceRepository } from './resource-repo.js';
 
 class BinWeight {
-    constructor(binId, weight, dateEmptied=new Date()) {
+    constructor(weightId, binId, weight, dateEmptied=new Date()) {
+        this.weightId = Number(weightId);
         this.binId = Number(binId);
         this.weight = Number(weight);
         this.dateEmptied = dateEmptied;
+    }
+
+    static fromObject(obj) {
+        const {weightId, binId, weight, dateEmptied} = obj;
+        return new BinWeight(weightId, binId, weight, dateEmptied);
+    }
+
+    toJSON() {
+        return {
+            weightId: this.weightId,
+            binId: this.binId,
+            weight: this.weight,
+            dateEmptied: this.dateEmptied
+        };
     }
 
     getTimeSinceWeighed() {
@@ -64,9 +79,18 @@ class Bin {
 
 const toBin = row => Bin.fromObject(row);
 
+const toWeight = row => BinWeight.fromObject(row);
+
 class BinRepository extends ResourceRepository {
     constructor() {
         super(Resources.BINS);
+        this.getOutBins = this.getOutBins.bind(this);
+        this.getWeights = this.getWeights.bind(this);
+        this.add = this.add.bind(this);
+        this.getAll = this.getAll.bind(this);
+        this.remove = this.remove.bind(this);
+        this.update = this.update.bind(this);
+        this.get = this.get.bind(this);
     }
 
     async getAll(offset=0, limit=10, predicate=(row)=>true) {
@@ -102,6 +126,23 @@ class BinRepository extends ResourceRepository {
         const result = await super.get(id);
         const bin = toBin(result);
         return bin;
+    }
+
+    async getWeights(binId) {
+        const id = Number(binId);
+        let resource = `${this._resource}/${id}/weights`;
+        const client = RestClient.getInstance();
+        const results = await client.getAll(resource, 0, Infinity);
+        const weights = results.map(toWeight);
+        return weights;
+    }
+
+    async getOutBins(offset=0, limit=10) {
+        let resource = `${this._resource}/out`;
+        const client = RestClient.getInstance();
+        const results = await client.getAll(resource, offset, limit);
+        const outBins = results.map(toBin);
+        return outBins;
     }
 }
 

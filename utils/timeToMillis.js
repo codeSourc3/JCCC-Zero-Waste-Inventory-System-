@@ -3,7 +3,7 @@
  * @param {string | number} minutes string in the form of "15m" or number representing minutes.
  * @returns {number} number in milliseconds.
  */
-module.exports.minutesToMillis = (minutes) => {
+const minutesToMillis = (minutes) => {
     // if param is "15m", strip m and convert to number.
     let parsedMinutes;
     if (typeof(minutes) === 'string' && minutes.endsWith('m')) {
@@ -19,7 +19,7 @@ module.exports.minutesToMillis = (minutes) => {
  * @param {string | number} days string in the form of "15d" or number.
  * @returns {number} number in milliseconds.
  */
-module.exports.daysToMillis = (days) => {
+const daysToMillis = (days) => {
     // param may be in the form of "15d".
     let parsedDays;
     if (typeof(days) === 'string' && days.endsWith('d')) {
@@ -33,11 +33,11 @@ module.exports.daysToMillis = (days) => {
     return milliseconds;
 };
 
-module.exports.stringToMillis = (str) => {
+const stringToMillis = (str) => {
     let parsed;
     if (typeof(str) === 'string') {
         if (str.endsWith('d')) {
-            parsed = daysToMillis(str);
+            parsed = module.exports.daysToMillis(str);
         } else if (str.endsWith('m')) {
             parsed = module.exports.minutesToMillis(str);
         }
@@ -46,3 +46,5 @@ module.exports.stringToMillis = (str) => {
     }
     return parsed;
 };
+
+module.exports = {minutesToMillis, daysToMillis, stringToMillis};

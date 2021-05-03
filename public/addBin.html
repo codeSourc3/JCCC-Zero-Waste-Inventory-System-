@@ -13,7 +13,8 @@
         <main id="pageContainer">
         <button class="But returnHome" onclick="location.href='/dashboard'">Home Page</button>
         <div class="formDiv">
-			<form class = "formFormat">
+			<!--Enzo's TODO: Stop default form submit behavior and normalize inputs to send to server's REST API-->
+			<form id="add-bin-form" class = "formFormat">
 				<label for="newBin">New Bin ID:</label><br>
 				<input class="binFormInput" type="text" name="newBin"><br>
 				<label>Bin Type</label><br>

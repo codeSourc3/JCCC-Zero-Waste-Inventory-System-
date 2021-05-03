@@ -14,15 +14,15 @@
         <button class="But returnHome" onclick="location.href='/dashboard'">Home Page</button>
         <div class="formDiv">
         <form class = "formFormat">
-            <label for="removeBin">Bin ID to Remove:</label><br>
-            <input class="removeBinFormInput" type="text" name="removeBin"><br>
+            <label for="bin-id">Bin ID to Remove:</label><br>
+            <input class="removeBinFormInput" type="text" id="bin-id" name="removeBin"><br>
             <label>Reason to be Removed</label><br>
 				<input type="radio" id="lost" name="bin" value="lost">
 				<label for="lost">Lost</label>
 				<input type="radio" id="removed" name="bin" value="removed">
 				<label for="removed">Removed</label><br>
             <label for="check">Are you sure?</label><br>
-            <input type="checkbox" id="doubleCheck" name="check" value="check">
+            <input type="checkbox" id="check" name="check" value="check">
             <label for="check">Yes I am sure</label><br>
             <input class="binFormSubmit" type="submit" name="submit">
         </form>
