@@ -13,10 +13,11 @@
 			<h1 id="Title">JCCC Zero Waste Test Site</h1>
 		</header>
 		<main id="pageContainer">
-			<button class="But returnHome" onclick="location.href='index.html'">Home Page</button>
+			<button class="But returnHome" onclick="location.href='/dashboard'">Home Page</button>
 			<div class="formDiv">
 				<form class="formFormat">
 					<h5>Print Bin landing Page </h5>
+					<canvas id="canvas"></canvas>
 				</form>
 			</div>
 		</main>
@@ -26,6 +27,8 @@
 			</i>
 		</footer>
 	</div>
+	<script src="/packages/qrcode.min.js"></script>
+	<script src="/javascripts/api/qr.js"></script>
 </body>
 
 </html>

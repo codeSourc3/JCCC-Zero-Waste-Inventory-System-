@@ -12,11 +12,11 @@ router.get('/', function(req, res, next) {
 
 
 router.get('/dashboard', auth.validJWTNeeded, auth.validRefreshNeeded, (req, res) => {
-  console.groupCollapsed('Dashboard parameters check');
-  console.info('Getting dashboard has req.jwt', ('jwt' in req));
-  console.info('Getting dashboard has req.body', ('body' in req));
-  console.info('Getting JWT', req.jwt);
-  console.groupEnd();
+  // console.groupCollapsed('Dashboard parameters check');
+  // console.info('Getting dashboard has req.jwt', ('jwt' in req));
+  // console.info('Getting dashboard has req.body', ('body' in req));
+  // console.info('Getting JWT', req.jwt);
+  // console.groupEnd();
   // If user has access token use it. Otherwise refresh it and then use it.
   try {
     if((req.jwt.role === role.Admin) ||(req.body.role === role.Admin)) {

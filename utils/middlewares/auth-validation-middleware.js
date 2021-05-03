@@ -13,9 +13,9 @@ module.exports.validJWTNeeded = (req, res, next) => {
     if (req.cookies.jwt) {
         try {
             req.jwt = jwt.verify(req.cookies.jwt, secret);
-            console.group('JWT Token');
-            console.dir(req.jwt);
-            console.groupEnd();
+            // console.group('JWT Token');
+            // console.dir(req.jwt);
+            // console.groupEnd();
             next();
         } catch (err) {
             res.status(403).send({});
@@ -23,6 +23,8 @@ module.exports.validJWTNeeded = (req, res, next) => {
     } else if (req.cookies.ref) {
         console.info('No jwt token, only refresh token');
         next();
+    } else {
+        res.redirect('/login');
     }
 };
 /**
@@ -48,9 +50,9 @@ const createNewAccessToken = async (req, res) => {
         let accessToken = jwt.sign(req.body, secret, {
             expiresIn: life
         });
-        console.group('Creating new access token');
-        console.dir(accessToken);
-        console.groupEnd();
+        // console.group('Creating new access token');
+        // console.dir(accessToken);
+        // console.groupEnd();
         res.clearCookie('jwt');
         res.cookie('jwt', accessToken, {httpOnly: true, secure: true, maxAge: millis.stringToMillis(life)});
         req.jwt = req.body;
@@ -72,10 +74,10 @@ module.exports.validRefreshNeeded = async (req, res, next) => {
         if (hash === refresh_token) {
             // create new access token.
             await createNewAccessToken(req, res);
-            console.groupCollapsed('Valid Refresh Needed Middleware');
-            console.dir(req.body);
-            console.info('Showing new JWT Cookie');
-            console.groupEnd();
+            // console.groupCollapsed('Valid Refresh Needed Middleware');
+            // console.dir(req.body);
+            // console.info('Showing new JWT Cookie');
+            // console.groupEnd();
             next();
         } else {
             res.status(400).send({error: 'Invalid refresh token'});

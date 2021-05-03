@@ -12,6 +12,7 @@
 const BinType = {
     EOC: 'EOC',
     BLUE_CART: 'Blue Cart',
+    OTHER: 'Other',
     /**
      * Determines if the value matches anything in the enum.
      * 

@@ -16,13 +16,18 @@ app.use('/api/v1', apiRouter);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+// node_modules\qrcode\build\qrcode.min.js
 const index = require('./routes/home');
 
 app.use('/', index);
 app.get('/packages/html5-qrcode.min.js', (req, res) => {
     res.sendFile(__dirname + '/node_modules/html5-qrcode/minified/html5-qrcode.min.js');
 });
+
+app.get('/packages/qrcode.min.js', (req, res) => {
+    res.sendFile('qrcode.min.js', {root: __dirname + '/node_modules/qrcode/build/'});
+});
+
 
 app.use(require('./utils/global-handler.js'));
 
