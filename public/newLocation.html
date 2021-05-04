@@ -14,12 +14,18 @@
 			<button class="But returnHome" onclick="location.href='/dashboard'">Home Page</button>
 			<div class="formDiv">
             <form id="new-location-form" class = "formFormat">
-                <label for="bin-id">Bin ID:</label><br>
-                <input id="bin-id" class="binIDInput" type="number" name="BinID"><br>
+                <label for="binId">Bin ID:</label><br>
+                <input id="binId" class="binIDInput" type="number" name="binId"><br>
+
                 <label for="location">Enter Delivered Location:</label><br>
                 <input id="location" class="location" type="text" name="location"><br>
+
                 <label for="notes">Notes about Location:</label><br>
                 <input id="notes" class="notes" type="text" name="notes"><br>
+
+				<label for="isReturned">Is Returned:</label>
+				<input type="checkbox" name="isReturned" id="isReturned">
+
                 <input class="binFormSubmit" type="submit" name="submit">
             </form>
 			</div>
@@ -31,4 +37,5 @@
 			</footer>
 		</div>
     </body>
+	<script type="module" src="./javascripts/ui/change-location.js"></script>
 </html>

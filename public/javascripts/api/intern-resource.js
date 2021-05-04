@@ -1,49 +1,38 @@
 import {ResourceRepository} from './resource-repo.js';
 import {Resources} from './rest-client.js';
 import {checkPropertiesMatch} from '../types.js';
+const Role = {
+    Admin: 'Admin',
+    Intern: 'Intern'
+};
 
-
-
-class Intern {
-    constructor(internId, firstName, lastName) {
+class User {
+    constructor(internId, firstName, lastName, username, role=Role.Intern) {
         this.internId = Number(internId);
         this.firstName = String(firstName);
         this.lastName = String(lastName);
+        this.username = String(username);
+        this.role = String(role);
     }
 
+    /**
+     * 
+     * @param {Object} obj 
+     * @returns {User}
+     */
     static fromObject(obj) {
-        if (checkPropertiesMatch(obj, ...Intern.properties())) {
-            return new Intern(obj.internId, obj.firstName, obj.lastName);
-        } else {
-            throw new TypeError(`Failed to convert ${JSON.stringify(obj)}.`);
-        }
+        const {internId, firstName, lastName, username, role} = obj;
+        return new User(internId, firstName, lastName, username, role);
     }
-
-    static properties() {
-        return ['internId', 'firstName', 'lastName'];
-    }
-
-    claimTask(task) {
-        task.internId = this.internId;
+    
+    toString() {
+        return `Intern Id: ${this.internId}, Name: ${this.firstName} ${this.lastName}, Username: ${this.username}, Role: ${this.role}`;
     }
 }
 
 
 
-/**
- * 
- * @param {Object} obj 
- * @returns {Intern} an intern.
- */
-const convertToIntern = (obj) => {
-    if (!obj instanceof Intern) {
-        return obj;
-    } else {
-        return Intern.fromObject(obj);
-    }
-};
-
-class InternRepository extends ResourceRepository {
+class UserRepository extends ResourceRepository {
     constructor() {
         super(Resources.INTERNS);
     }
@@ -76,16 +65,16 @@ class InternRepository extends ResourceRepository {
     async get(internId) {
         const id = Number(internId);
         const result = await super.get(id);
-        const intern = Intern.fromObject(result);
+        const intern = User.fromObject(result);
         return intern;
     }
 
     async getAll(offset=0, limit=10) {
         const results = await super.getAll(offset, limit);
-        const interns = results.map(result => Intern.fromObject(result));
+        const interns = results.map(result => User.fromObject(result));
         return interns;
     }
 
 }
 
-export {Intern, InternRepository};
+export {User, UserRepository};

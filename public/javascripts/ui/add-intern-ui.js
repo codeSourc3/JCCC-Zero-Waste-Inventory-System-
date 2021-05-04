@@ -1,31 +1,44 @@
 import { RestClient } from '../api/rest-client.js';
+import * as fetch from '../api/fetch.js';
+import defaultHandle from './form.js';
 // Custom Javascript. Don't care if you don't like it. I'm tired.
-const keys = [
-    'first-name', 'last-name', 'user-name', 'password', 'confirm-password'
-];
-const elements = document.forms[0].elements;
-function handleSubmit(e) {
+const form = document.forms[0];
+const elements = form.elements;
+/**
+ * 
+ * @param {Event} e 
+ * @returns 
+ */
+async function handleSubmit(e) {
     e.preventDefault();
-    // compare
-    let pass = elements.namedItem(keys[3]).value;
-    let confPass = elements.namedItem(keys[4]).value;
-    let normPass = pass.normalize();
-    let normConfPass = confPass.normalize();
-    let password;
-    if (normPass === normConfPass) {
-        console.log('It works');
-        const obj = {
-            internId: 1,
-            firstName: String(elements.item(0).value),
-            lastName: String(elements.item(1).value),
-            username: String(elements.item(2).value),
-            password: String(elements.item(3).value), 
-            role: 'Intern'
-        };
-        const client = RestClient.getInstance();
-        client.post('interns', obj).catch(err => console.error(err));
+    console.info('Event type', e.type);
+    const data = new FormData(e.target);
+    const obj = {};
+    data.forEach((value, key) => {
+        obj[key] = value;
+    });
+    form.reset();
+    console.info({obj});
+    let normalizedPassword = String(obj['password']).normalize();
+    
+    let normalizedConfirmationPassword = String(obj['confirmPassword']).normalize();
+    if (normalizedPassword === normalizedConfirmationPassword) {
+        console.log('Passwords are equal');
+        // submit object
+        try {
+            await fetch.create('/interns', obj);
+        } catch (err) {
+            console.error(err);
+        }
+    } else {
+        showPasswordError();
     }
-    return false;
+    
+    
+}
+
+function showPasswordError() {
+    console.error('Passwords do not match');
 }
 
 document.forms[0].addEventListener('submit', handleSubmit);

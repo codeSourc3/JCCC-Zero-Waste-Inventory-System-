@@ -10,6 +10,19 @@ const inchesToPixels = (inches) => {
     return pixels;
 };
 
+async function checkBinExists(binId) {
+    const module = await import('../api/bin-resource.js');
+    const repo = new module.BinRepository();
+    let doesExist = false;
+    try {
+        const bin = await repo.get(binId);
+        doesExist = true;
+    } catch (err) {
+        // bin does not exist.
+    }
+    return doesExist;
+}
+
 const options = {
     errorCorrectionLevel: 'H',
 
@@ -80,7 +93,7 @@ const createDataLink = (url) => {
 const form = document.forms[0];
 
 
-(() => {
+(async () => {
     if (!sessionStorage.getItem('binId')) {
         // bin id hasn't been set.
         form.hidden = false;
@@ -91,12 +104,14 @@ const form = document.forms[0];
              */
             const input = form.elements.namedItem('bin-id');
             let value = input.valueAsNumber;
-            drawQRCode(`Bin Id=${value}`).then(createDataLink);
+            const url = await drawQRCode(`Bin Id=${value}`);
+            createDataLink(url);
             return false;
         });
     } else {
         let value = parseInt(sessionStorage.getItem('binId'));
-        drawQRCode(`Bin Id=${value}`).then(createDataLink);
+        const url = await drawQRCode(`Bin Id=${value}`);
+        createDataLink(url);
     }
 })();
 

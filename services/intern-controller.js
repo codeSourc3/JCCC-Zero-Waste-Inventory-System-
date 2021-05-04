@@ -38,9 +38,10 @@ module.exports.lookupIntern = async (req, res, next) => {
 module.exports.getAllInterns = async (req, res) => {
     const internRepo = await InternRepository.load();
         try {
-            let interns = await internRepo.getAll();
-            interns = interns.map(intern => intern.toJSON()).forEach(obj => {
-                delete obj.password;
+            let results = await internRepo.getAll();
+            const interns = results.map(intern => intern.toJSON());
+            interns.forEach(intern => {
+                delete intern.password;
             });
             res.status(200).json(interns);
         } catch (err) {
@@ -57,11 +58,12 @@ module.exports.getAllInterns = async (req, res) => {
  * GET /api/v1/interns/:internId
  */
 module.exports.getInternById = async (req, res) => {
-    const currentUser = req.user;
+    const currentUser = req.jwt;
+    console.log(currentUser);
     const id = Number(req.params.internId);
 
     // only allow admins to access other user records.
-    if (id !== currentUser.sub && currentUser.role !== role.Admin) {
+    if (id !== currentUser.internId && currentUser.role !== role.Admin) {
         return res.status(401).json({message: 'Unauthorized'});
     }
 

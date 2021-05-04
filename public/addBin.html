@@ -15,13 +15,15 @@
         <div class="formDiv">
 			<!--Enzo's TODO: Stop default form submit behavior and normalize inputs to send to server's REST API-->
 			<form id="add-bin-form" class = "formFormat">
-				<label for="bin-id">New Bin ID:</label><br>
-				<input id="bin-id" class="binFormInput" type="text" name="newBin"><br>
-				<label>Bin Type</label><br>
-				<input type="radio" id="EOC" name="bin" value="EOC">
-				<label for="EOC">EOC</label>
-				<input type="radio" id="Blue Cart" name="bin" value="Blue Cart">
-				<label for="Blue Cart">Blue Cart</label><br>
+				<label for="binId">New Bin ID:</label><br>
+				<input id="binId" class="binFormInput" type="text" name="binId"><br>
+				<fieldset>
+					<legend>Bin Type</legend>
+				<input type="radio" id="eoc" name="binType" value="EOC">
+				<label for="eoc">EOC</label>
+				<input type="radio" id="blueCart" name="binType" value="Blue Cart">
+				<label for="blueCart">Blue Cart</label><br>
+				</fieldset>
 				<input class="binFormSubmit" type="submit" name="submit">
 			</form>
         </div>
@@ -32,5 +34,6 @@
 				</i>
 				</footer>
 		</div>
+		<script type="module" src="./javascripts/ui/form.js"></script>
     </body>
 </html>

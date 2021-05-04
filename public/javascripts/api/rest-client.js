@@ -20,10 +20,7 @@ class RestClient {
     }
 
     static getInstance() {
-        if (this._instance === undefined) {
-            this._instance = new RestClient();
-        }
-        return this._instance;
+        return new RestClient();
     }
 
     /**
@@ -93,6 +90,19 @@ class RestClient {
         });
         const jsonResult = await response.json();
         console.log('PUT result: ', jsonResult);
+        return jsonResult;
+    }
+
+    async patch(resource, id, data) {
+        const relativeURL = `${this._endPoint}/${String(resource)}/${Number(id)}`;
+        const response = await fetch(relativeURL, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        const jsonResult = await response.json();
         return jsonResult;
     }
 

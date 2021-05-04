@@ -63,16 +63,17 @@ module.exports.getBins = async (req, res) => {
     const binRepo = await BinRepository.load();
     const {limit, offset} = req.query;
     try {
-        let bins;
-        if (limit && offset) {
-            bins = await binRepo.getAll(Number(offset), Number(limit));
+        let bins={};
+        if ('limit' in req.query && 'offset' in req.query) {
+            bins = await binRepo.getAll(Number(req.query.offset), Number(req.query.limit));
             //
-        } else if (offset) {
-            bins = await binRepo.getAll(Number(offset));
+        } else if ('offset' in req.query) {
+            bins = await binRepo.getAll(Number(req.query.offset));
             //
         } else {
             bins = await binRepo.getAll();
         }
+        console.log(bins);
         res.status(Codes.Success.OK).json(bins);
     } catch (err) {
         console.error(err);
@@ -125,6 +126,7 @@ module.exports.editBin = async (req, res) => {
     const {binId} = req.params;
     try {
         const requestBody = req.body;
+        console.log({requestBody});
         const index = await binRepo.update(Number(binId), requestBody);
         await binRepo.save();
         res.status(Codes.Success.OK).json({id: index});
