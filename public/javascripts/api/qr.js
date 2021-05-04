@@ -97,7 +97,7 @@ const form = document.forms[0];
     if (!sessionStorage.getItem('binId')) {
         // bin id hasn't been set.
         form.hidden = false;
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             /**
              * @type {HTMLInputElement}
@@ -114,6 +114,7 @@ const form = document.forms[0];
         createDataLink(url);
     }
 })();
+
 
 
 
