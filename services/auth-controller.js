@@ -30,6 +30,7 @@ module.exports.isPasswordAndUserMatch = async (req, res, next) => {
         console.assert(req.body.password !== undefined);
         console.groupEnd();
         let hash = crypto.createHmac('sha512', salt).update(req.body.password.normalize()).digest('base64');
+        
         if (hash === passwordFields[1]) {
             req.body = {
                 internId: user.internId,

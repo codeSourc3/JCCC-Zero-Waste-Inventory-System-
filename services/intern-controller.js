@@ -137,7 +137,13 @@ module.exports.addInternTask = async (req, res) => {
         res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err.message});
     }
 };
-
+const saltAndHashPassword = (plainTextPassword) => {
+    let normalizedPassword = plainTextPassword.normalize();
+    let salt = crypto.randomBytes(16).toString('base64');
+    let hash = crypto.createHmac('sha512', salt).update(normalizedPassword).digest('base64');
+    let cipherTextPassword = salt + '$' + hash;
+    return cipherTextPassword;
+};
 
 /**
  * 

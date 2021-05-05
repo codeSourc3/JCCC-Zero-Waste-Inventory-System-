@@ -17,14 +17,14 @@
             <div class="formDiv">
                 <form id="remove-bin-form" class="formFormat">
                     <label for="binId">Bin ID to Remove:</label><br>
-                    <input class="removeBinFormInput" type="text" id="binId" name="binId"><br>
+                    <input class="removeBinFormInput" type="text" id="binId" name="binId" required><br>
                     <label>Reason to be Removed</label><br>
                     <input type="radio" id="lost" name="binStatus" value="Lost">
                     <label for="lost">Lost</label>
                     <input type="radio" id="removed" name="binStatus" value="Removed">
                     <label for="removed">Removed</label><br>
                     <label for="check">Are you sure?</label><br>
-                    <input type="checkbox" id="check" name="check" value="check">
+                    <input type="checkbox" id="check" name="check" value="check" required>
                     <label for="check">Yes I am sure</label><br>
                     <input class="binFormSubmit" type="submit" name="submit">
                 </form>
