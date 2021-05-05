@@ -26,4 +26,8 @@ export const addIntern = async (intern) => {
     return response;
 };
 
-
+export const removeIntern = async (internId) => {
+    let id = parseInt(internId);
+    const response = await rest.remove('/interns/' + id);
+    return response;
+};

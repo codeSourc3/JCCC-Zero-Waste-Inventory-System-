@@ -9,6 +9,13 @@ function objectToQueryString(obj) {
     return Object.keys(obj).map(key => key + '=' + obj[key]).join('&');
 }
 
+/**
+ * 
+ * @param {string} url 
+ * @param {Headers} params 
+ * @param {string} method 
+ * @returns {Promise<any>}
+ */
 async function request(url, params, method='GET') {
     const options = {
         method,
@@ -29,27 +36,56 @@ async function request(url, params, method='GET') {
 
     // Ian - .catch or .then if error 401, then resend - from Collin
     const response = await fetch(apiHost + url, options);
-    console.dir(response);
     const result = await response.json();
     return result;
 }
 
+/**
+ * 
+ * @param {string} url 
+ * @param {object} params 
+ * @returns {Promise<any>}
+ */
 function get(url, params) {
     return request(url, params);
 }
 
+/**
+ * 
+ * @param {string} url 
+ * @param {object} params 
+ * @returns {Promise<any>}
+ */
 function create(url, params) {
     return request(url, params, 'POST');
 }
 
+/**
+ * 
+ * @param {string} url 
+ * @param {object} params 
+ * @returns {Promise<any>}
+ */
 function replace(url, params) {
     return request(url, params, 'PUT');
 }
 
+/**
+ * 
+ * @param {string} url 
+ * @param {object} params 
+ * @returns {Promise<any>}
+ */
 function update(url, params) {
     return request(url, params, 'PATCH');
 }
 
+/**
+ * 
+ * @param {string} url 
+ * @param {object} params 
+ * @returns {Promise<any>}
+ */
 function remove(url, params) {
     return request(url, params, 'DELETE');
 }

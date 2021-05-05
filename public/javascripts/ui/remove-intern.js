@@ -4,5 +4,6 @@ import {bindToForm, formToObj} from './form.js';
 bindToForm('remove-intern-form', async (e) => {
     e.preventDefault();
     const obj = formToObj(e.target);
-    console.log({obj});
+    const result = await intern.removeIntern(obj.internId);
+    console.log({result});
 });
