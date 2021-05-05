@@ -156,7 +156,7 @@ module.exports.ensureUniqueUsername = async (req, res, next) => {
     const repo = await InternRepository.load();
 
     if (req.body.username) {
-        let username = username;
+        let username = req.body.username;
         const user = await repo.findByUsername(username);
         if (!user) {
             // no user found. Good.
