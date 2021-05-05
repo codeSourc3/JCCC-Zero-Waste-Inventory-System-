@@ -17,6 +17,12 @@ nav ul {
 	text-decoration: none;
 }
 
+fieldset {
+  margin-left: 20%;
+  margin-right: 20%;
+  margin-top: 20px;
+}
+
 .buttons {
 	text-align:center;
 	position: flex;
@@ -65,6 +71,22 @@ nav ul {
     margin-top: 1em;
 }
 input[type=text], select, textarea {
+  width: 50%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+input[type=password], select, textarea {
+  width: 50%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+input[type=number], select, textarea {
   width: 50%;
   padding: 12px;
   border: 1px solid #ccc;
@@ -154,8 +176,19 @@ input[type=submit]:hover {
 input[type=text], select, textarea {
   width: 25%;
 }
+input[type=password], select, textarea {
+  width: 25%;
+}
+input[type=number], select, textarea {
+  width: 25%;
+}
 label{
 	font-size: 22px;
+}
+fieldset {
+  margin-left: 30%;
+  margin-right: 30%;
+  margin-top: 20px;
 }
 #wrapper{ background-color: #545444;
 			margin-left: auto;
