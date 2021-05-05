@@ -29,7 +29,7 @@ router.get('/', permissions.authorizedFor(role.Admin), controller.getAllInterns)
 router.post('/:internId/tasks', permissions.authorizedFor(), permissions.onlySameUserOrAdmin, controller.addInternTask);
 
 // Creates a new intern
-router.post('/', permissions.authorizedFor(role.Admin), controller.addIntern);
+router.post('/', permissions.authorizedFor(role.Admin), controller.ensureUniqueUsername, controller.addIntern);
 
 // Updates an interns' task.
 router.put('/:internId/tasks/:taskId', permissions.authorizedFor(), permissions.onlySameUserOrAdmin, controller.updateInternTask);
@@ -45,7 +45,7 @@ router.patch('/:internId', permissions.authorizedFor(), permissions.onlySameUser
 router.delete('/:internId/tasks/:taskId', permissions.authorizedFor(), permissions.onlySameUserOrAdmin, controller.deleteInternTask);
 
 // Removes an intern.
-router.delete('/:internId', permissions.authorizedFor(role.Admin), permissions.onlySameUserOrAdmin, controller.deleteIntern);
+router.delete('/:internId', permissions.authorizedFor(role.Admin), permissions.sameUserCantDoThisAction, controller.deleteIntern);
 
 
 

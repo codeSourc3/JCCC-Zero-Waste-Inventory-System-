@@ -146,6 +146,31 @@ const saltAndHashPassword = (plainTextPassword) => {
 };
 
 /**
+ * Prevents duplicate users from being added.
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ * @param {import('express').NextFunction} next 
+ */
+module.exports.ensureUniqueUsername = async (req, res, next) => {
+    // Prevent duplicate usernames. Not sure what to do when we find one though.
+    const repo = await InternRepository.load();
+
+    if (req.body.username) {
+        let username = username;
+        const user = await repo.findByUsername(username);
+        if (!user) {
+            // no user found. Good.
+            next();
+        } else {
+            // Prevent user from being added.
+            res.status(Codes.ClientError.NOT_ACCEPTABLE).json({success: false, message: 'Username taken.'});
+        }
+    } else {
+        res.status(Codes.ClientError.BAD_REQUEST).json({success: false, message: 'Missing username'});
+    }
+};
+
+/**
  * 
  * @param {import('express').Request} req 
  * @param {import('express').Response} res 

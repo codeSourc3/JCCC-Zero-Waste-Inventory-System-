@@ -46,7 +46,7 @@ class InternRepository {
         return interns;
     }
 
-    async findByUsernameAndPassword(username) {
+    async findByUsername(username) {
         const results = await this._sheet.getRows();
         const user = results.find(u => u.username === username);
         /**@type {Admin | Intern} */
