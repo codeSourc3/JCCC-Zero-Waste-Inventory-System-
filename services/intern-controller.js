@@ -137,7 +137,13 @@ module.exports.addInternTask = async (req, res) => {
         res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err.message});
     }
 };
-
+const saltAndHashPassword = (plainTextPassword) => {
+    let normalizedPassword = plainTextPassword.normalize();
+    let salt = crypto.randomBytes(16).toString('base64');
+    let hash = crypto.createHmac('sha512', salt).update(normalizedPassword).digest('base64');
+    let cipherTextPassword = salt + '$' + hash;
+    return cipherTextPassword;
+};
 
 /**
  * 
@@ -149,11 +155,11 @@ module.exports.addInternTask = async (req, res) => {
 module.exports.addIntern = async (req, res) => {
     const internRepo = await InternRepository.load();
     try {
-        /*
+        
         let salt = crypto.randomBytes(16).toString('base64');
-        let hash = crypto.createHmac('sha512', salt).update(req.body.password).digest('base64');
+        let hash = crypto.createHmac('sha512', salt).update(req.body.password.normalize()).digest('base64');
         req.body.password = salt + '$' + hash;
-        */
+        
         // try to add an intern.
         const requestBody = req.body;
         const intern = User.fromObject(requestBody);

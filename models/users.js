@@ -11,12 +11,12 @@ class User {
      * @param {string} username 
      * @param {string} password 
      */
-    constructor(internId, firstName, lastName, username='', password='', role=Role.Intern) {
+    constructor(internId, firstName, lastName, username, password, role=Role.Intern) {
         this._internId = Number(internId);
         this._firstName = String(firstName);
         this._lastName = String(lastName);
         this._username = String(username).normalize();
-        this._password = String(password).normalize();
+        this._password = String(password); // don't normalize a hashed password.
         this._role = role;
     }
 
