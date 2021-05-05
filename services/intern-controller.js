@@ -149,11 +149,11 @@ module.exports.addInternTask = async (req, res) => {
 module.exports.addIntern = async (req, res) => {
     const internRepo = await InternRepository.load();
     try {
-        /*
+        
         let salt = crypto.randomBytes(16).toString('base64');
-        let hash = crypto.createHmac('sha512', salt).update(req.body.password).digest('base64');
+        let hash = crypto.createHmac('sha512', salt).update(req.body.password.normalize()).digest('base64');
         req.body.password = salt + '$' + hash;
-        */
+        
         // try to add an intern.
         const requestBody = req.body;
         const intern = User.fromObject(requestBody);
@@ -206,7 +206,7 @@ module.exports.updateIntern = async (req, res) => {
         
         if (req.body.password) {
             let salt = crypto.randomBytes(16).toString('base64');
-            let hash = crypto.createHmac('sha512', salt).update(req.body.password).digest('base64');
+            let hash = crypto.createHmac('sha512', salt).update(req.body.password.normalize()).digest('base64');
             req.body.password = salt + '$' + hash;
         }
         
