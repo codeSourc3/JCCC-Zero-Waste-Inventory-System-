@@ -3,8 +3,8 @@ const {secret, life} = require('../../config/login-secrets.json').accessToken;
 const crypto = require('crypto');
 const InternRepository = require('../../persistence/intern-repository.js');
 const millis = require('../timeToMillis.js');
-const utils = require('util');
-const logger = utils.debuglog('Auth Validation');
+const util = require('util');
+const logger = util.debuglog('auth-validation');
 /**
  * Adds jwt to the request object and continues through the chain.
  * @param {import('express').Request} req 
@@ -20,7 +20,7 @@ module.exports.validJWTNeeded = (req, res, next) => {
             res.status(403).send({});
         }
     } else if (req.cookies.ref) {
-        console.info('No jwt token, only refresh token');
+        logger('No jwt token, only refresh token');
         next();
     } else {
         res.redirect('/login');
