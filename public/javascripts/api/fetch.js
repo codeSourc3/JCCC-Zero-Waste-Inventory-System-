@@ -27,6 +27,7 @@ async function request(url, params, method='GET') {
         }
     }
 
+    // Ian - .catch or .then if error 401, then resend - from Collin
     const response = await fetch(apiHost + url, options);
     console.dir(response);
     const result = await response.json();
