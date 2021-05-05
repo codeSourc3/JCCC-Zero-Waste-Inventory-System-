@@ -3,6 +3,8 @@ const {secret, life} = require('../../config/login-secrets.json').accessToken;
 const crypto = require('crypto');
 const InternRepository = require('../../persistence/intern-repository.js');
 const millis = require('../timeToMillis.js');
+const utils = require('util');
+const logger = utils.debuglog('Auth Validation');
 /**
  * Adds jwt to the request object and continues through the chain.
  * @param {import('express').Request} req 
@@ -13,9 +15,6 @@ module.exports.validJWTNeeded = (req, res, next) => {
     if (req.cookies.jwt) {
         try {
             req.jwt = jwt.verify(req.cookies.jwt, secret);
-            // console.group('JWT Token');
-            // console.dir(req.jwt);
-            // console.groupEnd();
             next();
         } catch (err) {
             res.status(403).send({});
@@ -39,7 +38,7 @@ const createNewAccessToken = async (req, res) => {
     const user = await internRepo.getById(userId);
     if (user) {
         // user exists. append fields to body.
-         req.body = {
+         const body = {
             internId: user.internId,
             firstName: user.firstName,
             lastName: user.lastName,
@@ -47,15 +46,12 @@ const createNewAccessToken = async (req, res) => {
             role: user.role,
             refreshKey: req.cookies.refK
         };
-        let accessToken = jwt.sign(req.body, secret, {
+        let accessToken = jwt.sign(body, secret, {
             expiresIn: life
         });
-        // console.group('Creating new access token');
-        // console.dir(accessToken);
-        // console.groupEnd();
         res.clearCookie('jwt');
         res.cookie('jwt', accessToken, {httpOnly: true, secure: true, maxAge: millis.stringToMillis(life)});
-        req.jwt = req.body;
+        req.jwt = body;
     }
 }
 
@@ -74,10 +70,7 @@ module.exports.validRefreshNeeded = async (req, res, next) => {
         if (hash === refresh_token) {
             // create new access token.
             await createNewAccessToken(req, res);
-            // console.groupCollapsed('Valid Refresh Needed Middleware');
-            // console.dir(req.body);
-            // console.info('Showing new JWT Cookie');
-            // console.groupEnd();
+            logger('Password matches,', req.jwt);
             next();
         } else {
             res.status(400).send({error: 'Invalid refresh token'});
@@ -86,6 +79,7 @@ module.exports.validRefreshNeeded = async (req, res, next) => {
         next();
     } else {
         // both the access token and refresh token expired. 
+        logger('Both refresh and access tokens expired');
         res.redirect('/login');
     }
 };
@@ -96,13 +90,16 @@ module.exports.validRefreshNeeded = async (req, res, next) => {
  * @param {import('express').Response} res 
  * @param {import('express').NextFunction} next 
  */
-module.exports.redirectToRefresh = (req, res, next) => {
-    if (!req.cookies.jwt) {
-        // JWT token expired. Attempt to refresh
+module.exports.autoLogin = (req, res, next) => {
+    if (req.cookies.ref) {
+        // User can still be logged in. Direct them to /dashboard.
+        // /dashboard will refresh the tokens automatically.
+        res.redirect('/dashboard');
     } else {
+        // User not logged in.
         next();
     }
-}
+};
 
 /**
  * 

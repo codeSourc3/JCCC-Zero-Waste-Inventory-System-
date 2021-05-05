@@ -32,7 +32,7 @@ router.get('/dashboard', auth.validJWTNeeded, auth.validRefreshNeeded, (req, res
   }
 });
 
-router.get('/login', (req, res) => {
+router.get('/login',auth.autoLogin, (req, res) => {
   res.sendFile('login.html', {root: './public/'});
 });
 
