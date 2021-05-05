@@ -19,7 +19,7 @@ const millis = require('../utils/timeToMillis.js');
  */
 module.exports.isPasswordAndUserMatch = async (req, res, next) => {
     const repo = await InternRepository.load();
-    const user = await repo.findByUsernameAndPassword(req.body.username);
+    const user = await repo.findByUsername(req.body.username);
     if (!user) {
         res.status(404).send({message: 'No user found'});
     } else {
