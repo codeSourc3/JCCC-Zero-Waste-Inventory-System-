@@ -8,13 +8,14 @@
     <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
+    <div id="wrapper">
     <header>
         <h1>Intern Dashboard</h1>
         <nav>
             <ul>
                 <li>
                     <form action="/api/v1/auth/logout" method="post">
-                        <button type="submit">Logout</button>
+                        <button id="logout" type="submit">Logout</button>
                     </form>
                 </li>
             </ul>
@@ -27,7 +28,10 @@
         <button id="js-scan-qrcode" class="But QRCode">Scan QR Code</button>
         <button id="js-bin-info" class="But binInformation">Get Bin Information</button>
     </main>
-    <footer class="pageFooter"><small><i>JCCC ZERO WASTE<br><a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a></i></small></footer>
+    <footer class="pageFooter">
+        <i>JCCC ZERO WASTE<br><a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a></i>
+    </footer>
+    </div>
     <script type="module" src="./javascripts/ui/dashboard-ui.js"></script>
 </body>
 </html>

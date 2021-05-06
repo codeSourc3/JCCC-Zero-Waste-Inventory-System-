@@ -7,19 +7,20 @@
     <link rel="stylesheet" href="/stylesheets/style.css">
     <title>Admin Dashboard - Zero Waste</title>
 </head>
-<body id="wrapper">
-    <header>
+<body>
+    <div id="wrapper">
+		<header>
         <h1 id="Title">Admin Dashboard</h1>
-        <nav>
-            <ul>
-                <li>
-                    <form action="/api/v1/auth/logout" method="post">
-                        <button class="But returnHome" type="submit">Logout</button>
-                    </form>
-                </li>
-            </ul>
-        </nav>
-    </header>
+            <nav>
+                <ul>
+                    <li>
+                        <form action="/api/v1/auth/logout" method="post">
+                            <button id="logout" class="But returnHome" type="submit">Logout</button>
+                        </form>
+                    </li>
+                </ul>
+            </nav>
+        </header>
     <main id="pageContainer">
         <button class="But" id="js-add-bin">Add Bin From Storage</button>
         <button class="But" id="js-remove-bin">Remove Bin From Storage</button>
@@ -40,7 +41,12 @@
             <div id="bin-panel"></div>
         </section>
     </main>
-    <footer id="pageFooter"><small><i>JCCC ZERO WASTE<br><a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a></i></small></footer>
+    <footer class="pageFooter">
+        <i>JCCC ZERO WASTE<br>
+        <a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a>
+        </i>
+        </footer>
+    </div>
     <script type="module" src="./javascripts/ui/dashboard-ui.js"></script>
 </body>
 </html>
