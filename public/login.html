@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-US">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
     <title>Login - Zero Waste</title>
 </head>
+
 <body>
     <div id="wrapper">
         <header>
@@ -14,25 +16,63 @@
         </header>
         <main id="pageContainer">
             <a id="aBut" href="./index.html">Back Home</a>
-            <form id="js-login-user" action="/api/v1/auth/login" method="POST">
+            <form id="js-login-user">
+                <p id="errorMsg" hidden></p>
                 <h1>Login</h1>
                 <label for="username">Username:</label>
                 <br />
                 <input type="text" name="username" id="username" autocomplete="username" required>
-                <br/>
+                <br />
                 <label for="password">Password:</label>
                 <br />
                 <input type="password" name="password" id="password" autocomplete="current-password" required>
-                <br/><br/>
+                <br /><br />
                 <input type="submit" value="Submit">
             </form>
         </main>
         <footer class="pageFooter">
-			<i>JCCC ZERO WASTE<br>
-				<a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a>
-			</i>
-		</footer>
+            <i>JCCC ZERO WASTE<br>
+                <a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a>
+            </i>
+        </footer>
     </div>
-    
+    <script type="module">
+        const errorMsg = document.getElementById('errorMsg');
+        async function handleLogin(event) {
+            event.preventDefault();
+            /**@type {HTMLInputElement} */
+            const username = document.getElementById('username');
+            /** @type {HTMLInputElement} */
+            const password = document.getElementById('password');
+            let userName = username.value;
+            let loginPassword = password.value;
+            try {
+                const response = await fetch('/api/v1/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username: userName, password: loginPassword })
+                });
+                if (response.ok && response.redirected) {
+                    location.href = response.url;
+                } else {
+                    const result = await response.json();
+                    let {message} = result;
+                    displayErrorMessage(message);
+                }
+            } catch (err) {
+                // User not found.
+            }
+        }
+
+        function displayErrorMessage(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.hidden = false;
+        }
+
+        document.forms[0].addEventListener('submit', handleLogin);
+    </script>
 </body>
+
 </html>
