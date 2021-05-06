@@ -101,6 +101,31 @@ fieldset {
 	width: 95%;
 	max-width: 450px;
 }
+#back{
+	display:block;
+	font-size: 20px;
+	border:0.1em solid #000000;
+	margin:auto;
+	border-radius:0.12em;
+	box-sizing: border-box;
+	text-decoration:none;
+	font-family:'Roboto',sans-serif;
+	font-weight:600;
+	color:#e6e9e6;
+	text-shadow: 2px 2px 2px #000000;
+	background-color:#74ad2f;
+	transition: all 0.2s;
+	cursor: pointer;
+	width: 95%;
+	max-width: 450px;
+}
+#js-bin-info{
+	list-style: none;
+	display: inline-block;
+	text-decoration: none;
+	font-family:'Roboto',sans-serif;
+	font-size: 20px;
+}
 
 .pageFooter{
 	position: flex;
