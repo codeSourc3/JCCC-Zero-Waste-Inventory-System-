@@ -49,5 +49,5 @@ function onScanFailure(error) {
 /**
  * @type {import('html5-qrcode')}
  */
-const qrScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+const qrScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 300 });
 qrScanner.render(onScanSuccess, onScanFailure);
