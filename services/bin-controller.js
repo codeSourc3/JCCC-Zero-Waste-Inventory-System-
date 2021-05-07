@@ -138,13 +138,14 @@ module.exports.editBin = async (req, res) => {
 
 /**
  * 
- * @param {Express.Request} req 
  * @param {import('express').Response} res 
+ * @param {import('express').Request} req
  */
 module.exports.deleteBin = async (req, res) => {
     const binRepo = await BinRepository.load();
     const {binId} = req.params;
     try {
+        //const body = req.body;
         const didSucceed = await binRepo.delete(Number(binId));
         await binRepo.save();
         res.status(Codes.Success.OK).json({succeeded: didSucceed});
