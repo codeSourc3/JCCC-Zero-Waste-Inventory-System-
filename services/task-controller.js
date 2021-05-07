@@ -41,7 +41,7 @@ module.exports.getUnassignedTasks = async (req, res) => {
         } else {
             unassignedTasks = await taskRepo.getUnassignedTasks(offsetParam);
         }
-        res.status(Codes.Success.OK).json(unassignedTasks);
+        res.status(Codes.Success.OK).json({success: true, data: unassignedTasks});
     } catch (err) {
         res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({success: false, message: err.message});
     }
@@ -59,7 +59,7 @@ module.exports.getTasks = async (req, res) => {
     try {
         /**@type {(Task|BinTask)[]} */
         const tasks = await taskRepo.getAll(Number(offset), Number(limit));
-        res.status(Codes.Success.OK).json(tasks);
+        res.status(Codes.Success.OK).json({success: true, data: tasks});
     } catch (error) {
         res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({success: false, message: error.message});
     }
@@ -76,7 +76,7 @@ module.exports.getTask = async (req, res) => {
     const taskId = Number(req.params.taskId);
     try {
         const task = await taskRepo.getById(taskId);
-        res.status(Codes.Success.OK).json(task);
+        res.status(Codes.Success.OK).json({success: true, data: task});
     } catch (error) {
         console.error('Error in getTask: ', error);
         res.status(Codes.ClientError.NOT_FOUND).json({success: false, message: error.message});
