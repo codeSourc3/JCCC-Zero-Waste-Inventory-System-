@@ -37,7 +37,7 @@ class Bin {
         this.binId = Number(id);
         this.binType = String(type);
         this.lastBinWeight = weight;
-        this.isReturned = new Boolean(isReturned);
+        this.isReturned = isReturned;
         this.location = String(location);
         this.notes = String(notes);
         this.previousWeights = [];
@@ -45,7 +45,8 @@ class Bin {
 
     static fromObject(obj) {
         if (checkPropertiesMatch(obj, ...Bin.properties())) {
-            return new Bin(obj.binId, obj.binType, obj.lastBinWeight, obj.isReturned, obj.location, obj.notes);
+            let isReturned = obj.isReturned.toLowerCase() === 'true';
+            return new Bin(obj.binId, obj.binType, obj.lastBinWeight, isReturned, obj.location, obj.notes);
         } else {
             throw new TypeError(`Could not convert ${JSON.stringify(obj)} to Bin.`);
         }

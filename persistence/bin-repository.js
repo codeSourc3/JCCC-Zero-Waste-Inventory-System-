@@ -102,7 +102,7 @@ class BinRepository {
         const ids = (await this._sheet.getRows()).map(row => Number(row.binId));
         let nextId = Math.max(...ids) + 1;
 
-        if (intern instanceof Bin) {
+        if (bin instanceof Bin) {
             bin.binId = nextId;
             let addedRow = await this._sheet.addRow(bin);
             this._unsavedRows.push(addedRow);

@@ -1,7 +1,7 @@
 import * as rest from '../api/fetch.js';
 
-export const addBin = async ({binId, binType='EOC'}) => {
-    const id = await rest.create('/bins', {binId, binType});
+export const addBin = async (bin) => {
+    const id = await rest.create('/bins', bin);
     return id;
 };
 

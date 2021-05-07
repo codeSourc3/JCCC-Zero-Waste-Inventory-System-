@@ -91,7 +91,9 @@ class Bin {
             lastBinWeight = Number(lastBinWeight);
         }
         if (typeof(isReturned) === 'string') {
-            isReturned = new Boolean(isReturned.toLowerCase());
+            console.info('Before conversion',isReturned);
+            isReturned = isReturned.toLowerCase() === 'true';
+            console.info('After conversion',isReturned);
         }
         return new Bin(binId, binType, lastBinWeight, isReturned, location, notes);
     }
