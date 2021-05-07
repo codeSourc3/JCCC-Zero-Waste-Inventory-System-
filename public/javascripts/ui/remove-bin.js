@@ -4,5 +4,6 @@ import {bindToForm, formToObj} from './form.js';
 bindToForm('remove-bin-form', async (e) => {
     e.preventDefault();
     const obj = formToObj(e.target);
-    console.log({obj});
+    const result = await bin.removeBin(obj.binId);
+    console.log({result});
 });
