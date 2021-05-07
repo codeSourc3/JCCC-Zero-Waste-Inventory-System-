@@ -48,7 +48,7 @@ module.exports.authorizedFor = (roles = []) => {
     }
     return (req, res, next) => {
         let user = req.jwt;
-        console.log('User', user);
+        debug('User', user);
         if (!user || (roles.length && !roles.includes(user.role))) {
             res.status(401).json({error: 'Unauthorizd'});
         }
