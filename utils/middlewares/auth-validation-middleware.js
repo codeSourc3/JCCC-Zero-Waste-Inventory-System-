@@ -17,7 +17,7 @@ module.exports.validJWTNeeded = (req, res, next) => {
             req.jwt = jwt.verify(req.cookies.jwt, secret);
             next();
         } catch (err) {
-            res.status(403).send({});
+            res.status(403).send({success: false, message: 'Invalid access token.'});
         }
     } else if (req.cookies.ref) {
         logger('No jwt token, only refresh token');
@@ -73,7 +73,7 @@ module.exports.validRefreshNeeded = async (req, res, next) => {
             logger('Password matches,', req.jwt);
             next();
         } else {
-            res.status(400).send({error: 'Invalid refresh token'});
+            res.status(400).send({success: false, message: 'Invalid refresh token'});
         }
     } else if (req.cookies.jwt) {
         next();
@@ -111,6 +111,6 @@ module.exports.verifyRefreshBodyField = (req, res, next) => {
     if (req.cookies && req.cookies.ref) {
         next();
     } else {
-        res.status(400).send({error: 'Need to pass refresh_token field.'});
+        res.status(400).send({success: false, message: 'Need to pass refresh_token field.'});
     }
 };

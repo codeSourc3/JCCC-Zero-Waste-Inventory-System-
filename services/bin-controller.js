@@ -17,7 +17,7 @@ module.exports.lookupBin = async (req, res, next) => {
         const bin = await repo.getById(binId);
         next();
     } catch (err) {
-        res.status(Codes.ClientError.NOT_FOUND).json({error: 'Bin was not found'});
+        res.status(Codes.ClientError.NOT_FOUND).json({success: false, message: 'Bin was not found'});
     }
 };
 
@@ -36,7 +36,7 @@ module.exports.getOutBins = async (req, res) => {
         res.status(Codes.Success.OK).json(bins);
     } catch (error) {
         console.error('Error getting out bins %s', error);
-        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: error});
+        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({success: false, message: error});
     }
 };
 
@@ -48,7 +48,7 @@ module.exports.getWeightHistory = async (req, res) => {
         const weightHistory = await weightRepo.getByBinId(Number(binId));
         res.status(Codes.Success.OK).json(weightHistory);
     } catch (err) {
-        res.status(Codes.ClientError.BAD_REQUEST).json({error: err});
+        res.status(Codes.ClientError.BAD_REQUEST).json({success: false, message: err});
     }
 };
 
@@ -77,7 +77,7 @@ module.exports.getBins = async (req, res) => {
         res.status(Codes.Success.OK).json(bins);
     } catch (err) {
         console.error(err);
-        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err});
+        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({success: false, message: err.message});
     }
 };
 
@@ -94,7 +94,7 @@ module.exports.addBin = async (req, res) => {
         res.status(Codes.Success.OK).json({id: index});
     } catch (err) {
         console.error(err);
-        res.status(Codes.ClientError.BAD_REQUEST).json({error: err.message});
+        res.status(Codes.ClientError.BAD_REQUEST).json({success: false, message: err.message});
     }
 };
 
@@ -112,7 +112,7 @@ module.exports.getBin = async (req, res) => {
         res.status(Codes.Success.OK).json(bin);
     } catch (err) {
         console.error(err);
-        res.status(Codes.ClientError.NOT_FOUND).json({error: err});
+        res.status(Codes.ClientError.NOT_FOUND).json({success: false, message: err.message});
     }
 };
 
@@ -132,7 +132,7 @@ module.exports.editBin = async (req, res) => {
         res.status(Codes.Success.OK).json({id: index});
     } catch (err) {
         console.error('Error with edit bin: ' + err);
-        res.status(Codes.ClientError.BAD_REQUEST).json({error: err.message});
+        res.status(Codes.ClientError.BAD_REQUEST).json({success: true, message: err.message});
     }
 };
 
@@ -146,12 +146,12 @@ module.exports.deleteBin = async (req, res) => {
     const {binId} = req.params;
     try {
         //const body = req.body;
-        const didSucceed = await binRepo.delete(Number(binId));
+        const didSucceed = await binRepo.delete(Number(binId), body.isLost);
         await binRepo.save();
         res.status(Codes.Success.OK).json({succeeded: didSucceed});
     } catch (err) {
         console.error('Error with edit bin: ' + err);
-        res.status(Codes.ClientError.BAD_REQUEST).json({error: err.message});
+        res.status(Codes.ClientError.BAD_REQUEST).json({success: true, message: err.message});
     }
 };
 

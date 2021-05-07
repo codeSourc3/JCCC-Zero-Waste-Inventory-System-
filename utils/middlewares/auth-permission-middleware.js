@@ -14,7 +14,7 @@ module.exports.sameUserCantDoThisAction = (req, res, next) => {
     if (req.params.internId !== userId) {
        next();
     } else {
-        res.status(400).send();
+        res.status(400).send({success: false, message: 'Can not remove yourself.'});
     }
 };
 
@@ -33,7 +33,7 @@ module.exports.onlySameUserOrAdmin = (req, res, next) => {
         if (userRole === Role.Admin) {
             next();
         } else {
-            res.status(403).send({error: ''});
+            res.status(403).send({success: false, message: 'Only the same user or Admin can do this action.'});
         }
     }
 };
@@ -50,7 +50,7 @@ module.exports.authorizedFor = (roles = []) => {
         let user = req.jwt;
         debug('User', user);
         if (!user || (roles.length && !roles.includes(user.role))) {
-            res.status(401).json({error: 'Unauthorizd'});
+            res.status(401).json({success: false, message: 'Unauthorizd'});
         }
         next();
     };

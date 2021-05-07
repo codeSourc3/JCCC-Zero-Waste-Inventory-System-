@@ -21,7 +21,7 @@ module.exports.isPasswordAndUserMatch = async (req, res, next) => {
     const repo = await InternRepository.load();
     const user = await repo.findByUsername(req.body.username);
     if (!user) {
-        res.status(404).send({message: 'No user found'});
+        res.status(404).send({success: false, message: 'No user found'});
     } else {
         let passwordFields = user.password.split('$');
         let salt = passwordFields[0];
@@ -42,7 +42,7 @@ module.exports.isPasswordAndUserMatch = async (req, res, next) => {
             next();
         } else {
             console.error('Password Or Username Invalid - ', user.toJSON());
-            res.status(400).send({errors: 'Invalid e-mail or password'});
+            res.status(400).send({success: false, message: 'Invalid e-mail or password'});
         }
     }
 };
@@ -155,7 +155,7 @@ module.exports.login = async (req, res, next) => {
         res.redirect('/dashboard');
     } catch(err) {
         console.error('Login Error: ', err);
-        res.status(500).send({message: err.message});
+        res.status(500).send({success: false, message: err.message});
     } 
 };
 
@@ -187,6 +187,6 @@ module.exports.refreshToken = (req, res) => {
         });
         res.status(201).clearCookie('jwt', {httpOnly: true, secure: true}).cookie('jwt', token, {httpOnly: true, secure: true, maxAge: millis.stringToMillis(config.accessToken.life)});
     } catch (err) {
-        res.status(500).send({error: err.message});
+        res.status(500).send({success: false, message: err.message});
     }
 };
