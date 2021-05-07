@@ -20,7 +20,7 @@ export const updateBin = async (id, {location, notes, isReturned, binType, lastB
     return result;
 };
 
-export const removeBin = async (id) => {
-    const result = await rest.remove('/bins/' + Number(id));
+export const removeBin = async (id, isLost=false) => {
+    const result = await rest.remove('/bins/' + Number(id), {isLost: isLost});
     return result;
 };

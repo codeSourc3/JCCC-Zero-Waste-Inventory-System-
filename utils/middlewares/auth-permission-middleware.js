@@ -1,7 +1,8 @@
 const Role = require('../../models/role.js');
 const jwt = require('jsonwebtoken');
 const {secret} = require('../../config/login-secrets.json').accessToken;
-
+const util = require('util');
+const debug = util.debuglog('auth-perm');
 /**
  * 
  * @param {import('express').Request} req 
@@ -47,6 +48,7 @@ module.exports.authorizedFor = (roles = []) => {
     }
     return (req, res, next) => {
         let user = req.jwt;
+        console.log('User', user);
         if (!user || (roles.length && !roles.includes(user.role))) {
             res.status(401).json({error: 'Unauthorizd'});
         }

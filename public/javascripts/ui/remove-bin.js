@@ -4,6 +4,7 @@ import {bindToForm, formToObj} from './form.js';
 bindToForm('remove-bin-form', async (e) => {
     e.preventDefault();
     const obj = formToObj(e.target);
-    const result = await bin.removeBin(obj.binId);
+    let binIsLost = obj.binStatus === 'Lost';
+    const result = await bin.removeBin(obj.binId, binIsLost);
     console.log({result});
 });
