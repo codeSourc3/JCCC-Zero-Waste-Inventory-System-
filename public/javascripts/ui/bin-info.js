@@ -1,11 +1,13 @@
 'use strict';
 async function findBin(id) {
-    const module = await import('../api/bin-resource.js');
-    const repo = new module.BinRepository();
+    const module = await import('./bin.js');
     try {
-        const bin = await repo.get(id);
-        console.info(bin.toJSON());
-        return bin;
+        const {success, data, message} = await module.findBin(id);
+        if (success) {
+            return data;
+        } else {
+            throw new Error(message);
+        }
     } catch (err) {
         console.error(err);
     }
@@ -36,11 +38,14 @@ async function getOutBins() {
 
 async function getWeights(binId) {
     const id = parseInt(binId);
-    const module = await import('../api/bin-resource.js');
-    const repo = new module.BinRepository();
+    const module = await import('./bin.js');
     try {
-        const weights = await repo.getWeights(id);
-        return weights;
+        const {success, data, message} = await module.getPreviousWeights(id);
+        if (success) {
+            return data;
+        } else {
+            throw new Error(message);
+        }
     } catch (err) {
         console.error(err);
     }
