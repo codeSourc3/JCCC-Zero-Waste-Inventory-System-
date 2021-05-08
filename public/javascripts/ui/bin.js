@@ -5,6 +5,12 @@ export const addBin = async (bin) => {
     return id;
 };
 
+export async function findBin(id) {
+    let binId = parseInt(id);
+    const bin = await rest.get(`/bins/${binId}`);
+    return bin;
+};
+
 export const getOutBins = async () => {
     const bins = await rest.get('/bins/out');
     return bins;
@@ -28,7 +34,6 @@ export const updateBin = async (id, {location, notes, isReturned, binType, lastB
     isPresent(isReturned, value => obj.isReturned = value);
     isPresent(binType, value => obj.isReturned = value);
     isPresent(lastBinWeight, value => obj.lastBinWeight = value);
-    const result = await rest.update('/bins/' + Number(id), obj);
     return result;
 };
 
