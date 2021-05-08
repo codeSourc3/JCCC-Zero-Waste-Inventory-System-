@@ -1,44 +1,54 @@
-import { RestClient } from '../api/rest-client.js';
 import * as fetch from '../api/fetch.js';
-import defaultHandle from './form.js';
+import {formToObj, bindToForm} from './form.js';
 // Custom Javascript. Don't care if you don't like it. I'm tired.
-const form = document.forms[0];
-const elements = form.elements;
-/**
- * 
- * @param {Event} e 
- * @returns 
- */
-async function handleSubmit(e) {
+const messageEl = document.getElementById('message');
+
+bindToForm('js-new-user-form', async e => {
     e.preventDefault();
-    console.info('Event type', e.type);
-    const data = new FormData(e.target);
-    const obj = {};
-    data.forEach((value, key) => {
-        obj[key] = value;
-    });
-    form.reset();
-    console.info({obj});
+    let form = e.target;
+    console.assert(form instanceof HTMLFormElement);
+    const obj = formToObj(form);
     let normalizedPassword = String(obj['password']).normalize();
-    
     let normalizedConfirmationPassword = String(obj['confirmPassword']).normalize();
     if (normalizedPassword === normalizedConfirmationPassword) {
-        console.log('Passwords are equal');
         // submit object
         try {
-            await fetch.create('/interns', obj);
+            obj.password = normalizedPassword;
+            const result = await fetch.create('/interns', obj);
+            let {success, data, message} = result;
+            if (success) {
+                showSuccess(data);
+            } else {
+                showError(message);
+            }
         } catch (err) {
             console.error(err);
         }
     } else {
         showPasswordError();
     }
-    
-    
+});
+
+/**
+ * 
+ * @param {{id}} data 
+ */
+function showSuccess(data) {
+    if (messageEl.classList.contains('error')) {
+        messageEl.classList.remove('error');
+    }
+    messageEl.hidden = false;
+    messageEl.textContent = `Intern of ${data.id} was created`;
 }
 
+function showError(message) {
+    messageEl.classList.add('error');
+    messageEl.hidden = false;
+    messageEl.textContent = message;
+}
 function showPasswordError() {
-    console.error('Passwords do not match');
+    messageEl.classList.add('error');
+    messageEl.hidden = false;
+    messageEl.textContent = 'Passwords do not match.';
 }
 
-document.forms[0].addEventListener('submit', handleSubmit);

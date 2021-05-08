@@ -16,7 +16,7 @@ module.exports.lookupTask = async (req, res, next) => {
         const task = await repo.getById(taskId);
         next();
     } catch (err) {
-        res.status(Codes.ClientError.NOT_FOUND).json({error: 'Task was not found.'});
+        res.status(Codes.ClientError.NOT_FOUND).json({success: false, message: 'Task was not found.'});
     }
 };
 
@@ -41,9 +41,9 @@ module.exports.getUnassignedTasks = async (req, res) => {
         } else {
             unassignedTasks = await taskRepo.getUnassignedTasks(offsetParam);
         }
-        res.status(Codes.Success.OK).json(unassignedTasks);
+        res.status(Codes.Success.OK).json({success: true, data: unassignedTasks});
     } catch (err) {
-        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err.message});
+        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({success: false, message: err.message});
     }
 };
 
@@ -59,9 +59,9 @@ module.exports.getTasks = async (req, res) => {
     try {
         /**@type {(Task|BinTask)[]} */
         const tasks = await taskRepo.getAll(Number(offset), Number(limit));
-        res.status(Codes.Success.OK).json(tasks);
+        res.status(Codes.Success.OK).json({success: true, data: tasks});
     } catch (error) {
-        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: error});
+        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({success: false, message: error.message});
     }
 };
 
@@ -76,10 +76,10 @@ module.exports.getTask = async (req, res) => {
     const taskId = Number(req.params.taskId);
     try {
         const task = await taskRepo.getById(taskId);
-        res.status(Codes.Success.OK).json(task);
+        res.status(Codes.Success.OK).json({success: true, data: task});
     } catch (error) {
         console.error('Error in getTask: ', error);
-        res.status(Codes.ClientError.NOT_FOUND).json({error: error});
+        res.status(Codes.ClientError.NOT_FOUND).json({success: false, message: error.message});
     }
 };
 
@@ -97,10 +97,10 @@ module.exports.addTask = async (req, res) => {
         const newTask = toTask(requestBody);
         const index = await taskRepo.add(newTask);
         await taskRepo.save();
-        res.status(Codes.Success.OK).json({id: index});
+        res.status(Codes.Success.OK).json({success: true, data: {id: index}});
     } catch (error) {
         console.error('Error with adding task: ' + error);
-        res.status(Codes.ClientError.BAD_REQUEST).json({error: error.message});
+        res.status(Codes.ClientError.BAD_REQUEST).json({success: false, message: error.message});
     }
 };
 
@@ -119,10 +119,10 @@ module.exports.editTask = async (req, res) => {
         const requestBody = req.body;
         const index = await taskRepo.update(Number(taskId), requestBody);
         await taskRepo.save();
-        res.status(Codes.Success.OK).json({id: index});
+        res.status(Codes.Success.OK).json({success: true, data: {id: index}});
     } catch (err) {
         console.error('Error with editing task: ' + err);
-        res.status(Codes.ClientError.BAD_REQUEST).json({error: err.message});
+        res.status(Codes.ClientError.BAD_REQUEST).json({success: false, message: err.message});
     }
 };
 
@@ -139,9 +139,10 @@ module.exports.deleteTask = async (req, res) => {
     try {
         const didSucceed = await taskRepo.delete(Number(taskId));
         await taskRepo.save();
-        res.status(Codes.Success.OK).json({succeeded: didSucceed});
+        let message = didSucceed ? `Deleted task ${taskId}`:`Failed to delete task ${taskId}`;
+        res.status(Codes.Success.OK).json({success: didSucceed, message: message});
     } catch (err) {
         console.error('Error with delete task: ' + err);
-        res.status(Codes.ServerError.NOT_FOUND).json({error: err.message});
+        res.status(Codes.ServerError.NOT_FOUND).json({success: false, message: err.message});
     }
 };

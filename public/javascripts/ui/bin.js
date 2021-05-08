@@ -15,8 +15,20 @@ export const getPreviousWeights = async (binId) => {
     return weights;
 };
 
+const isPresent = (value, func) => {
+    if (typeof(value) !== 'undefined') {
+        func(value);
+    }
+};
+
 export const updateBin = async (id, {location, notes, isReturned, binType, lastBinWeight}) => {
-    const result = await rest.update('/bins/' + Number(id), {location, notes, isReturned, binType, lastBinWeight});
+    const obj = {};
+    isPresent(location, value => obj.location = value);
+    isPresent(notes, value => obj.notes = value);
+    isPresent(isReturned, value => obj.isReturned = value);
+    isPresent(binType, value => obj.isReturned = value);
+    isPresent(lastBinWeight, value => obj.lastBinWeight = value);
+    const result = await rest.update('/bins/' + Number(id), obj);
     return result;
 };
 

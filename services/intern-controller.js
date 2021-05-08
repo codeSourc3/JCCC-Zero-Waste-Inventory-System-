@@ -23,7 +23,7 @@ module.exports.lookupIntern = async (req, res, next) => {
         const intern = await repo.getById(internId);
         next();
     } catch (err) {
-        res.status(Codes.ClientError.NOT_FOUND).json({error: 'Intern was not found.'});
+        res.status(Codes.ClientError.NOT_FOUND).json({success: false, message: 'Intern was not found.'});
     }
 };
 
@@ -43,9 +43,9 @@ module.exports.getAllInterns = async (req, res) => {
             interns.forEach(intern => {
                 delete intern.password;
             });
-            res.status(200).json(interns);
+            res.status(200).json({success: true, data: interns});
         } catch (err) {
-            res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err.message});
+            res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({success: false, message: err.message});
         }
     
 };
@@ -64,7 +64,7 @@ module.exports.getInternById = async (req, res) => {
 
     // only allow admins to access other user records.
     if (id !== currentUser.internId && currentUser.role !== role.Admin) {
-        return res.status(401).json({message: 'Unauthorized'});
+        return res.status(401).json({success: false, message: 'Unauthorized'});
     }
 
     const internRepo = await InternRepository.load();
@@ -73,9 +73,9 @@ module.exports.getInternById = async (req, res) => {
         const intern = await internRepo.getById(id);
         const internObj = intern.toJSON();
         delete internObj.password;
-        res.status(200).json(internObj);
+        res.status(200).json({success: true, data: internObj});
     } catch (err) {
-        res.status(400).json({error: err.message});
+        res.status(400).json({success: false, message: err.message});
     }
 }
 
@@ -93,9 +93,9 @@ module.exports.getOneOrAllInternTasks = async (req, res) => {
     if (taskId) {
         try {
             const task = await taskRepo.getTaskOfIntern(internId, taskId);
-            res.status(Codes.Success.OK).json(task);
+            res.status(Codes.Success.OK).json({success: true, data: task});
         } catch (err) {
-            res.status(Codes.ClientError.NOT_FOUND).json({error: err});
+            res.status(Codes.ClientError.NOT_FOUND).json({success: false, message: err.message});
         }
     } else {
         // Getting all tasks
@@ -103,9 +103,9 @@ module.exports.getOneOrAllInternTasks = async (req, res) => {
         try {
             const tasks = await taskRepo.getTasksOfIntern(internId);
             console.dir('Task Array: ', tasks);
-            res.status(Codes.Success.OK).json(tasks);
+            res.status(Codes.Success.OK).json({success: true, data: tasks});
         } catch (err) {
-            res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err});
+            res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({success: false, message: err.message});
         }
     }
 };
@@ -131,10 +131,10 @@ module.exports.addInternTask = async (req, res) => {
         const task = Task.fromObject(requestBody);
         const id = await taskRepo.add(task);
         await taskRepo.save();
-        res.status(Codes.Success.OK).json({id});
+        res.status(Codes.Success.OK).json({success: true, data: {id}});
     } catch (err) {
         console.error('Error encountered: ', err);
-        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err.message});
+        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({success: false, message: err.message});
     }
 };
 const saltAndHashPassword = (plainTextPassword) => {
@@ -191,10 +191,10 @@ module.exports.addIntern = async (req, res) => {
         const index = await internRepo.add(intern);
         await internRepo.save();
 
-        res.status(Codes.Success.OK).json({id: index});
+        res.status(Codes.Success.OK).json({success: true, data: {id: index}});
     } catch (err) {
         console.error(err);
-        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err});
+        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({success: false, message: err});
     }
 };
 
@@ -215,10 +215,10 @@ module.exports.updateInternTask = async (req, res) => {
         const index = await taskRepo.update(taskId, newTask);
         
         await taskRepo.save();
-        res.status(Codes.Success.OK).json({id: index});
+        res.status(Codes.Success.OK).json({success: true, data: {id: index}});
     } catch (err) {
         console.error('Error with updateInternTask on intern-controller: ', err);
-        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err.message});
+        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({success: false, message: err.message});
     }
 };
 
@@ -244,10 +244,10 @@ module.exports.updateIntern = async (req, res) => {
         const newIntern = req.body;
         const index = await internRepo.update(Number(internId), newIntern);
         await internRepo.save();
-        res.status(Codes.Success.OK).json({id: index});
+        res.status(Codes.Success.OK).json({success: true, data: {id: index}});
     } catch (err) {
         console.error('Error with update intern: ' + err);
-        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err.message});
+        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({success: false, message: err.message});
     }
 };
 
@@ -264,10 +264,11 @@ module.exports.deleteIntern = async (req, res) => {
     try {
         const didSucceed = await internRepo.delete(Number(internId));
         await internRepo.save();
-        res.status(Codes.Success.OK).json({succeeded: didSucceed});
+        let message = didSucceed ? `Intern ${internId} deleted` : `Intern ${internId} not deleted`;
+        res.status(Codes.Success.OK).json({success: didSucceed, message: message});
     } catch (err) {
         console.error('Error with delete intern: ' + err);
-        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err.message});
+        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({success: false, message: err.message});
     }
 };
 
@@ -284,10 +285,11 @@ module.exports.deleteInternTask = async (req, res) => {
     try {
         const didSucceed = await taskRepo.delete(Number(taskId));
         await internRepo.save();
-        res.status(Codes.Success.OK).json({succeeded: didSucceed});
+        let message = didSucceed ? `Intern Task ${taskId} deleted` : `Intern Task ${taskId} not deleted`;
+        res.status(Codes.Success.OK).json({success: didSucceed, message: message});
     } catch (err) {
         console.error('Error with delete intern task: ' + err);
-        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({error: err.message});
+        res.status(Codes.ServerError.INTERNAL_SERVER_ERROR).json({success: false, message: err.message});
     }
 };
 

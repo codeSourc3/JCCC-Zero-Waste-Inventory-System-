@@ -94,25 +94,9 @@ const form = document.forms[0];
 
 
 (async () => {
-    if (!sessionStorage.getItem('binId')) {
-        // bin id hasn't been set.
-        form.hidden = false;
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            /**
-             * @type {HTMLInputElement}
-             */
-            const input = form.elements.namedItem('bin-id');
-            let value = input.valueAsNumber;
-            const url = await drawQRCode(`Bin Id=${value}`);
-            createDataLink(url);
-            return false;
-        });
-    } else {
-        let value = parseInt(sessionStorage.getItem('binId'));
-        const url = await drawQRCode(`Bin Id=${value}`);
-        createDataLink(url);
-    }
+    let value = parseInt(sessionStorage.getItem('binId'));
+    const url = await drawQRCode(`Bin Id=${value}`);
+    createDataLink(url);
 })();
 
 

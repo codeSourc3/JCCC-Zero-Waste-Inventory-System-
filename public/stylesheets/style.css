@@ -55,6 +55,10 @@ fieldset {
   margin-top: 20px;
 }
 
+.error {
+	color: red;
+}
+
 .buttons {
 	text-align:center;
 	position: flex;

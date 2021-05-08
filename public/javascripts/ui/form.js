@@ -5,7 +5,6 @@ export default async function handleSubmit(e) {
     data.forEach((value, key) => {
         obj[key] = value;
     });
-    console.log({obj});
 }
 
 export function formPresent(formId) {

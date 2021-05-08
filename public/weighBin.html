@@ -14,9 +14,9 @@
 			<button class="But returnHome" onclick="location.href='/dashboard'">Home Page</button>
 			<button class="But returnBinInfoAfter" onclick="location.href='/getBinInfoAfter.html'">Bin Info</button>
 			<div class="formDiv">
-				<form class = "formFormat">
-					<label for="binId">Bin ID:</label><br>
-					<input class="binIDInput" id="binId" type="number" name="bin-id" required><br>
+				<form id="js-weigh-bin" class = "formFormat">
+					<!-- <label for="binId">Bin ID:</label><br>
+					<input class="binIDInput" id="binId" type="number" name="bin-id" required><br> -->
 					<label for="lastBinWeight">Bin Weight</label><br>
 					<span><input class="binWeight" type="text" id="lastBinWeight" name="lastBinWeight" required> .lbs</span><br>
 					<!-- Put a static weight descriptor i.e pounds as a static text in the right side of the form-->
@@ -32,5 +32,6 @@
 				</i>
 				</footer>
 		</div>
+		<script type="module" src="./javascripts/ui/weigh-bin.js"></script>
     </body>
 </html>
