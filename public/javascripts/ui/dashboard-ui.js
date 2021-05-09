@@ -28,6 +28,13 @@ const hasElement = (elementId) => {
     return document.contains(el);
 };
 
+function addSpan(value, slotName, parent) {
+    const span = document.createElement('span');
+    span.slot = slotName;
+    span.textContent = value;
+    parent.appendChild(span);
+}
+
 const bindToBinPanel = (panelId, offsetId, limitId, buttonId) => {
     if (hasElement(panelId) && hasElement(offsetId) && hasElement(limitId) && hasElement(buttonId)) {
         const panel = document.getElementById(panelId);
@@ -35,11 +42,26 @@ const bindToBinPanel = (panelId, offsetId, limitId, buttonId) => {
         const limitInput = document.getElementById(limitId);
         const btn = document.getElementById(buttonId);
         btn.addEventListener('click', async (e) => {
+            panel.childNodes.forEach(node => node.remove());
             const offset = offsetInput.value;
             const limit = limitInput.value;
             console.log(`Offset: ${offset}, Limit: ${limit}`);
-            const results = await rest.get('/interns');
-            console.log(results);
+            /**
+             * @type {Object[]}
+             */
+            const {success, data, message} = await rest.get('/interns', {offset, limit});
+            if (success) {
+                data.forEach(obj => {
+                    const internCard = document.createElement('intern-card');
+                    addSpan(obj.firstName, 'first-name', internCard);
+                    addSpan(obj.lastName, 'last-name', internCard);
+                    addSpan(obj.username, 'username', internCard);
+                    addSpan(obj.role, 'role', internCard);
+                    panel.appendChild(internCard);
+                });
+            } else {
+                console.error(message);
+            }
         });
     }
 };

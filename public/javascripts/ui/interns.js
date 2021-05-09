@@ -16,9 +16,9 @@ export const getInterns = async (offset=0, limit=10) => {
 };
 
 
-export const changePassword = async (internid, newPassword) => {
-    const result = await rest.get('/interns' + Number(internId), {password: String(newPassword).normalize()});
-    console.log({result});
+export const changePassword = async (internId, newPassword) => {
+    const result = await rest.update('/interns/' + Number(internId), {password: String(newPassword).normalize()});
+    return result;
 };
 
 export const addIntern = async (intern) => {

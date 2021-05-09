@@ -37,8 +37,9 @@ module.exports.lookupIntern = async (req, res, next) => {
  */
 module.exports.getAllInterns = async (req, res) => {
     const internRepo = await InternRepository.load();
+    const {offset, limit} = req.query;
         try {
-            let results = await internRepo.getAll();
+            let results = await internRepo.getAll(Number(offset), Number(limit));
             const interns = results.map(intern => intern.toJSON());
             interns.forEach(intern => {
                 delete intern.password;
