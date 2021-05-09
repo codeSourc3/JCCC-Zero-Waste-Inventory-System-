@@ -21,8 +21,9 @@ bindToForm('add-bin-form', async e => {
 });
 
 function showSuccess(data) {
-    messageEl.hidden = false;
-    messageEl.textContent = `New bin of ${data.id} added.`;
+    // add bin id to sessionStorage and go to binInfo.html
+    sessionStorage.setItem('binId', String(data.id));
+    location.href = '/getBinInfoAfter.html';
 }
 
 function showError(message) {
