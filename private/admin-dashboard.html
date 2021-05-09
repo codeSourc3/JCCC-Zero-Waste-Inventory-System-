@@ -8,6 +8,22 @@
     <title>Admin Dashboard - Zero Waste</title>
 </head>
 <body>
+    <template id="intern-card-tmpl">
+        <style>
+            div {
+                border: 1px solid black;
+            }
+        </style>
+        <div>
+            <p><span>First Name: </span><slot name="first-name"></slot></p>
+            <p><span>Last Name: </span><slot name="last-name"></slot></p>
+            <p><span>Username: </span><slot name="username"></slot></p>
+            <p><span>Role: </span><slot name="role"></slot></p>
+            <button>Change Password</button>
+            <button>Remove</button>
+        </div>
+        
+    </template>
     <div id="wrapper">
 		<header>
         <h1 id="Title">Admin Dashboard</h1>
@@ -17,6 +33,9 @@
                         <form action="/api/v1/auth/logout" method="post">
                             <button id="logout" class="But returnHome" type="submit">Logout</button>
                         </form>
+                    </li>
+                    <li>
+                        <button class="But returnHome" onclick="location.href='./change-password.html';">Change Password</button>
                     </li>
                 </ul>
             </nav>
@@ -30,7 +49,7 @@
         <button class="But" id="js-bin-info">Get Bin Information</button>
         <!--Would like to add ability to change password-->
 
-        <section>
+        <!-- <section>
             <h2>Interns</h2>
             <label for="offset">Offset: </label>
             <input type="number" min="0" name="offset" id="offset">
@@ -39,12 +58,13 @@
             <input type="number" min="1" name="limit" id="limit">
             <button id="submit">Search</button>
             <div id="bin-panel"></div>
-        </section>
+        </section> -->
     </main>
     <footer class="pageFooter">
         <i>JCCC ZERO WASTE<br><a href="mailto:Recycle@jccc.edu">Recycle@jccc.edu</a></i>
     </footer>
     </div>
+    <script type="module" src="./javascripts/ui/admin-ui.js"></script>
     <script type="module" src="./javascripts/ui/dashboard-ui.js"></script>
 </body>
 </html>
