@@ -2,7 +2,11 @@ import * as bin from './bin.js';
 import {formToObj, bindToForm} from './form.js';
 
 const messageEl = document.getElementById('message');
-
+window.addEventListener('DOMContentLoaded', e => {
+    let binId = parseInt(window.sessionStorage.getItem('binId'));
+    const binIdElement = document.getElementById('bin-id');
+    binIdElement.textContent = `${binId}`;
+});
 bindToForm('js-weigh-bin', async e => {
     e.preventDefault();
     const obj = formToObj(e.target);
