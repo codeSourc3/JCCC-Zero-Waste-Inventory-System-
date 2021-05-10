@@ -3,7 +3,7 @@ const BinRepository = require('../persistence/bin-repository');
 const typeSafety = require('../utils/type-safety');
 const {Bin} = require('../models/bins');
 const WeightHistoryRepository = require('../persistence/weight-history-repository');
-
+const {WeightHistory} = require('../models/weight-history');
 /**
  * 
  * @param {import('express').Request} req 
@@ -65,10 +65,10 @@ module.exports.getBins = async (req, res) => {
     try {
         let bins={};
         if ('limit' in req.query && 'offset' in req.query) {
-            bins = await binRepo.getAll(Number(req.query.offset), Number(req.query.limit));
+            bins = await binRepo.getAll(Number(offset), Number(limit));
             //
         } else if ('offset' in req.query) {
-            bins = await binRepo.getAll(Number(req.query.offset));
+            bins = await binRepo.getAll(Number(offset));
             //
         } else {
             bins = await binRepo.getAll();
@@ -123,10 +123,16 @@ module.exports.getBin = async (req, res) => {
  */
 module.exports.editBin = async (req, res) => {
     const binRepo = await BinRepository.load();
+    const weightRepo = await WeightHistoryRepository.load();
     const {binId} = req.params;
     try {
         const requestBody = req.body;
-        console.log({requestBody});
+        if ('lastBinWeight' in requestBody) {
+            // save current weight
+            const bin = await binRepo.getById(Number(binId));
+            const lastWeight = new WeightHistory(1, Number(binId), bin.binWeight);
+            await weightRepo.add(lastWeight);
+        }
         const index = await binRepo.update(Number(binId), requestBody);
         await binRepo.save();
         res.status(Codes.Success.OK).json({success: true, data: {id: index}});

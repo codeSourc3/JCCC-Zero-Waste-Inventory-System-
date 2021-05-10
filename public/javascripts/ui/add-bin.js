@@ -18,6 +18,7 @@ bindToForm('add-bin-form', async e => {
     } else {
         showError(message);
     }
+    e.target.reset();
 });
 
 function showSuccess(data) {

@@ -17,6 +17,7 @@ bindToForm('js-weigh-bin', async e => {
     } else {
         showError(message);
     }
+    e.target.reset();
 });
 
 function showSuccess(data) {
