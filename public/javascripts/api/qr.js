@@ -2,6 +2,7 @@
 
 /**@type {HTMLCanvasElement} */
 const canvas = document.getElementById('canvas');
+const homeButton = document.getElementById('js-return-home');
 
 const inchesToPixels = (inches) => {
     // The standard that most use is 96 pixels per inch.
@@ -97,7 +98,12 @@ const form = document.forms[0];
     let value = parseInt(sessionStorage.getItem('binId'));
     const url = await drawQRCode(`Bin Id=${value}`);
     createDataLink(url);
+    homeButton.addEventListener('click', e => {
+        sessionStorage.removeItem('binId');
+        location.href = '/dashboard';
+    }, {passive: true});
 })();
+
 
 
 

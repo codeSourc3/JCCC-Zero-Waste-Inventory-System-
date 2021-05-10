@@ -1,7 +1,7 @@
 import * as bin from './bin.js';
 import {bindToForm, formToObj} from './form.js';
 
-
+const homeButton = document.getElementById('js-return-home');
 const messageEl = document.getElementById('message');
 
 const showSuccess = (data) => {
@@ -34,3 +34,8 @@ bindToForm('new-location-form', async (e) => {
     }
     form.reset();
 });
+
+homeButton.addEventListener('click', e => {
+    sessionStorage.removeItem('binId');
+    location.href = '/dashboard';
+}, {passive: true});

@@ -1,6 +1,7 @@
 import * as bin from './bin.js';
 import {formToObj, bindToForm} from './form.js';
 
+const homeButton = document.getElementById('js-return-home');
 const messageEl = document.getElementById('message');
 window.addEventListener('DOMContentLoaded', e => {
     let binId = parseInt(window.sessionStorage.getItem('binId'));
@@ -29,3 +30,8 @@ function showError(message) {
     messageEl.hidden = false;
     messageEl.textContent = message;
 }
+
+homeButton.addEventListener('click', e => {
+    sessionStorage.removeItem('binId');
+    location.href = '/dashboard';
+}, {passive: true});

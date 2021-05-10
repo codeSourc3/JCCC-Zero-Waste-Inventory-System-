@@ -1,13 +1,17 @@
 import * as bin from './bin.js';
 import {bindToForm, formToObj} from './form.js';
 
+const homeButton = document.getElementById('js-return-home');
+
 const messageEl = document.getElementById('message');
 messageEl.hidden = true;
+
 /**@type {HTMLInputElement} */
 const binIdInput = document.getElementById('binId');
 if (sessionStorage.getItem('binId')) {
     binIdInput.defaultValue = sessionStorage.getItem('binId');
 }
+
 const toBinInfo = document.getElementById('to-bin-info');
 
 
@@ -41,3 +45,8 @@ function showError(message) {
     messageEl.hidden = false;
     messageEl.textContent = message;
 }
+
+homeButton.addEventListener('click', e => {
+    sessionStorage.removeItem('binId');
+    location.href = '/dashboard';
+}, {passive: true});

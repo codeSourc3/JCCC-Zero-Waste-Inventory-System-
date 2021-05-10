@@ -1,7 +1,7 @@
 'use strict';
 
 const binInfo = document.getElementById('js-bin-info');
-
+const backButton = document.getElementById('back');
 async function findBin(id) {
     const module = await import('./bin.js');
     const { success, data, message } = await module.findBin(id);
@@ -86,4 +86,8 @@ window.onload = (e) => {
             location.href = './getBinInfo.html';
         });
     }
+    backButton.addEventListener('click', e => {
+        sessionStorage.removeItem('binId');
+        location.href = '/dashboard';
+    }, {passive: true});
 };
