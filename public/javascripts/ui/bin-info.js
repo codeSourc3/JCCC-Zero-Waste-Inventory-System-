@@ -83,6 +83,7 @@ window.onload = (e) => {
             binInfo.classList.add('error');
             binInfo.textContent = 'Bin could not be found';
             sessionStorage.removeItem('binId');
+            location.href = './getBinInfo.html';
         });
     }
 };
