@@ -1,5 +1,5 @@
 const db = require('./db');
-const {Bin} = require('../models/bins');
+const { Bin, BinStatus } = require('../models/bins');
 const { GoogleSpreadsheetWorksheet, GoogleSpreadsheetRow, GoogleSpreadsheet } = require('google-spreadsheet');
 
 /**
@@ -18,7 +18,7 @@ class BinRepository {
          * @private
          */
         this._doc = doc;
-        
+
         /**
          * @type {GoogleSpreadsheetWorksheet}
          * @private
@@ -58,7 +58,7 @@ class BinRepository {
     async getAll(offset = 0, limit = 10) {
         // assert offset >= 0 && limit > 0
 
-        const results = await this._sheet.getRows({offset, limit});
+        const results = await this._sheet.getRows({ offset, limit });
         const bins = results.map(row => Bin.fromObject(row));
         return bins;
     }
@@ -120,19 +120,17 @@ class BinRepository {
      * @returns {Promise<boolean>} a promise resolving to true if 
      * the bin was deleted, false otherwise.
      */
-    async delete(binId, isLost=false) {
+    async delete(binId, status = BinStatus.Lost) {
         const rows = await this._sheet.getRows();
         const id = Number(binId);
         const targetRow = rows.find(row => Number(row.binId) === id);
         if (targetRow) {
             // row with bin id exists.
-            if (isLost) {
-                const bin = Bin.fromObject(targetRow);
-                let binLiteral = bin.toJSON();
-                binLiteral.status = 'Lost';
-                // save to inactive bins sheet
-                await this._inactiveBinSheet.addRow(binLiteral);
-            }
+            const bin = Bin.fromObject(targetRow);
+            let binLiteral = bin.toJSON();
+            binLiteral.status = status;
+            // save to inactive bins sheet
+            await this._inactiveBinSheet.addRow(binLiteral);
             await targetRow.delete();
             return true;
         } else {

@@ -1,7 +1,7 @@
 const Codes = require('../utils/http-codes');
 const BinRepository = require('../persistence/bin-repository');
 const typeSafety = require('../utils/type-safety');
-const {Bin} = require('../models/bins');
+const {Bin, BinStatus} = require('../models/bins');
 const WeightHistoryRepository = require('../persistence/weight-history-repository');
 const {WeightHistory} = require('../models/weight-history');
 /**
@@ -152,14 +152,14 @@ module.exports.deleteBin = async (req, res) => {
     const {binId} = req.params;
     try {
         //const body = req.body;
-        const isLost = Boolean(req.body.isLost);
-        const didSucceed = await binRepo.delete(Number(binId), isLost);
+        const status = req.body.status;
+        const didSucceed = await binRepo.delete(Number(binId), status);
         await binRepo.save();
         let message = '';
-        if (isLost) {
+        if (status === BinStatus.Lost) {
             message = didSucceed ? `Bin ${binId} moved to inactive bins` : `Bin ${binId} was not moved to inactive bins`;
-        } else {
-            message = didSucceed ? `Bin ${binId} deleted` : `Bin ${binId} not deleted`;
+        } else if (status === BinStatus.Removed) {
+            message = didSucceed ? `Bin ${binId} removed` : `Bin ${binId} not removed`;
         }
         res.status(Codes.Success.OK).json({success: didSucceed, message: message});
     } catch (err) {

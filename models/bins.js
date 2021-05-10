@@ -5,6 +5,11 @@
  * @todo Create the class
  */
 
+const BinStatus = {
+    Lost: 'Lost',
+    Removed: 'Removed'
+};
+
 /**
  * @readonly
  * @enum {string}
@@ -170,4 +175,4 @@ class Bin {
     }
 }
 
-module.exports = {Bin, BinType};
+module.exports = {Bin, BinType, BinStatus};

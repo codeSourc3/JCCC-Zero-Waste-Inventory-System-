@@ -20,8 +20,8 @@ bindToForm('remove-bin-form', async (e) => {
     const obj = formToObj(e.target);
 
     obj.binId = parseInt(obj.binId)
-    let binIsLost = obj.binStatus === 'Lost';
-    const {success, message} = await bin.removeBin(obj.binId, binIsLost);
+    let binStatus = obj.binStatus;
+    const {success, message} = await bin.removeBin(obj.binId, binStatus);
     if (success) {
         showSuccess(message);
     } else {
