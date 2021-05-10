@@ -8,6 +8,9 @@ const binIdInput = document.getElementById('binId');
 if (sessionStorage.getItem('binId')) {
     binIdInput.defaultValue = sessionStorage.getItem('binId');
 }
+const toBinInfo = document.getElementById('to-bin-info');
+
+
 bindToForm('remove-bin-form', async (e) => {
     e.preventDefault();
     const obj = formToObj(e.target);
@@ -28,6 +31,8 @@ function showSuccess(message) {
     }
     messageEl.hidden = false;
     messageEl.textContent = message;
+    // can't have the user going back to a bin that doesn't exist.
+    toBinInfo.hidden = true;
 }
 
 function showError(message) {

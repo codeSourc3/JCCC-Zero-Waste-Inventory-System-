@@ -146,9 +146,15 @@ module.exports.deleteBin = async (req, res) => {
     const {binId} = req.params;
     try {
         //const body = req.body;
-        const didSucceed = await binRepo.delete(Number(binId));
+        const isLost = Boolean(req.body.isLost);
+        const didSucceed = await binRepo.delete(Number(binId), isLost);
         await binRepo.save();
-        let message = didSucceed ? `Bin ${binId} deleted` : `Bin ${binId} not deleted`;
+        let message = '';
+        if (isLost) {
+            message = didSucceed ? `Bin ${binId} moved to inactive bins` : `Bin ${binId} was not moved to inactive bins`;
+        } else {
+            message = didSucceed ? `Bin ${binId} deleted` : `Bin ${binId} not deleted`;
+        }
         res.status(Codes.Success.OK).json({success: didSucceed, message: message});
     } catch (err) {
         console.error('Error with edit bin: ' + err);
