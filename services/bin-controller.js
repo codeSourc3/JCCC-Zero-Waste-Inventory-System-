@@ -129,7 +129,7 @@ module.exports.editBin = async (req, res) => {
         console.log({requestBody});
         const index = await binRepo.update(Number(binId), requestBody);
         await binRepo.save();
-        res.status(Codes.Success.OK).json({success: true, data: {id: index}});
+        res.status(Codes.Success.OK).json({success: true, data: {id: binId}});
     } catch (err) {
         console.error('Error with edit bin: ' + err);
         res.status(Codes.ClientError.BAD_REQUEST).json({success: false, message: err.message});
