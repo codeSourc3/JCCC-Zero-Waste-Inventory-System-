@@ -59,7 +59,7 @@ function displayBin(bin) {
     <p>Notes: ${bin.notes}</p>
     <p>Previous Weights</p>
     <ul>
-        ${bin.previousWeights?.map(weight => `<li>${displayWeight(weight)}</li>`)}
+        ${bin.previousWeights?.map(weight => `<li>${displayWeight(weight)}</li>`).join('')}
     </ul>
     `;
     binInfo.innerHTML = html;
