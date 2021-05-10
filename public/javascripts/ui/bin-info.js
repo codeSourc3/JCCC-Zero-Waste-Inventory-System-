@@ -1,53 +1,40 @@
 'use strict';
+
+const binInfo = document.getElementById('js-bin-info');
+
 async function findBin(id) {
     const module = await import('./bin.js');
-    try {
-        const {success, data, message} = await module.findBin(id);
-        if (success) {
-            return data;
-        } else {
-            throw new Error(message);
-        }
-    } catch (err) {
-        console.error(err);
+    const { success, data, message } = await module.findBin(id);
+    if (success) {
+        return data;
+    } else {
+        throw new Error(message);
     }
 }
 
-async function getBins(offset=0, limit=10) {
+async function getBins(offset = 0, limit = 10) {
     const module = await import('../api/bin-resource.js');
     const repo = new module.BinRepository();
-    try {
-        const bins = await repo.getAll(offset, limit);
-        return bins;
-    } catch (err) {
-        console.error('Error getting all bins ' + offset + ', ' + limit + ':', err);
-    }
+    const bins = await repo.getAll(offset, limit);
+    return bins;
 }
 
 
 async function getOutBins() {
     const module = await import('../api/bin-resource.js');
     const repo = new module.BinRepository();
-    try {
-        const outBins = await repo.getOutBins();
-        return outBins;
-    } catch(err) {
-        console.error(err);
-    }
+    const outBins = await repo.getOutBins();
+    return outBins;
 }
 
 async function getWeights(binId) {
     const id = parseInt(binId);
     const module = await import('./bin.js');
-    try {
-        const {success, data, message} = await module.getPreviousWeights(id);
-        if (success) {
-            return data;
-        } else {
-            throw new Error(message);
-        }
-    } catch (err) {
-        console.error(err);
+    const { success, data, message } = await module.getPreviousWeights(id);
+    if (success) {
+        return data;
+    } else {
+        throw new Error(message);
     }
 }
 
@@ -88,11 +75,14 @@ function displayWeight(binWeight) {
     `;
 }
 
+
 window.onload = (e) => {
     if (sessionStorage.getItem('binId')) {
         let id = parseInt(sessionStorage.getItem('binId'));
         getFullBin(id).then(displayBin).catch(err => {
-            console.error('Bin could not be found', err);
+            binInfo.classList.add('error');
+            binInfo.textContent = 'Bin could not be found';
+            sessionStorage.removeItem('binId');
         });
     }
 };

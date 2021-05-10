@@ -1,8 +1,12 @@
 import * as intern from './interns.js';
 import {bindToForm, formToObj} from './form.js';
 
+const messageEl = document.getElementById('message');
+messageEl.hidden = true;
+
 bindToForm('change-password-form', async e => {
     e.preventDefault();
+    const form = e.target;
     const obj = formToObj(e.target);
     let password = String(obj.password).normalize();
     let confirmPassword = String(obj['confirmPassword']).normalize();
@@ -18,12 +22,15 @@ bindToForm('change-password-form', async e => {
     } else {
         showError('Passwords don\'t match. Password' + password + ' Confirm: ' + confirmPassword);
     }
+    form.reset();
 });
 
 function showSuccess(data) {
-    console.info({data});
+    messageEl.hidden = false;
+    messageEl.textContent = `User ${data.id}'s password has been changed`;
 }
 
 function showError(message) {
-    console.error(message);
+    messageEl.hidden = false;
+    messageEl.textContent = message;
 }

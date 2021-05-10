@@ -17,6 +17,7 @@ const showError = (message) => {
 
 bindToForm('new-location-form', async (e) => {
     e.preventDefault();
+    const form = e.target;
     const obj = formToObj(e.target);
     let regex = /storage/i;
     let stringLocation = String(obj['location']);
@@ -31,4 +32,5 @@ bindToForm('new-location-form', async (e) => {
     } else {
         showError(message);
     }
+    form.reset();
 });

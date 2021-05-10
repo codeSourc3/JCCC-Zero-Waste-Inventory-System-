@@ -41,7 +41,7 @@ module.exports.isPasswordAndUserMatch = async (req, res, next) => {
             };
             next();
         } else {
-            console.error('Password Or Username Invalid - ', user.toJSON());
+            //console.error('Password Or Username Invalid - ', user.toJSON());
             res.status(400).send({errors: 'Invalid e-mail or password'});
         }
     }
@@ -154,7 +154,7 @@ module.exports.login = async (req, res, next) => {
         addRefreshToken(res, refresh_token);
         res.redirect('/dashboard');
     } catch(err) {
-        console.error('Login Error: ', err);
+        //console.error('Login Error: ', err);
         res.status(500).send({message: err.message});
     } 
 };

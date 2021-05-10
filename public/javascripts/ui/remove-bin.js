@@ -3,10 +3,16 @@ import {bindToForm, formToObj} from './form.js';
 
 const messageEl = document.getElementById('message');
 messageEl.hidden = true;
+/**@type {HTMLInputElement} */
+const binIdInput = document.getElementById('binId');
+if (sessionStorage.getItem('binId')) {
+    binIdInput.defaultValue = sessionStorage.getItem('binId');
+}
 bindToForm('remove-bin-form', async (e) => {
     e.preventDefault();
     const obj = formToObj(e.target);
-    obj.binId = Number(sessionStorage.getItem('binId'));
+
+    obj.binId = parseInt(obj.binId)
     let binIsLost = obj.binStatus === 'Lost';
     const {success, message} = await bin.removeBin(obj.binId, binIsLost);
     if (success) {
