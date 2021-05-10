@@ -54,7 +54,7 @@ function displayBin(bin) {
     const html = `
     <p>Bin Id: ${bin.binId}</p>
     <p>Bin Type: ${bin.binType}</p>
-    <p>Last Bin Weight: ${bin.lastBinWeight}</p>
+    <p>Current Bin Weight: ${bin.lastBinWeight}</p>
     <p>Location: ${bin.location}</p>
     <p>Notes: ${bin.notes}</p>
     <p>Previous Weights</p>
