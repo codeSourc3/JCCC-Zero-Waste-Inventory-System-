@@ -23,6 +23,7 @@ bindToForm('remove-bin-form', async (e) => {
     } else {
         showError(message);
     }
+    e.target.reset();
 });
 
 function showSuccess(message) {

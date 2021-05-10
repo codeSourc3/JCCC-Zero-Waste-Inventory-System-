@@ -65,8 +65,8 @@ class WeightHistoryRepository {
      */
     async add(weightHistory) {
         const ids = (await this._sheet.getRows()).map(row => Number(row.weightId));
-        let nextId = Math.max(...ids);
-        nextId++;
+        let nextId = Math.max(...ids) + 1;
+
 
         if (weightHistory instanceof WeightHistory) {
             weightHistory.weightId = nextId;
@@ -74,7 +74,7 @@ class WeightHistoryRepository {
             this._unsavedRows.push(addedRow);
             return addedRow.rowIndex - 1;
         } else {
-            throw new TypeError(`Expected an Intern object, not ${weightHistory}`);
+            throw new TypeError(`Expected an WeightHistory object, not ${weightHistory}`);
         }
     }
 

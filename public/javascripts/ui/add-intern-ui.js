@@ -27,6 +27,7 @@ bindToForm('js-new-user-form', async e => {
     } else {
         showPasswordError();
     }
+    e.target.reset();
 });
 
 /**
