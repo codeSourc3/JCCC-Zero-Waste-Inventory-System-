@@ -12,12 +12,11 @@
 		</header>
         <main id="pageContainer">
         <button class="But returnHome" onclick="location.href='/dashboard'">Home Page</button>
-        <div id="remove-intern-form" class="formDiv">
-			<form class = "formFormat">
-                <h5>Be sure to capitalize only first letter of each name input </h5>
+        <div class="formDiv">
+			<form id="remove-intern-form" class = "formFormat">
 				<p id="message"></p>
-                <label for="internId" hidden>Intern Id:</label>
-				<input type="number" name="internId" id="internId" min="1" required></form><br>
+                <label for="internId">Intern Id:</label><br>
+				<input type="number" name="internId" id="internId" min="1" required><br>
 
 				<label for="isSure">Are you sure you want to delete this Intern?</label>
 				<input type="checkbox" name="isSure" id="isSure" required><br>
