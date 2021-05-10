@@ -34,6 +34,7 @@ export const updateBin = async (id, {location, notes, isReturned, binType, lastB
     isPresent(isReturned, value => obj.isReturned = value);
     isPresent(binType, value => obj.isReturned = value);
     isPresent(lastBinWeight, value => obj.lastBinWeight = value);
+    const result = await rest.update(`/bins/${Number(id)}`, obj);
     return result;
 };
 
