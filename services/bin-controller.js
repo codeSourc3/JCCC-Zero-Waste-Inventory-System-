@@ -129,8 +129,7 @@ module.exports.editBin = async (req, res) => {
         const requestBody = req.body;
         if ('lastBinWeight' in requestBody) {
             // save current weight
-            const bin = await binRepo.getById(Number(binId));
-            const lastWeight = new WeightHistory(1, Number(binId), bin.binWeight);
+            const lastWeight = new WeightHistory(1, Number(binId), requestBody.lastBinWeight);
             await weightRepo.add(lastWeight);
         }
         const index = await binRepo.update(Number(binId), requestBody);
