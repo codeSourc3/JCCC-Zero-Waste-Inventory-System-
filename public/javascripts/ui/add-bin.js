@@ -24,7 +24,9 @@ bindToForm('add-bin-form', async e => {
 function showSuccess(data) {
     // add bin id to sessionStorage and go to binInfo.html
     sessionStorage.setItem('binId', String(data.id));
-    location.href = '/getBinInfoAfter.html';
+    setTimeout(() => {
+        location.href = '/getBinInfoAfter.html';
+    }, 1000);
 }
 
 function showError(message) {
