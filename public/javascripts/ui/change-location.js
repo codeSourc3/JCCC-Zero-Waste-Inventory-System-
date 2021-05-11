@@ -19,11 +19,14 @@ bindToForm('new-location-form', async (e) => {
     e.preventDefault();
     const form = e.target;
     const obj = formToObj(e.target);
+    console.dir(obj);
     let regex = /storage/i;
     let stringLocation = String(obj['location']);
-    console.assert(regex.ignoreCase, 'Regular expression is case-sensitive.');
+    if (obj.notes.length === 0) {
+        // fixes Issue #62
+        obj.notes = ' ';
+    }
     obj.isReturned = regex.test(stringLocation);
-    console.log({obj});
     let binId = parseInt(sessionStorage.getItem('binId'));
     obj.binId = binId;
     const {success, data, message} = await bin.updateBin(obj.binId, obj);
