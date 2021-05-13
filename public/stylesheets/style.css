@@ -105,6 +105,10 @@ fieldset {
 	width: 95%;
 	max-width: 450px;
 }
+.no-show {
+	display: none;
+}
+
 #back{
 	display:block;
 	font-size: 20px;

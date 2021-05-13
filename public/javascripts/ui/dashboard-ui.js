@@ -67,3 +67,15 @@ const bindToBinPanel = (panelId, offsetId, limitId, buttonId) => {
 };
 
 bindToBinPanel('bin-panel', 'offset', 'limit', 'submit');
+/**
+ * Figures out if the user is an admin or not.
+ * @returns {boolean} true if the dashboard is an admin, false otherwise.
+ */
+function isAdmin() {
+    let intern = document.documentElement.dataset.intern;
+    let isAdmin = intern === 'false';
+    
+    console.log('Is Admin?', isAdmin);
+    return isAdmin;
+}
+sessionStorage.setItem('isAdmin', isAdmin());

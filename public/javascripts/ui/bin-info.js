@@ -74,8 +74,8 @@ function displayWeight(binWeight) {
     Date Emptied: ${binWeight.dateEmptied}, Weight: ${binWeight.weight}
     `;
 }
-
-
+/**@type {HTMLButtonElement} */
+const removeBinButton = document.getElementById('remove-bin-btn');
 window.onload = (e) => {
     if (sessionStorage.getItem('binId')) {
         let id = parseInt(sessionStorage.getItem('binId'));
@@ -90,4 +90,12 @@ window.onload = (e) => {
         sessionStorage.removeItem('binId');
         location.href = '/dashboard';
     }, {passive: true});
+    
+    let isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+    if (isAdmin) {
+        //console.log(isAdmin);
+        removeBinButton.disabled = false;
+        removeBinButton.classList.remove('no-show');
+    }
+    
 };
