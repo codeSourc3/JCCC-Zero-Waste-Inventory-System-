@@ -26,14 +26,14 @@ module.exports.sameUserCantDoThisAction = (req, res, next) => {
  */
 module.exports.onlySameUserOrAdmin = (req, res, next) => {
     let userRole = String(req.jwt.role);
-    let internId = req.jwt.internId;
-    if (req.params && req.params.internId && internId === req.params.internId) {
+    let internId = parseInt(req.jwt.internId);
+    if (req.params && req.params.internId && internId === Number(req.params.internId)) {
         next();
     } else {
         if (userRole === Role.Admin) {
             next();
         } else {
-            res.status(403).send({error: ''});
+            res.status(403).send({error: `Intern of ${internId} does not match ${req.params.internId} and you are not an Admin.`});
         }
     }
 };

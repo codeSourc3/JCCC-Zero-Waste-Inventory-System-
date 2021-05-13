@@ -91,7 +91,7 @@ class InternRepository {
 
         if (intern instanceof User) {
             intern.internId = nextId;
-            let addedRow = await this._sheet.addRow(intern.toJSON());
+            let addedRow = await this._sheet.addRow(intern.toJSON(), {raw: true});
             this._unsavedRows.push(addedRow);
             return addedRow.rowIndex;
         } else {
@@ -152,7 +152,7 @@ class InternRepository {
      */
     async save() {
         for (const intern of this._unsavedRows) {
-            await intern.save();
+            await intern.save({raw: true});
         }
         this._unsavedRows = [];
     }
