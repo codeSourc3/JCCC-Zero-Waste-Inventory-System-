@@ -86,14 +86,13 @@ class InternRepository {
     async add(intern) {
         // Validates the intern before adding it.
         const ids = (await this._sheet.getRows()).map(row => Number(row.internId));
-        let nextId = Math.max(...ids);
-        nextId++;
+        let nextId = Math.max(...ids) + 1;
 
         if (intern instanceof User) {
             intern.internId = nextId;
             let addedRow = await this._sheet.addRow(intern.toJSON(), {raw: true});
             this._unsavedRows.push(addedRow);
-            return addedRow.rowIndex;
+            return nextId;
         } else {
             throw new TypeError(`Expected an Intern object, not ${intern}`);
         }
@@ -124,7 +123,8 @@ class InternRepository {
             }
         }
         this._unsavedRows.push(row);
-        return row.rowIndex - 1;
+        console.info('Row Index', row.rowIndex);
+        return internId;
     }
 
     /**

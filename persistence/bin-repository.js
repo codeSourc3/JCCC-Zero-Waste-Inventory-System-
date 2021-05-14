@@ -106,7 +106,7 @@ class BinRepository {
             bin.binId = nextId;
             let addedRow = await this._sheet.addRow(bin);
             this._unsavedRows.push(addedRow);
-            return addedRow.rowIndex - 1;
+            return nextId;
         } else {
             throw new TypeError(`The object ${bin} is not a Bin object.`);
         }
@@ -168,7 +168,7 @@ class BinRepository {
             }
         }
         this._unsavedRows.push(row);
-        return row.rowIndex - 1;
+        return id;
     }
 
     /**

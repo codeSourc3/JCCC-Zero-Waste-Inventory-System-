@@ -72,7 +72,7 @@ class WeightHistoryRepository {
             weightHistory.weightId = nextId;
             let addedRow = await this._sheet.addRow(weightHistory.toJSON());
             this._unsavedRows.push(addedRow);
-            return addedRow.rowIndex - 1;
+            return nextId;
         } else {
             throw new TypeError(`Expected an WeightHistory object, not ${weightHistory}`);
         }
@@ -126,7 +126,7 @@ class WeightHistoryRepository {
             }
         }
         this._unsavedRows.push(row);
-        return row.rowIndex - 1;
+        return row.rowIndex;
     }
 
 
