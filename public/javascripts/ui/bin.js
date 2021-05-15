@@ -1,10 +1,31 @@
 import * as rest from '../api/fetch.js';
 
+/**
+ * 
+ * @typedef {Object} Bin
+ * @property {number} binId - the bin id.
+ * @property {string} binType - the bin type
+ * @property {number} lastBinWeight
+ * @property {boolean} isReturned
+ * @property {string} location
+ * @property {string} notes
+ */
+
+/**
+ * 
+ * @param {*} bin 
+ * @returns 
+ */
 export const addBin = async (bin) => {
     const id = await rest.create('/bins', bin);
     return id;
 };
 
+/**
+ * 
+ * @param {number} id 
+ * @returns {{success: boolean, message: string | undefined, data: Bin}}
+ */
 export async function findBin(id) {
     let binId = parseInt(id);
     const bin = await rest.get(`/bins/${binId}`);

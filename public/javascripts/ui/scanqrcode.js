@@ -1,14 +1,13 @@
 const importURL = './javascripts/api';
 
 async function findBin(id) {
-    const module = await import('../api/bin-resource.js');
-    const repo = new module.BinRepository();
-    try {
-        const bin = await repo.get(id);
-        console.info(bin.toJSON());
-        return bin.toJSON();
-    } catch (err) {
-        console.error(err);
+    let binId = parseInt(id);
+    const module = await import('./bin.js');
+    let {success, message, data} = await module.findBin(binId);
+    if (success) {
+        return data;
+    } else {
+        return message;
     }
 }
 
