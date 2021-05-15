@@ -22,7 +22,7 @@ export const addBin = async (bin) => {
 };
 
 /**
- * 
+ * Finds a bin.
  * @param {number} id 
  * @returns {{success: boolean, message: string | undefined, data: Bin}}
  */
