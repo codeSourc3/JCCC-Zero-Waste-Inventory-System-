@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "start-debug": "set NODE_DEBUG=* & node ./bin/www"
+    "start-debug": "set NODE_DEBUG=* & node ./bin/www",
+    "build": "node ./setup.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
