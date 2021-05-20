@@ -7,8 +7,11 @@ let doc;
 
 
 module.exports = (async () => {
-    doc = new GoogleSpreadsheet(config.sheetId);
+    doc = new GoogleSpreadsheet(config.production.sheetId);
     await doc.useServiceAccountAuth(credentials);
     await doc.loadInfo();
     return doc;
-})();
+})().catch(err => {
+    console.error('Database was not setup correctly ', err);
+    process.abort();
+});

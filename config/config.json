@@ -1,9 +1,14 @@
 {
-    "sheetId": "13kpWcwI8haU7_Ac4Pt9k3HtGwZXXNc9h9yY4sTaEMaA",
+    "production": {
+        "sheetId": "1bfOZmZQieThtIkO9tkZ91JvcshdSwM0emfxLnGZ3Uhw"
+    },
+    "test": {
+        "sheetId": "13kpWcwI8haU7_Ac4Pt9k3HtGwZXXNc9h9yY4sTaEMaA",
     "sheets": {
         "Interns": 0,
         "Bins": 1,
         "Tasks": 2,
         "WeightHistory": 3
+    }
     }
 }

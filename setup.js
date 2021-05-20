@@ -2,6 +2,8 @@ const InternRepository = require('./persistence/intern-repository.js');
 const {Intern, Admin} = require('./models/interns.js');
 const crypto = require('crypto');
 (async function() {
+    //
+
     let password = 'password';
     let salt = crypto.randomBytes(16).toString('base64');
     let hash = crypto.createHmac('sha512', salt).update(password.normalize()).digest('base64');
