@@ -10,4 +10,4 @@ const {Intern, Admin} = require('./models/interns.js');
         const result = await repo.add(defaultAdmin);
         console.log(`Default admin created. Username: ${defaultAdmin.username}\nPassword: ${defaultAdmin.password}`);
     }
-});
+})();
